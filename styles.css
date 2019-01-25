@@ -31,9 +31,10 @@ hr {
 }
 
 .navbar-brand {
-  background: #fff url('images/qgis_logo.png') no-repeat 20px 2px;
-  height: 67px;
-  width: 100px;
+  background: #fff url('images/qgis_logo.png') no-repeat;
+  background-size: 100% 100%;
+  height: 70px;
+  width: 133px;
 }
 
 .navbar-collapse {
