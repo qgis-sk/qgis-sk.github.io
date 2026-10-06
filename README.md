@@ -35,9 +35,10 @@ feed.xml                   RSS kanál noviniek (odporúčanie QGIS.org pre user 
 1_qgis_advent.html         starší adventný kalendár 2020 (ponechaný)
 styles.css                 všetky štýly (farby QGIS: #589632, #93b023, #ee7913, #f0e64a)
 js/komunita.js             mapa organizácií (Leaflet + OpenStreetMap), vyhľadávanie, filtre,
-                           mobilné menu
+                           mobilné menu, SVG mapa Slovenska v hlavičke (kraje + body organizácií)
 data/organizacie.json      dáta pre mapu – GENEROVANÉ, needitovať ručne
 data/stat.json             počty členov – udržiavané ručne
+data/sk-kraje.json         zjednodušené hranice 8 krajov (OpenStreetMap/Nominatim) pre mapu v hlavičke
 data/organizacie-tabulka.csv  záloha tabuľky z 6. 10. 2026
 scripts/sync_organizacie.py   skript, ktorý z tabuľky vyrobí organizacie.json
 .github/workflows/sync-organizacie.yml  mesačná automatizácia
@@ -123,6 +124,7 @@ kontaktu na `index.html`.
 
 - Font Cairo z Google Fonts
 - Leaflet 1.9.4 z cdnjs
+- Hranice krajov v hlavičke: © prispievatelia OpenStreetMap (ODbL), stiahnuté cez Nominatim
 - Dlaždice OpenStreetMap (štandardný server, vhodný pre nízku návštevnosť; pri raste prejsť na
   vlastný alebo platený poskytovateľ)
 

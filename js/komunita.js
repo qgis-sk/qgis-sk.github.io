@@ -131,3 +131,61 @@ document.addEventListener("DOMContentLoaded", () => {
   t && n && t.addEventListener("click", () => n.classList.toggle("open"));
   n && n.querySelectorAll("a").forEach((a) => a.addEventListener("click", () => n.classList.remove("open")));
 });
+
+// Hero mapa: skutočné hranice krajov + skutočné organizácie (inline SVG, bez knižnice)
+(function () {
+  const svg = document.getElementById("hero-map");
+  if (!svg) return;
+  const NS = "http://www.w3.org/2000/svg";
+  const W = 1000, H = 560, PAD = 18;
+  Promise.all([
+    fetch("data/sk-kraje.json").then((r) => r.json()),
+    fetch("data/organizacie.json").then((r) => r.json())
+  ]).then(([kraje, data]) => {
+    // rozsah
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    const cosLat = Math.cos(48.7 * Math.PI / 180);
+    const rings = [];
+    kraje.features.forEach((f) => {
+      const polys = f.geometry.type === "Polygon" ? [f.geometry.coordinates] : f.geometry.coordinates;
+      polys.forEach((poly) => {
+        poly.forEach((ring) => {
+          rings.push({ kraj: f.properties.nazov, ring });
+          ring.forEach(([lon, lat]) => {
+            const x = lon * cosLat, y = -lat;
+            if (x < minX) minX = x; if (x > maxX) maxX = x; if (y < minY) minY = y; if (y > maxY) maxY = y;
+          });
+        });
+      });
+    });
+    const sc = Math.min((W - 2 * PAD) / (maxX - minX), (H - 2 * PAD) / (maxY - minY));
+    const ox = (W - (maxX - minX) * sc) / 2, oy = (H - (maxY - minY) * sc) / 2;
+    const proj = (lon, lat) => [ox + (lon * cosLat - minX) * sc, oy + (-lat - minY) * sc];
+    const path = (ring) => ring.map(([lon, lat], i) => (i ? "L" : "M") + proj(lon, lat).map((v) => v.toFixed(1)).join(" ")).join("") + "Z";
+
+    const g1 = document.createElementNS(NS, "g");
+    rings.forEach((r) => {
+      const el = document.createElementNS(NS, "path");
+      el.setAttribute("class", "kraj"); el.setAttribute("d", path(r.ring));
+      const t = document.createElementNS(NS, "title"); t.textContent = r.kraj; el.appendChild(t);
+      g1.appendChild(el);
+    });
+    svg.appendChild(g1);
+
+    const orgs = (data.organizacie || []).filter((o) => o.lat && o.lon && (o.krajina || "SK") === "SK");
+    const g2 = document.createElementNS(NS, "g");
+    orgs.forEach((o) => {
+      const [x, y] = proj(o.lon, o.lat);
+      const cls = o.typ === "firma" ? " firma" : "";
+      const halo = document.createElementNS(NS, "circle");
+      halo.setAttribute("class", "halo" + cls); halo.setAttribute("cx", x); halo.setAttribute("cy", y); halo.setAttribute("r", 14);
+      const dot = document.createElementNS(NS, "circle");
+      dot.setAttribute("class", "bod" + cls); dot.setAttribute("cx", x); dot.setAttribute("cy", y); dot.setAttribute("r", 6);
+      const t = document.createElementNS(NS, "title"); t.textContent = o.nazov + " · " + o.mesto; dot.appendChild(t);
+      g2.appendChild(halo); g2.appendChild(dot);
+    });
+    svg.appendChild(g2);
+    const note = document.getElementById("hero-map-note");
+    if (note) note.textContent = orgs.length + " organizácií na Slovensku · zelená: inštitúcie, školy, samosprávy · oranžová: firmy";
+  }).catch(() => {});
+})();

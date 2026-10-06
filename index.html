@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <link rel="alternate" type="application/rss+xml" title="QGIS Slovensko – novinky" href="feed.xml">
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
 
@@ -44,16 +44,10 @@
         <a class="btn ghost" href="#komunita">Kto s QGIS pracuje</a>
       </div>
     </div>
-    <div class="hero-map" aria-hidden="true">
-      <img src="background-sk.png" alt="">
-      <div class="pins">
-        <span class="pin" style="left:17%;top:62%"></span>
-        <span class="pin g" style="left:35%;top:40%"></span>
-        <span class="pin g" style="left:52%;top:48%"></span>
-        <span class="pin" style="left:78%;top:55%"></span>
-        <span class="pin g" style="left:86%;top:44%"></span>
-      </div>
-    </div>
+    <a class="hero-map" href="#komunita" title="Otvoriť komunitnú mapu">
+      <svg id="hero-map" viewBox="0 0 1000 560" role="img" aria-label="Mapa Slovenska s organizáciami, ktoré pracujú s QGIS"></svg>
+      <span class="hero-map-note" id="hero-map-note"></span>
+    </a>
   </div>
 </section>
 
@@ -259,6 +253,6 @@
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="js/komunita.js?v=4"></script>
+<script src="js/komunita.js?v=5"></script>
 </body>
 </html>

@@ -80,15 +80,17 @@ section { padding: 96px 0; }
 .hero h1 span { color: var(--green); }
 .hero .lead { font-size: 1.3rem; max-width: 36ch; }
 .hero .actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
-.hero-map { position: relative; }
-.hero-map img { width: 100%; opacity: .9; }
-.hero-map .pins { position: absolute; inset: 0; }
-.hero-map .pin {
-  position: absolute; width: 14px; height: 14px; border-radius: 50%;
-  background: var(--orange); box-shadow: 0 0 0 6px rgba(238,121,19,.18);
-  transform: translate(-50%,-50%);
-}
-.hero-map .pin.g { background: var(--green); box-shadow: 0 0 0 6px rgba(88,150,50,.18); }
+.hero-map { position: relative; display: block; text-decoration: none; }
+.hero-map:hover { text-decoration: none; }
+.hero-map svg { width: 100%; height: auto; display: block; }
+.hero-map .kraj { fill: var(--green-soft); stroke: #fff; stroke-width: 2; transition: fill .15s; }
+.hero-map:hover .kraj { fill: #e4eedb; }
+.hero-map .obrys { fill: none; stroke: var(--green); stroke-width: 2.5; stroke-linejoin: round; }
+.hero-map .bod { fill: var(--green); stroke: #fff; stroke-width: 2.5; }
+.hero-map .bod.firma { fill: var(--orange); }
+.hero-map .halo { fill: var(--green); opacity: .14; }
+.hero-map .halo.firma { fill: var(--orange); }
+.hero-map-note { display: block; text-align: center; font-size: .85rem; color: var(--muted); margin-top: 6px; }
 
 /* Numbers band */
 .band { background: linear-gradient(135deg, var(--dark) 0%, var(--dark-2) 100%); color: #fff; padding: 80px 0; }
