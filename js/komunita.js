@@ -39,6 +39,12 @@
     .then((r) => r.json())
     .then((d) => {
       all = d.organizacie || [];
+      const st = d.stat || {};
+      const so = document.getElementById("stat-org"); if (so) so.textContent = all.length;
+      const si = document.getElementById("stat-ind"); if (si && st.individualni_clenovia) si.textContent = st.individualni_clenovia;
+      const sb = document.getElementById("org-count-band"); if (sb) sb.textContent = all.length;
+      const ib = document.getElementById("ind-count-band"); if (ib && st.individualni_clenovia) ib.textContent = st.individualni_clenovia;
+      const su = document.getElementById("stat-upd"); if (su && d.aktualizovane) su.textContent = d.aktualizovane.split("-").reverse().join(". ");
       buildChips();
       render();
     })
@@ -93,7 +99,7 @@
       el.className = "org";
       el.id = id;
       el.innerHTML =
-        '<div class="t">' + (TYPY[o.typ] || o.typ) + (o.stav === "overené" ? ' · <span style="color:#589632">sídlo overené</span>' : ' · <span style="color:#ee7913">na potvrdenie</span>') + (o.krajina && o.krajina !== "SK" ? " · " + esc(o.krajina) : "") + "</div>" +
+        '<div class="t">' + (TYPY[o.typ] || o.typ) + (o.registracia === "člen" ? ' · <span style="color:#ee7913">na potvrdenie</span>' : (o.stav === "overené" ? ' · <span style="color:#589632">sídlo overené</span>' : ' · <span style="color:#ee7913">sídlo neoverené</span>')) + (o.krajina && o.krajina !== "SK" ? " · " + esc(o.krajina) : "") + "</div>" +
         "<h4>" + esc(o.nazov) + "</h4>" +
         '<div class="city">' + esc(o.mesto) + "</div>" +
         (o.popis ? "<p>" + esc(o.popis) + "</p>" : "") +

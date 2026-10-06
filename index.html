@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <link rel="alternate" type="application/rss+xml" title="QGIS Slovensko – novinky" href="feed.xml">
-  <link rel="stylesheet" href="styles.css?v=3">
+  <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
 
@@ -62,9 +62,9 @@
   <div class="wrap">
     <div class="grid">
       <div class="stat"><div class="num">2020</div><div class="label">Rok vzniku skupiny – oficiálny štart na GIS Day, 18. novembra 2020</div></div>
-      <div class="stat"><div class="num" id="org-count-band">–</div><div class="label">organizácií v komunitnej mape (zoznam priebežne dopĺňame)</div></div>
+      <div class="stat"><div class="num" id="ind-count-band">–</div><div class="label">individuálnych členov registrovaných od roku 2020</div></div>
+      <div class="stat"><div class="num" id="org-count-band">–</div><div class="label">organizácií v komunitnej mape (priebežne overujeme)</div></div>
       <div class="stat"><div class="num">2024</div><div class="label">QGIS User Conference a stretnutie prispievateľov sa konali v Bratislave</div></div>
-      <div class="stat"><div class="num">100<small>%</small></div><div class="label">otvorený softvér, otvorené dáta, otvorená komunita</div></div>
     </div>
   </div>
 </div>
@@ -92,6 +92,10 @@
     <h2>Sila otvoreného softvéru je v ľuďoch</h2>
     <div class="cols">
       <div>
+        <figure class="photo">
+          <img src="images/preco-komunita.jpg" alt="Slovenská QGIS komunita" onerror="this.parentElement.style.display='none'">
+          <figcaption>Komunita QGIS Slovensko</figcaption>
+        </figure>
         <p class="lead">QGIS nie je produkt jednej firmy. Je to projekt tisícov ľudí, ktorí ho vyvíjajú, prekladajú, dokumentujú, učia a používajú – a väčšina z nich to robí preto, že chce niečo vrátiť komunite.</p>
         <p>Práve v tom sa QGIS líši od komerčných riešení. Nie v počte funkcií, ale v nezištnej chuti budovať niečo spoločné a spolupracovať. Vzájomná pomoc nie je slabosť, ale evolučná výhoda – ako to už koncom 19. storočia opísal Peter Kropotkin vo svojej knihe <em>Vzájomná pomoc</em>. Komunity, ktoré si pomáhajú, prežijú a rastú.</p>
         <p>Na Slovensku chceme byť takou komunitou. Nie klubom fanúšikov jedného softvéru, ale sieťou ľudí a organizácií, ktorí si navzájom pomáhajú robiť lepšie GIS.</p>
@@ -136,7 +140,11 @@
       <input type="search" id="org-search" placeholder="Hľadať organizáciu, mesto alebo oblasť…">
       <div class="chips" id="org-chips"></div>
     </div>
-    <p class="muted" style="margin:0 0 12px">Zobrazených: <strong id="org-count">0</strong> organizácií</p>
+    <div class="stat-row">
+      <div><span class="big" id="stat-org">–</span><span>organizácií na mape</span></div>
+      <div><span class="big" id="stat-ind">–</span><span>individuálnych členov (jednotlivcov na mape nezobrazujeme)</span></div>
+    </div>
+    <p class="muted" style="margin:0 0 12px">Zoznam organizácií priebežne overujeme a aktualizujeme (naposledy <span id="stat-upd">–</span>). Položky označené „na potvrdenie“ sú odvodené z registrácie člena, nie organizácie. Zobrazených: <strong id="org-count">0</strong>.</p>
     <div class="map-grid">
       <div id="mapa"></div>
       <div class="org-list" id="org-list"></div>
@@ -251,12 +259,6 @@
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="js/komunita.js?v=3"></script>
-<script>
-  // počet organizácií do pásu s číslami
-  fetch("data/organizacie.json").then(r => r.json()).then(d => {
-    const n = (d.organizacie || []).length; const el = document.getElementById("org-count-band"); if (el) el.textContent = n;
-  }).catch(() => {});
-</script>
+<script src="js/komunita.js?v=4"></script>
 </body>
 </html>

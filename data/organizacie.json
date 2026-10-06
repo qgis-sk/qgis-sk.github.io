@@ -1,6 +1,11 @@
 {
   "_poznamka": "Generované automaticky zo zdieľanej tabuľky organizácií; needitovať ručne.",
   "aktualizovane": "2026-10-06",
+  "stat": {
+    "individualni_clenovia": 105,
+    "registracii_spolu": 124,
+    "aktualizovane": "2026-10-06"
+  },
   "organizacie": [
     {
       "nazov": "3Dproduction Slovakia s. r. o. (videomanual.eu)",
@@ -11,7 +16,20 @@
       "lon": 17.10712,
       "web": "https://www.videomanual.eu",
       "popis": "Video manuály a videoprodukcia.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
+    },
+    {
+      "nazov": "AKUSON s. r. o.",
+      "typ": "firma",
+      "mesto": "Bratislava",
+      "krajina": "SK",
+      "lat": 48.14564,
+      "lon": 17.08905,
+      "web": "https://www.akuson.sk",
+      "popis": "Geodézia, GIS.",
+      "stav": "overené",
+      "registracia": "člen"
     },
     {
       "nazov": "AMAVET klub č. 962",
@@ -22,7 +40,20 @@
       "lon": 17.10979,
       "web": "https://amavet962.org",
       "popis": "GISkola, popularizácia GIS pre mládež.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
+    },
+    {
+      "nazov": "AmigoNet s.r.o.",
+      "typ": "firma",
+      "mesto": "Ústí nad Labem",
+      "krajina": "CZ",
+      "lat": 50.62626,
+      "lon": 14.05377,
+      "web": "https://www.amigonet.cz",
+      "popis": "Internet a hosting.",
+      "stav": "overené",
+      "registracia": "člen"
     },
     {
       "nazov": "Dopravný úrad",
@@ -33,7 +64,20 @@
       "lon": 17.21004,
       "web": "https://nsat.sk",
       "popis": "Priestorové informácie v agende úradu.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
+    },
+    {
+      "nazov": "Ekonomická univerzita v Bratislave",
+      "typ": "skola",
+      "mesto": "Bratislava",
+      "krajina": "SK",
+      "lat": 48.12953,
+      "lon": 17.13075,
+      "web": "https://www.euba.sk",
+      "popis": "",
+      "stav": "overené",
+      "registracia": "člen"
     },
     {
       "nazov": "Geografický ústav SAV, v. v. i.",
@@ -44,7 +88,8 @@
       "lon": 17.10578,
       "web": "https://geography.sav.sk",
       "popis": "Výskum v geografii a geoinformatike.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
     },
     {
       "nazov": "Geosupport, s.r.o.",
@@ -55,7 +100,8 @@
       "lon": 21.05496,
       "web": "https://www.geosupport.sk",
       "popis": "Geoportály, priestorové analýzy, dokumenty pre obce.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
     },
     {
       "nazov": "GT DATA s.r.o.",
@@ -66,7 +112,8 @@
       "lon": 19.12851,
       "web": "https://gtdata.sk",
       "popis": "GIS konzultácie a riešenia.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
     },
     {
       "nazov": "KAJO, s. r. o.",
@@ -77,7 +124,8 @@
       "lon": 18.56295,
       "web": "https://www.kajoservices.com",
       "popis": "GIS služby a vývoj.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
     },
     {
       "nazov": "KaNET Software s. r. o.",
@@ -88,7 +136,8 @@
       "lon": 18.4504,
       "web": "https://www.kanet.sk",
       "popis": "Vývoj PyQGIS aplikácií.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
     },
     {
       "nazov": "LANDGEO, s.r.o.",
@@ -99,7 +148,20 @@
       "lon": 19.29423,
       "web": "",
       "popis": "Geodézia a GIS.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
+    },
+    {
+      "nazov": "Landmann s.r.o.",
+      "typ": "firma",
+      "mesto": "Mikulov",
+      "krajina": "CZ",
+      "lat": 48.80542,
+      "lon": 16.63865,
+      "web": "",
+      "popis": "Poľnohospodársky podnik.",
+      "stav": "overené",
+      "registracia": "organizácia"
     },
     {
       "nazov": "Lutra Consulting (LUTRA CONSULTING SK s. r. o.)",
@@ -110,7 +172,32 @@
       "lon": 17.11275,
       "web": "https://www.lutraconsulting.co.uk",
       "popis": "Vývoj QGIS, Mergin Maps, konzultácie a školenia.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
+    },
+    {
+      "nazov": "Mesto Banská Bystrica",
+      "typ": "samosprava",
+      "mesto": "Banská Bystrica",
+      "krajina": "SK",
+      "lat": 48.73837,
+      "lon": 19.15633,
+      "web": "https://www.banskabystrica.sk",
+      "popis": "Územné plánovanie.",
+      "stav": "overené",
+      "registracia": "člen"
+    },
+    {
+      "nazov": "Mesto Bánovce nad Bebravou",
+      "typ": "samosprava",
+      "mesto": "Bánovce nad Bebravou",
+      "krajina": "SK",
+      "lat": 48.71858,
+      "lon": 18.25803,
+      "web": "https://www.banovce.sk",
+      "popis": "",
+      "stav": "overené",
+      "registracia": "člen"
     },
     {
       "nazov": "Ministerstvo dopravy SR",
@@ -121,7 +208,8 @@
       "lon": 17.11342,
       "web": "https://www.mindop.sk",
       "popis": "",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
     },
     {
       "nazov": "Ministerstvo obrany SR",
@@ -132,7 +220,8 @@
       "lon": 17.1303,
       "web": "https://www.mosr.sk",
       "popis": "",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
     },
     {
       "nazov": "Ministerstvo životného prostredia SR",
@@ -143,7 +232,8 @@
       "lon": 17.11051,
       "web": "https://www.minzp.sk",
       "popis": "Geozdroje verejnej správy, INSPIRE.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
     },
     {
       "nazov": "NEKONEČNO | architekti (nekonečno s.r.o.)",
@@ -154,7 +244,8 @@
       "lon": 21.29538,
       "web": "https://nekonecno.org",
       "popis": "Architektúra a urbanizmus.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
     },
     {
       "nazov": "Prešovská univerzita v Prešove",
@@ -165,7 +256,8 @@
       "lon": 21.23289,
       "web": "https://www.unipo.sk",
       "popis": "Katedra geografie a aplikovanej geoinformatiky; výskum QGIS user groups.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
     },
     {
       "nazov": "Real Forest s. r. o.",
@@ -176,7 +268,44 @@
       "lon": 21.25504,
       "web": "https://www.realforest.sk",
       "popis": "Lesníctvo a GIS.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
+    },
+    {
+      "nazov": "RELAND, s.r.o.",
+      "typ": "firma",
+      "mesto": "Bratislava",
+      "krajina": "SK",
+      "lat": 48.14049,
+      "lon": 17.10508,
+      "web": "https://www.reland.com",
+      "popis": "",
+      "stav": "overené",
+      "registracia": "člen"
+    },
+    {
+      "nazov": "Slovenská poľnohospodárska univerzita v Nitre",
+      "typ": "skola",
+      "mesto": "Nitra",
+      "krajina": "SK",
+      "lat": 48.30729,
+      "lon": 18.09354,
+      "web": "https://www.uniag.sk",
+      "popis": "",
+      "stav": "overené",
+      "registracia": "člen"
+    },
+    {
+      "nazov": "Slovenská technická univerzita v Bratislave (stuba.sk)",
+      "typ": "skola",
+      "mesto": "Bratislava",
+      "krajina": "SK",
+      "lat": 48.15489,
+      "lon": 17.11783,
+      "web": "https://www.stuba.sk",
+      "popis": "",
+      "stav": "overené",
+      "registracia": "člen"
     },
     {
       "nazov": "Solargis s. r. o.",
@@ -187,7 +316,8 @@
       "lon": 17.12617,
       "web": "https://solargis.com",
       "popis": "Solárne dáta a softvér; bronzový sponzor projektu QGIS.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
     },
     {
       "nazov": "Správa a údržba ciest Trnavského samosprávneho kraja",
@@ -198,7 +328,8 @@
       "lon": 17.59742,
       "web": "https://www.spravaciest.sk",
       "popis": "Správa cestnej siete TTSK.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
     },
     {
       "nazov": "STU v Bratislave – Fakulta elektrotechniky a informatiky",
@@ -209,7 +340,8 @@
       "lon": 17.07369,
       "web": "https://www.fei.stuba.sk",
       "popis": "",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
     },
     {
       "nazov": "Technická univerzita vo Zvolene",
@@ -220,7 +352,8 @@
       "lon": 19.11794,
       "web": "https://www.tuzvo.sk",
       "popis": "Lesnícka fakulta, GIS v lesníctve.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
     },
     {
       "nazov": "Univerzita Karlova – Přírodovědecká fakulta",
@@ -231,7 +364,20 @@
       "lon": 14.42428,
       "web": "https://www.natur.cuni.cz",
       "popis": "",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
+    },
+    {
+      "nazov": "Univerzita Komenského v Bratislave (uniba.sk)",
+      "typ": "skola",
+      "mesto": "Bratislava",
+      "krajina": "SK",
+      "lat": 48.14178,
+      "lon": 17.11691,
+      "web": "https://uniba.sk",
+      "popis": "",
+      "stav": "overené",
+      "registracia": "člen"
     },
     {
       "nazov": "Univerzita Komenského v Bratislave – Prírodovedecká fakulta",
@@ -242,7 +388,8 @@
       "lon": 17.07088,
       "web": "https://fns.uniba.sk",
       "popis": "Katedra fyzickej geografie a geoinformatiky.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
     },
     {
       "nazov": "Ústav manažmentu STU, Oddelenie priestorového plánovania",
@@ -253,7 +400,44 @@
       "lon": 17.11783,
       "web": "https://www.stuba.sk/um.html",
       "popis": "Priestorové plánovanie, výučba GIS.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
+    },
+    {
+      "nazov": "Štátna ochrana prírody SR",
+      "typ": "institucia",
+      "mesto": "Banská Bystrica",
+      "krajina": "SK",
+      "lat": 48.73979,
+      "lon": 19.12922,
+      "web": "https://www.sopsr.sk",
+      "popis": "",
+      "stav": "overené",
+      "registracia": "člen"
+    },
+    {
+      "nazov": "Štátny geologický ústav Dionýza Štúra",
+      "typ": "institucia",
+      "mesto": "Bratislava",
+      "krajina": "SK",
+      "lat": 48.16637,
+      "lon": 17.07792,
+      "web": "https://www.geology.sk",
+      "popis": "",
+      "stav": "overené",
+      "registracia": "člen"
+    },
+    {
+      "nazov": "Žilinská univerzita – Fakulta riadenia a informatiky",
+      "typ": "skola",
+      "mesto": "Žilina",
+      "krajina": "SK",
+      "lat": 49.20384,
+      "lon": 18.75574,
+      "web": "https://www.fri.uniza.sk",
+      "popis": "",
+      "stav": "overené",
+      "registracia": "člen"
     },
     {
       "nazov": "Žilinská univerzita – FPEDAS, Katedra cestnej a mestskej dopravy",
@@ -264,7 +448,8 @@
       "lon": 18.75574,
       "web": "https://kcmd.uniza.sk",
       "popis": "Dopravné plánovanie, GIS v doprave.",
-      "stav": "overené"
+      "stav": "overené",
+      "registracia": "organizácia"
     }
   ]
 }

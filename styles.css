@@ -211,3 +211,12 @@ section { padding: 96px 0; }
 .page ul { padding-left: 22px; color: var(--ink-2); }
 .page li { margin-bottom: 6px; }
 .page .timeline h3 a { color: var(--ink); }
+
+/* Stat row above the map */
+.stat-row { display: flex; flex-wrap: wrap; gap: 32px; margin: 8px 0 12px; }
+.stat-row > div { display: flex; align-items: baseline; gap: 10px; color: var(--ink-2); }
+.stat-row .big { font-size: 2.2rem; font-weight: 700; color: var(--green-dark); line-height: 1; letter-spacing: -0.02em; }
+/* Photo in the Why section */
+.photo { margin: 0 0 28px; }
+.photo img { width: 100%; border-radius: var(--radius); aspect-ratio: 4 / 3; object-fit: cover; }
+.photo figcaption { font-size: .85rem; color: var(--muted); margin-top: 8px; }
