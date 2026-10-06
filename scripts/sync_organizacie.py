@@ -2,7 +2,7 @@
 """Stiahne tabuľku organizácií (Google Sheet publikovaný ako CSV) a zapíše data/organizacie.json.
 
 Použitie:
-  SHEET_CSV_URL="https://docs.google.com/spreadsheets/d/<ID>/gviz/tq?tqx=out:csv&sheet=organizacie" \
+  SHEET_CSV_URL="https://docs.google.com/spreadsheets/d/1JVPnrBTYYyEG4s7gUkXeO6AQWHwmCWVqL-4V0hoUTV8/gviz/tq?tqx=out:csv" \
   python3 scripts/sync_organizacie.py
 
 Do JSON idú iba riadky so zobrazit_na_mape = áno a s platnými súradnicami.
