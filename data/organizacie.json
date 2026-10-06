@@ -1,0 +1,45 @@
+{
+  "_poznamka": "NÁVRH NA DOPLNENIE. Každý záznam: nazov, typ (firma|institucia|skola|samosprava|komunita), mesto, lat, lon, web, popis. Záznamy so stav='navrh' treba potvrdiť alebo odstrániť.",
+  "organizacie": [
+    {
+      "nazov": "Prešovská univerzita v Prešove – Katedra geografie a aplikovanej geoinformatiky",
+      "typ": "skola",
+      "mesto": "Prešov",
+      "lat": 48.9985,
+      "lon": 21.2393,
+      "web": "https://www.unipo.sk/fakulta-humanitnych-prirodnych-vied/katedry/geografia/",
+      "popis": "Výskum fungovania skupín používateľov QGIS, výučba GIS.",
+      "stav": "navrh"
+    },
+    {
+      "nazov": "Stavebná fakulta STU v Bratislave – Katedra geodézie",
+      "typ": "skola",
+      "mesto": "Bratislava",
+      "lat": 48.1517,
+      "lon": 17.1142,
+      "web": "https://www.svf.stuba.sk/",
+      "popis": "Hostiteľ GIS Day 2020, kde skupina oficiálne odštartovala.",
+      "stav": "navrh"
+    },
+    {
+      "nazov": "Geosupport s.r.o.",
+      "typ": "firma",
+      "mesto": "Košice",
+      "lat": 48.7164,
+      "lon": 21.2611,
+      "web": "https://geosupport.sk",
+      "popis": "Geoportály, priestorové analýzy a klimatické dáta pre samosprávy.",
+      "stav": "navrh"
+    },
+    {
+      "nazov": "Lutra Consulting",
+      "typ": "firma",
+      "mesto": "Bratislava",
+      "lat": 48.1486,
+      "lon": 17.1077,
+      "web": "https://www.lutraconsulting.co.uk/",
+      "popis": "Vývoj QGIS, Mergin Maps, QGIS User Conference 2024.",
+      "stav": "navrh"
+    }
+  ]
+}

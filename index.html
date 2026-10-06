@@ -1,220 +1,247 @@
 <!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <title>QGIS Slovensko – Slovenská skupina používateľov QGIS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Slovenská skupina používateľov QGIS: spájame komunitu okolo otvoreného GIS softvéru, informujeme o novinkách, prepájame firmy, inštitúcie a školy a zdieľame know-how.">
+  <link rel="icon" href="images/qgis-logo_SK_color.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="styles.css?v=2">
+</head>
+<body>
 
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Slovenská skupina používateľov QGIS</title>
-    <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
-    <link href='http://fonts.googleapis.com/css?family=Lato:900,100' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="styles.css">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-    <script>
-      $(function(){
-        // bind change event to select
-        $('#other_groups').bind('change', function () {
-            var url = $(this).val(); // get selected value
-            if (url) { // require a URL
-                window.location = url; // redirect
-            }
-            return false;
-        });
-      });
-    </script>
-  </head>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#"><img src="images/qgis-logo_SK_color.svg" alt="QGIS SK"><span>QGIS Slovensko</span></a>
+    <button class="nav-toggle" aria-label="Menu">☰</button>
+    <nav class="nav">
+      <a href="#ciele">Ciele</a>
+      <a href="#preco">Prečo QGIS</a>
+      <a href="#komunita">Komunita</a>
+      <a href="#podujatia">Podujatia</a>
+      <a href="#zdroje">Zdroje</a>
+      <a href="#kontakt">Kontakt</a>
+      <a class="btn" href="#zapojte-sa">Pridať sa</a>
+    </nav>
+  </div>
+</header>
 
-  </head>
-
-  <body>
-    <!-- QGIS.org NAVBAR -->
-    <div class="navbar navbar-default" role="navigation">
-      <div class="container-fluid">
-        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="http://qgis.org"></a>
-        </div>
-        <div class="collapse navbar-collapse" id="nav-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="http://qgis.org/en/site/about/index.html">Objavte QGIS</a></li>
-            <li><a href="http://qgis.org/en/site/forusers/index.html">Pre používateľov</a></li>
-            <li><a href="http://qgis.org/en/site/getinvolved/index.html">Zapojte sa</a></li>
-            <li><a href="http://qgis.org/en/docs/index.html">Dokumentácia</a></li>
-            <li class="navbar-dropdown">
-              <div class="select-dropdown">
-              <select id="other_groups">
-                <option value="" title="none">Iné uživateľské skupiny</option>
-                <optgroup label="World">
-                  <option title="Ireland" value="http://ieqgis.wordpress.com/">Ireland</option>
-                  <option title="Switzerland" value="http://www.qgis.ch/en">Switzerland</option>
-                  <option title="Portugal" value="http://www.qgis.pt/">Portugal</option>
-                  <option title="Netherlands" value="http://www.qgis.nl/">Netherlands</option>
-                  <option title="US" value="http://qgis.us/">United States</option>
-                  <option title="Denmark" value="http://qgis.dk/">Denmark</option>
-                  <option title="Brazil" value="http://qgisbrazil.org/">Brazil</option>
-                  <option title="Germany" value="http://qgis.de/">Germany</option>
-                  <option title="Italy" value="http://qgis.it/">Italy</option>
-                  <option title="Japan" value="http://qgis.jp/">Japan</option>
-                  <option title="Peru" value="http://qgis.pe/">Peru</option>
-                  <option title="Poland" value="http://forum.quantum-gis.pl/">Poland</option>
-                  <option title="New Zealand" value="https://teamwork.niwa.co.nz/display/NQUG/NIWA+QGIS+Users+Group">New Zealand</option>
-                  <option title="Australia" value="https://sites.google.com/site/ausqgis/home">Australia</option>
-                  <option title="United Kingdom" value="http://qgis.uk/">United Kingdom</option>
-                </optgroup>
-              </select>
-              </div>
-            </li>
-          </ul>
-        </div>
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Slovenská skupina používateľov QGIS</span>
+      <h1>Otvorený GIS. <span>Otvorená komunita.</span></h1>
+      <p class="lead">Spájame ľudí, firmy, školy a inštitúcie, ktoré na Slovensku pracujú s QGIS. Zdieľame know-how, informujeme o novinkách a hľadáme príležitosti na spoluprácu.</p>
+      <div class="actions">
+        <a class="btn" href="#zapojte-sa">Pridať sa ku komunite</a>
+        <a class="btn ghost" href="#komunita">Kto s QGIS pracuje</a>
       </div>
     </div>
+    <div class="hero-map" aria-hidden="true">
+      <img src="background-sk.png" alt="">
+      <div class="pins">
+        <span class="pin" style="left:17%;top:62%"></span>
+        <span class="pin g" style="left:35%;top:40%"></span>
+        <span class="pin g" style="left:52%;top:48%"></span>
+        <span class="pin" style="left:78%;top:55%"></span>
+        <span class="pin g" style="left:86%;top:44%"></span>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- TITLE & PAGE NAV -->
-    <div class="container">
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-12 page-title"><center>Slovenská skupina používateľov QGIS<center></div>
+<!-- NUMBERS -->
+<div class="band">
+  <div class="wrap">
+    <div class="grid">
+      <div class="stat"><div class="num">2020</div><div class="label">Rok vzniku skupiny – oficiálny štart na GIS Day, 18. novembra 2020</div></div>
+      <div class="stat"><div class="num" id="org-count-band">–</div><div class="label">organizácií v komunitnej mape (zoznam priebežne dopĺňame)</div></div>
+      <div class="stat"><div class="num">2024</div><div class="label">QGIS User Conference a stretnutie prispievateľov sa konali v Bratislave</div></div>
+      <div class="stat"><div class="num">100<small>%</small></div><div class="label">otvorený softvér, otvorené dáta, otvorená komunita</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- GOALS -->
+<section class="goals" id="ciele">
+  <div class="wrap">
+    <span class="eyebrow">Ciele skupiny</span>
+    <h2>Čo chceme na Slovensku dosiahnuť</h2>
+    <p class="lead" style="max-width:70ch">Chceme vytvoriť slovenskú komunitu okolo projektu QGIS, otvorenú, zameranú na vzdelávanie a postavenú na transparentnosti a inklúzii v duchu otvoreného softvéru.</p>
+    <ol>
+      <li><div class="n">01</div><div><h3>Spájať komunity</h3><p>Prepájať používateľov, firmy, úrady, školy a výskumné pracoviská. Budovať mosty k príbuzným komunitám – OSGeo, OpenStreetMap, open data.</p></div></li>
+      <li><div class="n">02</div><div><h3>Informovať o novinkách</h3><p>Nové verzie QGIS, pluginy, dátové zdroje, podujatia doma aj vo svete. Jedno miesto, kde sa dozviete, čo je v slovenskom QGIS svete nové.</p></div></li>
+      <li><div class="n">03</div><div><h3>Ponúkať príležitosti na spoluprácu</h3><p>Projekty, zákazky, výskum, stáže aj dobrovoľnícka práca na QGIS. Komunita, kde sa dopyt stretáva s ponukou.</p></div></li>
+      <li><div class="n">04</div><div><h3>Vymieňať know-how</h3><p>Prednášky, workshopy, návody, preklady. Zdieľanie skúseností je to, na čom QGIS vo svete stojí – a chceme, aby stálo aj na Slovensku.</p></div></li>
+      <li><div class="n">05</div><div><h3>Šíriť povedomie o QGIS a open source</h3><p>Ukazovať, že otvorený GIS je plnohodnotná, profesionálna voľba pre firmy, samosprávy aj školy. Vzdelávať, nie presviedčať.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why" id="preco">
+  <div class="wrap">
+    <span class="eyebrow">Prečo QGIS a prečo komunita</span>
+    <h2>Sila otvoreného softvéru je v ľuďoch</h2>
+    <div class="cols">
+      <div>
+        <p class="lead">QGIS nie je produkt jednej firmy. Je to projekt tisícov ľudí, ktorí ho vyvíjajú, prekladajú, dokumentujú, učia a používajú – a väčšina z nich to robí preto, že chce niečo vrátiť komunite.</p>
+        <p>Práve v tom sa QGIS líši od komerčných riešení. Nie v počte funkcií, ale v nezištnej chuti budovať niečo spoločné a spolupracovať. Vzájomná pomoc nie je slabosť, ale evolučná výhoda – ako to už koncom 19. storočia opísal Peter Kropotkin vo svojej knihe <em>Vzájomná pomoc</em>. Komunity, ktoré si pomáhajú, prežijú a rastú.</p>
+        <p>Na Slovensku chceme byť takou komunitou. Nie klubom fanúšikov jedného softvéru, ale sieťou ľudí a organizácií, ktorí si navzájom pomáhajú robiť lepšie GIS.</p>
+      </div>
+      <div>
+        <!-- DISSERTATION-QUOTE -->
+        <div class="quote">
+          <p>Úspešné skupiny používateľov QGIS vo svete sú komunity „s vysokou úrovňou spolupráce medzi jej členmi“, ktoré vyznávajú „hodnoty ako priateľstvo, dobrá vôľa, čestnosť, nezaujatosť, rešpekt a dôvera“ a kde si členovia „najviac cenia zdieľanie know-how a výmenu skúseností“.</p>
+          <cite>Jana Michalková: Open Source filozofia ako báza pre naplnenie konceptu triple helix (dizertačná práca, Prešovská univerzita 2017) – prieskum 43 expertov z 13 skupín na 4 kontinentoch</cite>
         </div>
-
-        <!-- START THE FEATURETTES -->
-        <div class="container">
-          <hr class="featurette-divider">
-          <a name="about"></a>
-          <div class="featurette">
-            <h2 class="featurette-heading">Ciele skupiny</h2>
-            <p class="lead">
-            Chceme vytvoriť slovenskú komunitu okolo projektu QGIS a zamerať sa na rast tejto komunity prostredníctvom organizovaných akcií či improvizovaných stretnutí. Chceme, aby bola skupina otvorená, zameraná na vzdelávanie a podporovala transparentnosť, inklúziu a komunitu v duchu otvoreného softvéru. Táto skupina sa zameriava na QGIS, ale dúfame, že vybudujeme prepojenia s príbuznými skupinami. Taktiež dúfame, že povzbudíme používateľov, aby sa zapojili: rozširovaním povedomia o QGISe na Slovensku, diskusiami na fóre alebo napríklad s prekladmi z angličtiny.
-            </p>
-
-          </div>
-
-            <h2 class="featurette-heading">Členstvo</h2>
-            <p class="lead">
-            Spustili sme <b>nezáväznú registráciu</b> pre záujemcov - budeme radi, ak ho vyplníte a dáte nám o sebe vedieť:<br/>
-            <a href="https://forms.gle/4CGRRrFp48zVBLXR9">tu je krátky formulár na vyplnenie</a>.
-            </p>
-            <p class="lead">
-            Založili sme diskusnú skupinu <a href="https://www.facebook.com/groups/qgis.sk">QGIS Slovensko na Facebooku</a> - otvorená všetkým záujemcom.
-            </p>
-            <p class="lead">
-            Je tu aj skupina <a href="https://www.linkedin.com/groups/9015131/">QGIS Slovensko na LinkedIn</a>.
-            </p>
-
-            <p class="lead">
-            Máme aj <a href="https://lists.osgeo.org/mailman/listinfo/qgis-sk">qgis-sk mailing list</a> pre tých, čo preferujú komunikáciu cez email.
-            Stačí sa zaregistrovať so svojou emailovou adresou a následne posielať maily na adresu <a href="mailto:qgis-sk@lists.osgeo.org">qgis-sk@lists.osgeo.org</a>
-            (iba maily od registrovaných účastníkov sú prijaté). Mailing list je verejný a je k dispozícii aj <a href="https://lists.osgeo.org/pipermail/qgis-sk/">archív správ</a>.
-            </p>
-          
-            <h2 class="featurette-heading">QGIS User Conference 2024</h2>
-          
-            <p class="lead">
-            <a href="https://uc2024.qgis.sk/"><img src="/images/logotype_qgis_uc_2024.png" alt="Logo QGIS UC 2024"></a>
-            </p>
-
-            <p class="lead">
-            Slovenská skupina používateľov QGIS organizuje <b>9-10. septembra 2024</b> v Bratislave oficiálnu <b>medzinárodnú konferenciu projektu QGIS</b>
-            spolu so <b>stretnutím komunity prispievateľov</b> projektu QGIS (11-13. septembra 2024).
-            Viac info na <a href="https://uc2024.qgis.sk/">webe konferencie</a>.
-            </p>
-
-            <h2 class="featurette-heading">Stretnutia</h2>
-          
-            <p class="lead">
-            <b>QGIS Day 2023</b> - prvé (neformálne) stretnutie používateľov k 21. narodeninám projektu QGIS - <a href="https://www.facebook.com/groups/qgis.sk/permalink/855608175514040">link na info na facebooku</a>, <a href="https://www.eventbrite.com/e/qgis-day-tickets-538568020447">bezplatná registrácia na Eventbrite</a> - 18. februára 2023.
-            </p>
-
-            <p class="lead">
-            <a href="http://amavet962.org/giskola/tretia/">GISkola #3</a> - <a href="https://www.facebook.com/events/1060572917785872">link na facebook udalosť</a> - 22. apríla 2021.
-            </p>
-          
-            <p class="lead">
-            <a href="http://amavet962.org/giskola/druha/">GISkola #2</a> - <a href="https://www.facebook.com/events/449059649434192">link na facebook udalosť</a> - 21. januára 2021 - dve prezentácie o QGISe.
-            </p>
-
-            <p class="lead">
-            <a href="http://www.kvhk.sk/sk/cinnosti-katedry/gis-day-2020">GIS day na SvF</a> - <a href="https://www.facebook.com/events/363375944879709">link na facebook udalosť</a> - 18. novembra 2020 - oficiálny štart skupiny!
-            <!--<a href="http://ossconf.soit.sk/index.php/program/4-jula">OSSConf Žilina</a> - 4. júla 2019-->
-            </p>
-          
-            <h2 class="featurette-heading">Prezentácie a príspevky</h2>
-            <p class="lead">
-            Úvodná prezentácia k vzniku (18.11.2020) - <a href="https://docs.google.com/presentation/d/1OUgqUHGoyvJZxUd8JUgfVhb4_nasH1nvzBWtOOsroD4/edit?usp=sharing">Jana Michalková: Slovenská skupina používateľov QGIS</a>, GIS day na SvF STU BA.
-            </p>
-            <p class="lead">
-            Výsledky výskumu z jari 2017 - <a href="https://www.unipo.sk/fakulta-humanitnych-prirodnych-vied/katedry/geografia/veda/qgis/37464/">Jana Michalková: Ako fungujú skupiny používateľov QGIS vo svete</a>, dizertačná práca (Prešov, 2017).
-            </p>
-            <p class="lead">
-            QGIS adventný kalendár 2020 (december, 2020)- <a href="1_qgis_advent.html" target="_blank">Užitočné tipy a triky na prácu s QGISom</a>.
-            </p>
-          
-            <p class="lead">
-            GISkola #2 (21.1.2021) - <a href="http://amavet962.org/giskola/prezentacie/novinky-qgis-3-18/">Martin Dobiaš: Čo je nové v QGIS 3.18</a> - <a href="https://www.youtube.com/watch?v=QnFF9SRLNtI">video na YouTube</a>
-            </p>
-              
-            <p class="lead">
-            GISkola #2 (21.1.2021) - <a href="http://amavet962.org/giskola/prezentacie/vznik-slovenska-skupina-pouzivatelov-qgis/">Jana Michalková: Vznik Slovenskej skupiny používateľov QGIS</a> - <a href="https://www.youtube.com/watch?v=tAlmdu4_oPM">video na YouTube</a>
-            </p>
-          
-            <p class="lead">
-            LiDAR in QGIS, the beginning of a beautiful friendship - vol.1 with Tibor Lieskovsky (30.4.2021) - <a href="https://www.youtube.com/watch?v=SsoRDfhZzm0">video na YouTube</a>
-            </p>
-          
-            <p class="lead">
-            LIDAR and QGIS - beginning of beautiful friendship - vol.2 - point clouds to rasters with Tibor (28.5.2021) - <a href="https://www.youtube.com/watch?v=kEBmoO-0hVU">video na YouTube</a>
-            </p>
-          
-            <p class="lead">
-            LIDAR and QGIS - beginning of beautiful friendship - vol.3 with Tibor Lieskovsky (25.6.2021) - <a href="https://www.youtube.com/watch?v=TyfM0KY-RiA">video na YouTube</a>
-            </p>
-            
-             <p class="lead">
-            Oslavujeme 1. rok založenia skupiny (18.11.2021) - <a href="Slovak_QGIS_user_group_1st_year.pdf" target="_blank">Slovak_QGIS_user_group_1st_year.pdf</a>.
-            </p>
-          
-            <h2 class="featurette-heading">Zdroje dát</h2>
-            <p class="lead">
-            Vznikol QGIS plugin na jednoduchý prístup k českým a slovenským dátam: hľadajte "GeoData CZ/SK" v QGIS plugin manageri. <a href="https://github.com/OpenGeoLabs/czech_slovak_freegeodata">GitHub repozitár</a>
-            </p>
-
-            <p class="lead">
-            Podkladové mapy XYZ: <a href="https://github.com/Mariosmsk/qgis-basemaps/blob/master/basemaps.xml">xyz_basemaps_qgis.xml</a>, M.S.Kyriakou (2019).
-            </p>
-          
-            <h2 class="featurette-heading">Kontaktujte nás</h2>
-            <p class="lead">
-            Kontaktná osoba: <a href="mailto:jana.michalkova@unipo.sk">Jana Michalková</a>
-            </p>
-
-          </div>
-
+        <div class="quote">
+          <p>„Nie uzavretosť, ale otvorenosť a zdieľanie predstavujú jediný spôsob, akým sa naša civilizácia môže vyvíjať.“</p>
+          <cite>tamže</cite>
         </div>
+        <!-- /DISSERTATION-QUOTE -->
+        <p><a href="https://www.unipo.sk/fakulta-humanitnych-prirodnych-vied/katedry/geografia/veda/qgis/37464/">Zhrnutie výskumu o skupinách používateľov QGIS vo svete →</a></p>
+        <!-- PRESENTATION-LINK -->
+        <h3 style="margin-top:32px">Open source ako verejná politika</h3>
+        <p>Švajčiarsko prijalo zákon, podľa ktorého je open source predvolenou voľbou pre štátny softvér. Gerhard Andrey, poslanec švajčiarskeho parlamentu a spoluzakladateľ firmy Liip, v keynote na QGIS User Conference 2026 v Laaxe vysvetľuje, prečo sú komunity ako QGIS kľúčom k digitálnej suverenite: open source je „digitálne verejné dobro“ a spolupráca na ňom je „nevyhnutný upgrade ľudskej spolupráce“.</p>
+        <p><a href="https://talks.osgeo.org/qgis-uc2026/talk/9RQJL8/">From Niche to Norm: Switzerland's Open Source Turn (QGIS UC 2026) →</a><br>
+        <a href="https://parldigi.ch/de/notwendiges-upgrade-menschlicher-zusammenarbeit/">Prejav na Parldigi, 2022 (DE) →</a></p>
+        <!-- /PRESENTATION-LINK -->
+      </div>
+    </div>
+  </div>
+</section>
 
-        </div>
+<!-- COMMUNITY HUB -->
+<section class="community" id="komunita">
+  <div class="wrap">
+    <span class="eyebrow">Komunita</span>
+    <h2>Kto na Slovensku pracuje s QGIS</h2>
+    <p class="lead" style="max-width:70ch">Mapa firiem, inštitúcií, škôl a samospráv, ktoré QGIS používajú alebo ho podporujú. Hľadajte partnerov vo svojom okolí, dodávateľov, lektorov alebo kolegov na spoluprácu.</p>
+    <div class="toolbar">
+      <input type="search" id="org-search" placeholder="Hľadať organizáciu, mesto alebo oblasť…">
+      <div class="chips" id="org-chips"></div>
+    </div>
+    <p class="muted" style="margin:0 0 12px">Zobrazených: <strong id="org-count">0</strong> organizácií</p>
+    <div class="map-grid">
+      <div id="mapa"></div>
+      <div class="org-list" id="org-list"></div>
     </div>
 
-    <!-- PAGE FOOTER -->
-    <footer class="footer">
-      <div class="container">
-        <ul id="social">
-          <!--
-          <li id="twitter"><a href="https://twitter.com/QgisUK" class="external"><div></div></a></li>
-          -->
-          <li id="facebook"><a href="https://www.facebook.com/groups/qgis.sk" class="external"><div></div></a></li>
-          <li id="github"><a href="http://github.com/qgis-sk/" class="external"><div></div></a></li>
-          <li id="contact"><a href="https://lists.osgeo.org/cgi-bin/mailman/listinfo/qgis-sk"><div></div></a></li>
+    <div class="hub-teaser">
+      <div class="card green">
+        <h3>Pridajte svoju organizáciu</h3>
+        <p>Používate QGIS vo firme, na úrade či v škole? Dajte o sebe vedieť a objavte sa na mape. Stačí krátky formulár.</p>
+        <a class="btn" href="https://forms.gle/4CGRRrFp48zVBLXR9" target="_blank" rel="noopener">Zaregistrovať organizáciu</a>
+      </div>
+      <div class="card">
+        <h3>Komunitná platforma <span class="tag">pripravujeme</span></h3>
+        <p>Pracujeme na jednoduchom priestore priamo na tejto stránke, kde si komunita bude môcť:</p>
+        <ul>
+          <li>klásť otázky a zdieľať riešenia,</li>
+          <li>ponúkať a hľadať spoluprácu, zákazky a stáže,</li>
+          <li>oznamovať podujatia a školenia vo svojom regióne.</li>
         </ul>
+        <p style="margin-top:12px">Dovtedy nás nájdete na <a href="https://www.facebook.com/groups/qgis.sk">Facebooku</a>, <a href="https://www.linkedin.com/groups/9015131/">LinkedIn</a> a v <a href="https://lists.osgeo.org/mailman/listinfo/qgis-sk">mailing liste</a>.</p>
       </div>
-      <p class="footer credit">Ak nie je uvedené inak, všetok obsah je licencovaný pod <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 licence (CC BY-SA)</a></p>
-      <p class="footer credit">Grafika z <a href="http://thenounproject.com"> The Noun Project</a></p>
-    </footer>
+    </div>
+  </div>
+</section>
 
-  </body>
+<!-- EVENTS -->
+<section id="podujatia">
+  <div class="wrap">
+    <span class="eyebrow">Podujatia a novinky</span>
+    <h2>Čo sa dialo a čo pripravujeme</h2>
+    <ul class="timeline">
+      <li>
+        <div class="date">Pripravujeme</div>
+        <div><h3>Ďalšie stretnutie komunity</h3><p>Termín a miesto oznámime na sociálnych sieťach a v mailing liste. Máte tip na tému alebo priestor? <a href="#kontakt">Ozvite sa.</a></p></div>
+      </li>
+      <li>
+        <div class="date">9.–13. september 2024</div>
+        <div><h3>QGIS User Conference 2024, Bratislava</h3><p>Slovenská skupina zorganizovala oficiálnu medzinárodnú konferenciu projektu QGIS spolu so stretnutím komunity prispievateľov.</p><p class="links"><a href="https://uc2024.qgis.sk/">Web konferencie</a></p></div>
+      </li>
+      <li>
+        <div class="date">18. február 2023</div>
+        <div><h3>QGIS Day 2023</h3><p>Prvé neformálne stretnutie používateľov k 21. narodeninám projektu QGIS.</p><p class="links"><a href="https://www.facebook.com/groups/qgis.sk/permalink/855608175514040">Info na Facebooku</a></p></div>
+      </li>
+      <li>
+        <div class="date">22. apríl 2021</div>
+        <div><h3>GISkola #3</h3><p class="links"><a href="http://amavet962.org/giskola/tretia/">Program</a><a href="https://www.facebook.com/events/1060572917785872">Facebook udalosť</a></p></div>
+      </li>
+      <li>
+        <div class="date">21. január 2021</div>
+        <div><h3>GISkola #2</h3><p>Dve prezentácie o QGIS: Čo je nové v QGIS 3.18 a Vznik Slovenskej skupiny používateľov QGIS.</p><p class="links"><a href="http://amavet962.org/giskola/druha/">Program</a><a href="https://www.facebook.com/events/449059649434192">Facebook udalosť</a></p></div>
+      </li>
+      <li>
+        <div class="date">18. november 2020</div>
+        <div><h3>GIS Day na SvF STU – oficiálny štart skupiny</h3><p class="links"><a href="http://www.kvhk.sk/sk/cinnosti-katedry/gis-day-2020">O podujatí</a><a href="https://docs.google.com/presentation/d/1OUgqUHGoyvJZxUd8JUgfVhb4_nasH1nvzBWtOOsroD4/edit?usp=sharing">Úvodná prezentácia</a></p></div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section class="resources" id="zdroje">
+  <div class="wrap">
+    <span class="eyebrow">Zdroje a know-how</span>
+    <h2>Dáta, návody a prezentácie</h2>
+    <div class="grid">
+      <div class="card"><h3>GeoData CZ/SK plugin</h3><p>QGIS plugin na jednoduchý prístup k českým a slovenským otvoreným dátam. Hľadajte „GeoData CZ/SK“ v správcovi pluginov.</p><a class="more" href="https://github.com/OpenGeoLabs/czech_slovak_freegeodata">GitHub repozitár →</a></div>
+      <div class="card"><h3>Podkladové mapy XYZ</h3><p>Pripravený zoznam XYZ podkladových máp na import do QGIS (M. S. Kyriakou, 2019).</p><a class="more" href="xyz_basemaps_qgis.xml">xyz_basemaps_qgis.xml →</a></div>
+      <div class="card"><h3>QGIS adventný kalendár 2020</h3><p>24 užitočných tipov a trikov na prácu s QGIS, deň po dni.</p><a class="more" href="1_qgis_advent.html">Otvoriť kalendár →</a></div>
+      <div class="card"><h3>LiDAR a QGIS s Tiborom Lieskovským</h3><p>Trojdielna séria videí: od mračien bodov po rastre.</p><a class="more" href="https://www.youtube.com/watch?v=SsoRDfhZzm0">1. diel</a> · <a class="more" href="https://www.youtube.com/watch?v=kEBmoO-0hVU">2. diel</a> · <a class="more" href="https://www.youtube.com/watch?v=TyfM0KY-RiA">3. diel</a></div>
+      <div class="card"><h3>Prednášky z GISkoly #2</h3><p>Martin Dobiaš: Čo je nové v QGIS 3.18 · Jana Michalková: Vznik Slovenskej skupiny používateľov QGIS.</p><a class="more" href="https://www.youtube.com/watch?v=QnFF9SRLNtI">Video 1</a> · <a class="more" href="https://www.youtube.com/watch?v=tAlmdu4_oPM">Video 2</a></div>
+      <div class="card"><h3>Prvý rok skupiny</h3><p>Zhrnutie prvého roka Slovenskej skupiny používateľov QGIS (november 2021).</p><a class="more" href="Slovak_QGIS_user_group_1st_year.pdf">Stiahnuť PDF →</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- JOIN -->
+<section class="join" id="zapojte-sa">
+  <div class="wrap">
+    <span class="eyebrow" style="color:#9ccf7a">Zapojte sa</span>
+    <h2>Komunita je otvorená všetkým</h2>
+    <p class="lead" style="max-width:60ch">Nezáleží na tom, či ste začiatočník alebo vývojár QGIS. Vyberte si kanál, ktorý vám vyhovuje.</p>
+    <div class="grid">
+      <div class="card"><h3>Registrácia</h3><p>Nezáväzný formulár – dajte nám o sebe vedieť a budeme vás informovať o podujatiach.</p><a href="https://forms.gle/4CGRRrFp48zVBLXR9" target="_blank" rel="noopener">Vyplniť formulár</a></div>
+      <div class="card"><h3>Facebook</h3><p>Diskusná skupina QGIS Slovensko, otvorená všetkým záujemcom.</p><a href="https://www.facebook.com/groups/qgis.sk">facebook.com/groups/qgis.sk</a></div>
+      <div class="card"><h3>LinkedIn</h3><p>Profesionálna skupina pre firmy a inštitúcie.</p><a href="https://www.linkedin.com/groups/9015131/">Skupina na LinkedIn</a></div>
+      <div class="card"><h3>Mailing list</h3><p>Pre tých, čo preferujú e-mail. Verejný <a href="https://lists.osgeo.org/pipermail/qgis-sk/">archív správ</a>.</p><a href="https://lists.osgeo.org/mailman/listinfo/qgis-sk">qgis-sk@lists.osgeo.org</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="kontakt">
+  <div class="wrap">
+    <span class="eyebrow">Kontakt</span>
+    <h2>Ozvite sa nám</h2>
+    <p class="lead">Kontaktná osoba: <a href="mailto:jana.michalkova@unipo.sk">Jana Michalková</a> · kód a stránka: <a href="https://github.com/qgis-sk">github.com/qgis-sk</a></p>
+    <p class="muted">Sme súčasťou siete <a href="https://qgis.org/community/groups/">oficiálnych skupín používateľov QGIS</a>.</p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div>© Slovenská skupina používateľov QGIS · Obsah je licencovaný pod <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></div>
+    <div class="links"><a href="https://qgis.org">qgis.org</a><a href="https://github.com/qgis-sk/qgis-sk.github.io">Zdrojový kód stránky</a></div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="js/komunita.js?v=2"></script>
+<script>
+  // počet organizácií do pásu s číslami
+  fetch("data/organizacie.json").then(r => r.json()).then(d => {
+    const n = (d.organizacie || []).length; const el = document.getElementById("org-count-band"); if (el) el.textContent = n;
+  }).catch(() => {});
+</script>
+</body>
 </html>
