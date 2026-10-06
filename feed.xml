@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>QGIS Slovensko – novinky</title>
+  <link>https://qgis.sk/</link>
+  <description>Novinky Slovenskej skupiny používateľov QGIS</description>
+  <language>sk</language>
+  <atom:link href="https://qgis.sk/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>QGIS User Conference 2026 v Laaxe: čo sme si priniesli domov (pripravujeme)</title>
+    <link>https://qgis.sk/blog/qgis-uc-2026-laax.html</link>
+    <guid>https://qgis.sk/blog/qgis-uc-2026-laax.html</guid>
+    <pubDate>Tue, 06 Oct 2026 12:00:00 +0200</pubDate>
+    <description>Slovenská skupina sa zúčastnila na QGIS UC 2026 vo švajčiarskom Laaxe. Keynote Gerharda Andreyho o švajčiarskom obrate k open source.</description>
+  </item>
+</channel>
+</rss>

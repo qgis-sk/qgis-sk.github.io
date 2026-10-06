@@ -93,7 +93,7 @@
       el.className = "org";
       el.id = id;
       el.innerHTML =
-        '<div class="t">' + (TYPY[o.typ] || o.typ) + (o.stav === "navrh" ? ' · <span style="color:#ee7913">návrh</span>' : "") + "</div>" +
+        '<div class="t">' + (TYPY[o.typ] || o.typ) + (o.stav === "overené" ? ' · <span style="color:#589632">sídlo overené</span>' : ' · <span style="color:#ee7913">na potvrdenie</span>') + (o.krajina && o.krajina !== "SK" ? " · " + esc(o.krajina) : "") + "</div>" +
         "<h4>" + esc(o.nazov) + "</h4>" +
         '<div class="city">' + esc(o.mesto) + "</div>" +
         (o.popis ? "<p>" + esc(o.popis) + "</p>" : "") +
