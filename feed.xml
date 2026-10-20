@@ -7,11 +7,11 @@
   <language>sk</language>
   <atom:link href="https://qgis.sk/feed.xml" rel="self" type="application/rss+xml"/>
   <item>
-    <title>QGIS User Conference 2026 v Laaxe: čo sme si priniesli domov (pripravujeme)</title>
+    <title>QGIS User Conference 2026: open source vo výške 2 222 metrov</title>
     <link>https://qgis.sk/blog/qgis-uc-2026-laax.html</link>
     <guid>https://qgis.sk/blog/qgis-uc-2026-laax.html</guid>
-    <pubDate>Tue, 06 Oct 2026 12:00:00 +0200</pubDate>
-    <description>Slovenská skupina sa zúčastnila na QGIS UC 2026 vo švajčiarskom Laaxe. Keynote Gerharda Andreyho o švajčiarskom obrate k open source.</description>
+    <pubDate>Tue, 20 Oct 2026 15:00:00 +0200</pubDate>
+    <description>Vyše 420 účastníkov z 30 krajín v Laaxe, keynote o švajčiarskom obrate k open source a slovenská stopa. Zhrnutie oficiálnej správy QGIS.org.</description>
   </item>
 </channel>
 </rss>
