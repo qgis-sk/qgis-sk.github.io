@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
 <channel>
   <title>QGIS Slovensko – novinky</title>
   <link>https://qgis.sk/</link>
@@ -11,6 +11,7 @@
     <link>https://qgis.sk/blog/qgis-uc-2026-laax.html</link>
     <guid>https://qgis.sk/blog/qgis-uc-2026-laax.html</guid>
     <pubDate>Tue, 20 Oct 2026 15:00:00 +0200</pubDate>
+    <dc:creator>Miloslav Michalko</dc:creator>
     <description>Vyše 420 účastníkov z 30 krajín v Laaxe, keynote o švajčiarskom obrate k open source a slovenská stopa. Zhrnutie oficiálnej správy QGIS.org.</description>
   </item>
 </channel>

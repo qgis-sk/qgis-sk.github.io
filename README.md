@@ -109,7 +109,11 @@ s číslami a nad mapou.
 ## Blog a RSS
 
 Nový článok = nový súbor `blog/<slug>.html` (skopírovať existujúci, upraviť obsah) + riadok v
-`blog/index.html` + položka `<item>` vo `feed.xml` (nový článok hore). QGIS.org odporúča novinky
+`blog/index.html` + položka `<item>` vo `feed.xml` (nový článok hore).
+
+**Každý článok má autora.** Pod nadpisom je riadok `<p class="byline">` s menom autora (a zdrojom, ak
+článok vychádza z cudzieho textu), v zozname blogu meno pod anotáciou a vo `feed.xml` prvok
+`<dc:creator>`. Prevzaté texty vždy s odkazom na originál a menom pôvodného autora. QGIS.org odporúča novinky
 posielať aj na https://feed.qgis.org.
 
 ## Podujatia

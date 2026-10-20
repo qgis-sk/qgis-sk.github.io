@@ -222,3 +222,7 @@ section { padding: 96px 0; }
 .photo { margin: 0 0 28px; }
 .photo img { width: 100%; border-radius: var(--radius); aspect-ratio: 4 / 3; object-fit: cover; }
 .photo figcaption { font-size: .85rem; color: var(--muted); margin-top: 8px; }
+
+/* Byline on blog posts */
+.byline { color: var(--muted); font-size: .95rem; margin: -6px 0 18px; }
+.timeline .byline { margin: 6px 0 0; font-size: .85rem; }
