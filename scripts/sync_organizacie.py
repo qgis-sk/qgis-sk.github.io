@@ -5,7 +5,7 @@ Použitie:
   SHEET_CSV_URL="https://docs.google.com/spreadsheets/d/1Yge6hcfhaaxkVRBLft4XKlQN3ZQrvibsqIzYUWxBB9k/gviz/tq?tqx=out:csv" \
   python3 scripts/sync_organizacie.py
 
-Do JSON idú všetky riadky s platnými súradnicami. Riadok sa skryje iba hodnotou "skryť"
+Do JSON idú všetky slovenské riadky (krajina = SK) s platnými súradnicami. Riadok sa skryje iba hodnotou "skryť"
 v stĺpci zobrazit_na_mape. Stĺpec zaradenie rozlišuje organizácie registrované cez formulár
 od organizácií odvodených z pracovnej adresy člena (tie sú na mape označené "na potvrdenie").
 Počty členov (data/stat.json) sa udržiavajú ručne.
@@ -30,6 +30,8 @@ out = []
 for r in rows:
     r = {k.strip().lower(): v for k, v in r.items() if k}
     if hidden(r.get("zobrazit_na_mape")): continue
+    if (norm(r.get("krajina")) or "SK").upper() != "SK":
+        print("preskakujem (zahraničná organizácia):", r.get("nazov"), file=sys.stderr); continue
     try:
         lat = float(norm(r.get("lat")).replace(",", ".")); lon = float(norm(r.get("lon")).replace(",", "."))
     except ValueError:

@@ -1,6 +1,6 @@
 {
   "_poznamka": "Generované automaticky zo zdieľanej tabuľky organizácií; needitovať ručne.",
-  "aktualizovane": "2026-10-06",
+  "aktualizovane": "2026-10-20",
   "stat": {
     "individualni_clenovia": 105,
     "registracii_spolu": 124,
@@ -42,18 +42,6 @@
       "popis": "GISkola, popularizácia GIS pre mládež.",
       "stav": "overené",
       "registracia": "organizácia"
-    },
-    {
-      "nazov": "AmigoNet s.r.o.",
-      "typ": "firma",
-      "mesto": "Ústí nad Labem",
-      "krajina": "CZ",
-      "lat": 50.62626,
-      "lon": 14.05377,
-      "web": "https://www.amigonet.cz",
-      "popis": "Internet a hosting.",
-      "stav": "overené",
-      "registracia": "člen"
     },
     {
       "nazov": "Dopravný úrad",
@@ -148,18 +136,6 @@
       "lon": 19.29423,
       "web": "",
       "popis": "Geodézia a GIS.",
-      "stav": "overené",
-      "registracia": "organizácia"
-    },
-    {
-      "nazov": "Landmann s.r.o.",
-      "typ": "firma",
-      "mesto": "Mikulov",
-      "krajina": "CZ",
-      "lat": 48.80542,
-      "lon": 16.63865,
-      "web": "",
-      "popis": "Poľnohospodársky podnik.",
       "stav": "overené",
       "registracia": "organizácia"
     },
@@ -352,18 +328,6 @@
       "lon": 19.11794,
       "web": "https://www.tuzvo.sk",
       "popis": "Lesnícka fakulta, GIS v lesníctve.",
-      "stav": "overené",
-      "registracia": "organizácia"
-    },
-    {
-      "nazov": "Univerzita Karlova – Přírodovědecká fakulta",
-      "typ": "skola",
-      "mesto": "Praha",
-      "krajina": "CZ",
-      "lat": 50.06875,
-      "lon": 14.42428,
-      "web": "https://www.natur.cuni.cz",
-      "popis": "",
       "stav": "overené",
       "registracia": "organizácia"
     },

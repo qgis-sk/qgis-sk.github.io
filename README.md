@@ -52,7 +52,10 @@ Podujatia, Komunita, Pravidlá, Blog), ale na vlastnej doméne a bez Huga.
 
 ## Komunitná mapa organizácií
 
-Na mape sú **iba organizácie** (firmy, inštitúcie, školy, samosprávy, komunity), nikdy fyzické osoby.
+Na mape sú **iba organizácie** (firmy, inštitúcie, školy, samosprávy, komunity), nikdy fyzické osoby, a iba
+tie so sídlom na Slovensku. Zoznam vznikol z odpovedí registračného formulára skupiny (Google Forms, od novembra
+2020): vybrali sme riadky, kde sa registrovala organizácia alebo člen s pracovnou adresou organizácie, a sídla sme
+overili v Registri právnických osôb, ORSR a na weboch organizácií.
 
 ### Zdroj dát: zdieľaná Google tabuľka
 
@@ -63,7 +66,7 @@ Na mape sú **iba organizácie** (firmy, inštitúcie, školy, samosprávy, komu
 |---|---|
 | `nazov` | názov organizácie, ako sa zobrazí na mape |
 | `typ` | `firma`, `institucia`, `skola`, `samosprava` alebo `komunita` (podľa toho sú filtre a farba bodu) |
-| `ulica`, `mesto`, `krajina` | sídlo; `krajina` ako kód (`SK`, `CZ`, …), iné než SK sa zobrazí pri názve |
+| `ulica`, `mesto`, `krajina` | sídlo; `krajina` ako kód (`SK`, `CZ`, …). Na mape sú iba slovenské organizácie, ostatné ostávajú v tabuľke ako evidencia |
 | `lat`, `lon` | súradnice WGS84 s bodkou ako desatinným oddeľovačom; bez nich sa riadok na mape nezobrazí |
 | `web` | odkaz (s `https://`) |
 | `ico` | IČO ako text (v tabuľke je zadané vzorcom `="00166545"`, aby ostali úvodné nuly) |

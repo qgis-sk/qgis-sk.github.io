@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <link rel="alternate" type="application/rss+xml" title="QGIS Slovensko – novinky" href="feed.xml">
-  <link rel="stylesheet" href="styles.css?v=5">
+  <link rel="stylesheet" href="styles.css?v=6">
 </head>
 <body>
 
@@ -91,7 +91,7 @@
           <figcaption>Organizačný tím QGIS User Conference 2024, Bratislava</figcaption>
         </figure>
         <p class="lead">QGIS nie je produkt jednej firmy. Je to projekt tisícov ľudí, ktorí ho vyvíjajú, prekladajú, dokumentujú, učia a používajú – a väčšina z nich to robí preto, že chce niečo vrátiť komunite.</p>
-        <p>Práve v tom sa QGIS líši od komerčných riešení. Nie v počte funkcií, ale v nezištnej chuti budovať niečo spoločné a spolupracovať. Vzájomná pomoc nie je slabosť, ale evolučná výhoda – ako to už koncom 19. storočia opísal Peter Kropotkin vo svojej knihe <em>Vzájomná pomoc</em>. Komunity, ktoré si pomáhajú, prežijú a rastú.</p>
+        <p>Práve v tom sa QGIS líši od komerčných riešení. Nie v počte funkcií, ale v nezištnej chuti budovať niečo spoločné a spolupracovať. Vzájomná pomoc nie je slabosť, ale evolučná výhoda. Opísal ju už geograf a prírodovedec Peter Kropotkin v knihe <em>Vzájomná pomoc ako faktor evolúcie</em> (1902): druhy a spoločenstvá, ktoré spolupracujú, prežívajú lepšie než tie, ktoré iba súperia. Komunity, ktoré si pomáhajú, rastú.</p>
         <p>Na Slovensku chceme byť takou komunitou. Nie klubom fanúšikov jedného softvéru, ale sieťou ľudí a organizácií, ktorí si navzájom pomáhajú robiť lepšie GIS.</p>
       </div>
       <div>
@@ -102,7 +102,7 @@
         </div>
         <div class="quote">
           <p>„Nie uzavretosť, ale otvorenosť a zdieľanie predstavujú jediný spôsob, akým sa naša civilizácia môže vyvíjať.“</p>
-          <cite>tamže</cite>
+          <cite>Jana Michalková, tamže – <a href="https://www.unipo.sk/fakulta-humanitnych-prirodnych-vied/katedry/geografia/veda/qgis/37464/">zhrnutie výskumu na stránke Prešovskej univerzity</a></cite>
         </div>
         <!-- /DISSERTATION-QUOTE -->
         <p><a href="https://www.unipo.sk/fakulta-humanitnych-prirodnych-vied/katedry/geografia/veda/qgis/37464/">Zhrnutie výskumu o skupinách používateľov QGIS vo svete →</a></p>
@@ -138,7 +138,7 @@
       <div><span class="big" id="stat-org">–</span><span>organizácií na mape</span></div>
       <div><span class="big" id="stat-ind">–</span><span>individuálnych členov (jednotlivcov na mape nezobrazujeme)</span></div>
     </div>
-    <p class="muted" style="margin:0 0 12px">Zoznam organizácií priebežne overujeme a aktualizujeme (naposledy <span id="stat-upd">–</span>). Položky označené „na potvrdenie“ sú odvodené z registrácie člena, nie organizácie. Zobrazených: <strong id="org-count">0</strong>.</p>
+    <p class="muted" style="margin:0 0 12px">Zoznam vychádza z registračného formulára skupiny a zobrazuje iba slovenské organizácie. Priebežne ho overujeme a aktualizujeme (naposledy <span id="stat-upd">–</span>). Položky označené „na potvrdenie“ sú odvodené z registrácie člena, nie organizácie. Zobrazených: <strong id="org-count">0</strong>.</p>
     <div class="map-grid">
       <div id="mapa"></div>
       <div class="org-list" id="org-list"></div>
@@ -149,6 +149,7 @@
         <h3>Pridajte svoju organizáciu</h3>
         <p>Používate QGIS vo firme, na úrade či v škole? Dajte o sebe vedieť a objavte sa na mape. Stačí krátky formulár.</p>
         <a class="btn" href="https://forms.gle/4CGRRrFp48zVBLXR9" target="_blank" rel="noopener">Zaregistrovať organizáciu</a>
+        <p class="muted" style="margin:14px 0 0;font-size:.9rem">Rovnaký formulár slúži aj jednotlivcom. Ak registrujete organizáciu, do poľa „meno“ napíšte jej oficiálny názov.</p>
       </div>
       <div class="card">
         <h3>Komunitná platforma <span class="tag">pripravujeme</span></h3>
@@ -209,7 +210,7 @@
     <h2>Dáta, návody a prezentácie</h2>
     <div class="grid">
       <div class="card"><h3>GeoData CZ/SK plugin</h3><p>QGIS plugin na jednoduchý prístup k českým a slovenským otvoreným dátam. Hľadajte „GeoData CZ/SK“ v správcovi pluginov.</p><a class="more" href="https://github.com/OpenGeoLabs/czech_slovak_freegeodata">GitHub repozitár →</a></div>
-      <div class="card"><h3>Podkladové mapy XYZ</h3><p>Pripravený zoznam XYZ podkladových máp na import do QGIS (M. S. Kyriakou, 2019).</p><a class="more" href="xyz_basemaps_qgis.xml">xyz_basemaps_qgis.xml →</a></div>
+      <div class="card"><h3>Podkladové mapy XYZ</h3><p>Pripravený zoznam XYZ podkladových máp (M. S. Kyriakou, 2019). V QGIS: Prehliadač → XYZ Tiles → pravý klik → Načítať pripojenia.</p><a class="more" href="xyz_basemaps_qgis.xml" download>Stiahnuť xyz_basemaps_qgis.xml</a> · <a class="more" href="https://github.com/Mariosmsk/qgis-basemaps">zdroj na GitHube</a></div>
       <div class="card"><h3>QGIS adventný kalendár 2020</h3><p>24 užitočných tipov a trikov na prácu s QGIS, deň po dni.</p><a class="more" href="1_qgis_advent.html">Otvoriť kalendár →</a></div>
       <div class="card"><h3>LiDAR a QGIS s Tiborom Lieskovským</h3><p>Trojdielna séria videí: od mračien bodov po rastre.</p><a class="more" href="https://www.youtube.com/watch?v=SsoRDfhZzm0">1. diel</a> · <a class="more" href="https://www.youtube.com/watch?v=kEBmoO-0hVU">2. diel</a> · <a class="more" href="https://www.youtube.com/watch?v=TyfM0KY-RiA">3. diel</a></div>
       <div class="card"><h3>Prednášky z GISkoly #2</h3><p>Martin Dobiaš: Čo je nové v QGIS 3.18 · Jana Michalková: Vznik Slovenskej skupiny používateľov QGIS.</p><a class="more" href="https://www.youtube.com/watch?v=QnFF9SRLNtI">Video 1</a> · <a class="more" href="https://www.youtube.com/watch?v=tAlmdu4_oPM">Video 2</a></div>
@@ -253,6 +254,6 @@
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="js/komunita.js?v=5"></script>
+<script src="js/komunita.js?v=6"></script>
 </body>
 </html>
