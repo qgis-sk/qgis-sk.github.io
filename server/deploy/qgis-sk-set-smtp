@@ -1,0 +1,61 @@
+#!/bin/bash
+# Nastaví schránku, z ktorej registračná služba QGIS Slovensko posiela potvrdzovacie e-maily.
+# Použitie (na serveri, interaktívne):  qgis-sk-set-smtp <schránka> [kam posielať upozornenia tímu]
+#   napr.  ssh -t root@server qgis-sk-set-smtp registracia@qgis.sk miki.michalko@gmail.com
+# Heslo sa pýta skryto. Najprv sa overí prihlásenie a odošle testovací e-mail, až potom sa
+# konfigurácia zapíše do /etc/qgis-sk/env a služba sa reštartuje. Pri chybe sa nič nemení.
+# Vypnutie potvrdzovania:  qgis-sk-set-smtp --vypnut
+set -euo pipefail
+DIR=/etc/qgis-sk; ENV=$DIR/env
+install -d -m 700 "$DIR"
+if [ "${1:-}" = "--vypnut" ]; then
+  [ -f "$ENV" ] && mv "$ENV" "$ENV.vypnute-$(date +%Y%m%d-%H%M%S)"
+  systemctl restart qgis-sk; echo "Potvrdzovanie e-mailom je vypnuté, registrácie platia hneď."; exit 0
+fi
+USER_NEW="${1:?Zadajte adresu schránky, napr. registracia@qgis.sk}"
+NOTIFY="${2:-$USER_NEW}"
+HOST="${SMTP_HOST:-smtp.websupport.sk}"; PORT="${SMTP_PORT:-587}"
+
+IFS= read -rsp "Heslo pre $USER_NEW: " P; echo
+[ -n "$P" ] || { echo "Prázdne heslo, končím."; exit 1; }
+case "$P" in *"'"*|*'"'*|*'\'*|*'$'*) echo "Heslo obsahuje znak ' \" \\ alebo \$, ktorý systemd nevie bezpečne načítať. Zvoľte heslo bez nich."; exit 1;; esac
+
+TMP=$(mktemp "$DIR/env.new.XXXX"); chmod 600 "$TMP"
+trap 'rm -f "$TMP"' EXIT
+printf 'SMTP_HOST=%s\nSMTP_PORT=%s\nSMTP_USER=%s\nSMTP_PASS=%s\nMAIL_FROM=%s\nNOTIFY_TO=%s\n' "$HOST" "$PORT" "$USER_NEW" "$P" "$USER_NEW" "$NOTIFY" > "$TMP"
+unset P
+
+echo "Overujem prihlásenie a posielam testovací e-mail na $NOTIFY…"
+if systemd-run --quiet --wait --pipe --collect -p EnvironmentFile="$TMP" /usr/bin/python3 - <<'PY'
+import os, smtplib, ssl
+from email.message import EmailMessage
+e = os.environ
+port = int(e.get("SMTP_PORT") or 587)
+m = EmailMessage()
+m["Subject"] = "QGIS Slovensko – test odosielania z " + e["SMTP_USER"]
+m["From"] = "QGIS Slovensko <" + e["MAIL_FROM"] + ">"
+m["To"] = e["NOTIFY_TO"]
+m.set_content("Testovací e-mail: registračná služba qgis.sk odteraz posiela potvrdzovacie e-maily zo schránky " + e["SMTP_USER"] + ".")
+if port == 465:
+    s = smtplib.SMTP_SSL(e["SMTP_HOST"], port, timeout=30, context=ssl.create_default_context())
+else:
+    s = smtplib.SMTP(e["SMTP_HOST"], port, timeout=30)
+    s.starttls(context=ssl.create_default_context())
+try:
+    s.login(e["SMTP_USER"], e["SMTP_PASS"])
+except smtplib.SMTPAuthenticationError as x:
+    print("Prihlásenie odmietnuté:", str(x)[:120])
+    print("Pri WebSupporte skontrolujte aj obmedzenie prihlásenia podľa krajiny: server je v Nemecku (DE).")
+    raise SystemExit(1)
+s.send_message(m); s.quit()
+print("OK – test odoslaný na", e["NOTIFY_TO"])
+PY
+then
+  [ -f "$ENV" ] && cp -a "$ENV" "$ENV.bak-$(date +%Y%m%d-%H%M%S)"
+  mv "$TMP" "$ENV"; chmod 600 "$ENV"
+  systemctl restart qgis-sk
+  echo "Hotovo: nové registrácie treba potvrdiť odkazom z e-mailu (odosiela $USER_NEW)."
+else
+  echo "CHYBA: prihlásenie alebo odoslanie zlyhalo. Konfiguráciu som NEMENIL, služba beží ďalej po starom."
+  exit 1
+fi

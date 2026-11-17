@@ -12,6 +12,8 @@ Environment=PORT=8773
 Environment=QGISSK_DB=/var/lib/qgis-sk/registracie.db
 Environment=QGISSK_ORIGINS=https://qgis.sk,https://www.qgis.sk
 Environment=PYTHONDONTWRITEBYTECODE=1
+# odosielanie pošty (potvrdzovacie e-maily); súbor vytvára qgis-sk-set-smtp, bez neho služba potvrdenie nevyžaduje
+EnvironmentFile=-/etc/qgis-sk/env
 Restart=always
 RestartSec=3
 UMask=0077

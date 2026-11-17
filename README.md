@@ -143,6 +143,24 @@ použijú sa záložné čísla z `data/stat.json`.
 (`export.py organizacie nová`), kontrola sídla, doplnenie riadku do zdieľanej tabuľky pre mapu
 (súradnice), potom `export.py oznac <IČO> overená`. Kraj organizácie sa určí zo súradníc pri synchronizácii.
 
+**Potvrdenie e-mailom.** Keď je na serveri nastavená schránka (`ssh -t root@server qgis-sk-set-smtp
+<schránka> [adresa pre upozornenia tímu]`, heslo sa zadáva skryto), registrácia jednotlivca platí až po
+kliknutí na odkaz z e-mailu (`potvrdenie.html?t=…`, platnosť 7 dní). Bez nastavenej schránky platí
+registrácia hneď. Na rovnakú adresu chodia tímu upozornenia na novú organizáciu a nový príklad použitia.
+Vypnutie: `qgis-sk-set-smtp --vypnut`.
+
+**Príklady použitia.** Oba formuláre majú nepovinný blok „Riešite s QGIS niečo zaujímavé?“. Výpis:
+`python3 /opt/qgis-sk/export.py pribehy`. Zverejňujeme ich len po dohode s autorom.
+
+**Návštevnosť.** `js/meranie.js` posiela pri načítaní stránky anonymný záznam (cesta, doména odkazujúcej
+stránky alebo `?utm_source=`). Služba ukladá iba denné súčty; žiadne cookies, žiadne IP adresy,
+rešpektuje „Do Not Track“. Prehľad: `python3 /opt/qgis-sk/export.py navstevnost [dní]` ukáže po dňoch
+návštevníkov, zobrazenia, otvorenia formulára, registrácie a zdroje. Do odkazov v kampaniach pridávajte
+napr. `?utm_source=facebook`.
+
+**Náhľad pri zdieľaní.** `images/og-vyzva.jpg` (1200×630) generuje `scripts/og_image.py` z dát mapy;
+po väčšej zmene počtu organizácií ho stačí pregenerovať.
+
 Lokálny test formulárov: spustiť službu
 `PORT=18774 QGISSK_DB=/tmp/q.db QGISSK_ORIGINS=http://localhost:8765 python3 server/app.py`
 a web cez `python3 -m http.server 8765`.

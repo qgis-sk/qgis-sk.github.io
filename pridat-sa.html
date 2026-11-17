@@ -5,12 +5,22 @@
   <title>Pridať sa ku komunite – QGIS Slovensko</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Pridajte sa k slovenskej QGIS komunite. Registrácia je bezplatná, nezáväzná a trvá minútu.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="QGIS Slovensko">
+  <meta property="og:title" content="Pridajte sa na mapu slovenskej QGIS komunity">
+  <meta property="og:description" content="Tri údaje a ste tam. Registrácia je bezplatná a nezáväzná.">
+  <meta property="og:url" content="https://qgis.sk/pridat-sa.html">
+  <meta property="og:image" content="https://qgis.sk/images/og-vyzva.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="sk_SK">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="images/qgis-logo_SK_color.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="alternate" type="application/rss+xml" title="QGIS Slovensko – novinky" href="feed.xml">
-  <link rel="stylesheet" href="styles.css?v=14">
+  <link rel="stylesheet" href="styles.css?v=15">
 </head>
 <body>
 <header class="site-header">
@@ -50,12 +60,26 @@
         <label class="chk"><input type="checkbox" name="clenstvo"><span>Mám záujem aj o formálne členstvo v občianskom združení QGIS Slovensko, ozvite sa mi.</span></label>
       </details>
 
+      <fieldset class="usecase">
+        <legend>Riešite s QGIS niečo zaujímavé? Ukážte to ostatným <em>nepovinné</em></legend>
+        <p>Pekná mapa, nezvyčajná analýza, mapovanie v teréne, vlastný plugin alebo postup, ktorý vám ušetril hodiny práce. Stačia dve-tri vety alebo odkaz. Zaujímavé príklady by sme radi predstavili na webe a na stretnutiach komunity, vždy až po dohode s vami.</p>
+        <div class="field"><label for="pribeh">Čo ste robili a čo sa podarilo?</label><textarea id="pribeh" name="pribeh" rows="4" maxlength="1200" placeholder="Napríklad: V teréne zbierame údaje o studniach cez QField a v QGIS z nich robíme mapu sucha pre obec."></textarea></div>
+        <div class="field"><label for="pribeh_odkaz">Odkaz na mapu, obrázok alebo článok</label><input id="pribeh_odkaz" name="pribeh_odkaz" type="url" maxlength="300" placeholder="https://"></div>
+      </fieldset>
+
       <label class="chk"><input type="checkbox" name="novinky"><span>Chcem dostávať e-mailom novinky QGIS Slovensko.</span></label>
       <label class="chk req"><input type="checkbox" name="suhlas" required><span>Súhlasím, aby QGIS Slovensko, o. z. spracúvalo uvedené údaje na účel vedenia zoznamu členov komunity. Súhlas môžem kedykoľvek odvolať. <a href="pravidla.html#osobne-udaje" target="_blank" rel="noopener">Ako s údajmi narábame</a></span></label>
 
       <p class="form-error" role="alert" hidden></p>
       <button class="btn" type="submit">Pridať sa na mapu</button>
     </form>
+
+    <div class="form-done wait" id="wait-jednotlivec" hidden>
+      <span class="featured-tag">Ešte jeden krok</span>
+      <h2>Potvrďte prosím svoj e-mail</h2>
+      <p class="lead">Na adresu <strong id="wait-email"></strong> sme poslali správu s odkazom. Kliknite naň a ste na mape.</p>
+      <p class="muted small">Správa príde do pár minút od QGIS Slovensko. Ak ju nevidíte, pozrite aj priečinok s nevyžiadanou poštou. Odkaz platí 7 dní.</p>
+    </div>
 
     <div class="form-done" id="done-jednotlivec" hidden>
       <span class="featured-tag">Ste na mape</span>
@@ -73,7 +97,8 @@
   </div>
 </footer>
 <script src="js/config.js?v=2"></script>
-<script src="js/formular.js?v=1"></script>
+<script src="js/formular.js?v=2"></script>
 <script src="js/komunita.js?v=12"></script>
+<script src="js/meranie.js?v=1" defer></script>
 </body>
 </html>
