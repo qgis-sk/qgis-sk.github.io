@@ -45,6 +45,7 @@ SMTP_USER = os.environ.get("SMTP_USER", "")
 SMTP_PASS = os.environ.get("SMTP_PASS", "")
 MAIL_FROM = os.environ.get("MAIL_FROM") or SMTP_USER
 NOTIFY_TO = os.environ.get("NOTIFY_TO", "")
+MAIL_REPLY_TO = os.environ.get("MAIL_REPLY_TO", "")   # kam pôjdu odpovede ľudí na potvrdzovací e-mail
 MAIL_DIR = os.environ.get("QGISSK_MAIL_DIR", "")      # iba testy: e-maily sa zapisujú do priečinka
 MAIL_ON = bool(MAIL_DIR or (SMTP_HOST and SMTP_USER and SMTP_PASS))
 TOKEN_DNI = 7
@@ -156,6 +157,8 @@ def posli(komu, predmet, telo):
     m["Subject"] = predmet
     m["From"] = "QGIS Slovensko <" + MAIL_FROM + ">"
     m["To"] = komu
+    if MAIL_REPLY_TO and komu != NOTIFY_TO:
+        m["Reply-To"] = MAIL_REPLY_TO
     m.set_content(telo)
     if MAIL_DIR:
         os.makedirs(MAIL_DIR, exist_ok=True)

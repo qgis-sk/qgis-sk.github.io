@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="alternate" type="application/rss+xml" title="QGIS Slovensko – novinky" href="feed.xml">
-  <link rel="stylesheet" href="styles.css?v=15">
+  <link rel="stylesheet" href="styles.css?v=16">
 </head>
 <body>
 <header class="site-header">
@@ -52,12 +52,12 @@
       <div class="field"><label for="web">Web <em>nepovinné</em></label><input id="web" name="web" type="url" maxlength="200" placeholder="https://"></div>
       <div class="field"><label for="pracovisko">Pracovisko, ktoré sa má zobraziť na mape <em>nepovinné</em></label><input id="pracovisko" name="pracovisko" type="text" maxlength="200" placeholder="Ulica, číslo, obec"><small>Iba ak sa má zobraziť iná adresa ako sídlo, napríklad katedra alebo pobočka.</small></div>
       <div class="field"><span class="lbl">Čo môžete komunite ponúknuť? <em>nepovinné</em></span><div class="checks"><label class="chk"><input type="checkbox" name="ponuka" value="Školenia"><span>Školenia</span></label><label class="chk"><input type="checkbox" name="ponuka" value="Služby alebo vývoj"><span>Služby alebo vývoj</span></label><label class="chk"><input type="checkbox" name="ponuka" value="Stáže a témy záverečných prác"><span>Stáže a témy záverečných prác</span></label><label class="chk"><input type="checkbox" name="ponuka" value="Priestory na stretnutie"><span>Priestory na stretnutie</span></label><label class="chk"><input type="checkbox" name="ponuka" value="Otvorené dáta"><span>Otvorené dáta</span></label><label class="chk"><input type="checkbox" name="ponuka" value="Prípadová štúdia na web"><span>Prípadová štúdia na web</span></label></div></div>
-      <fieldset class="usecase">
-        <legend>Riešite s QGIS niečo zaujímavé? Ukážte to ostatným <em>nepovinné</em></legend>
+      <div class="usecase" role="group" aria-labelledby="usecase-h">
+        <h3 id="usecase-h">Riešite s QGIS niečo zaujímavé? Ukážte to ostatným <em>nepovinné</em></h3>
         <p>Pekná mapa, nezvyčajná analýza, mapovanie v teréne, vlastný plugin alebo postup, ktorý vám ušetril hodiny práce. Stačia dve-tri vety alebo odkaz. Zaujímavé príklady by sme radi predstavili na webe ako prípadové štúdie, vždy až po dohode s vami.</p>
         <div class="field"><label for="pribeh">Čo ste robili a čo sa podarilo?</label><textarea id="pribeh" name="pribeh" rows="4" maxlength="1200" placeholder="Napríklad: V teréne zbierame údaje o studniach cez QField a v QGIS z nich robíme mapu sucha pre obec."></textarea></div>
         <div class="field"><label for="pribeh_odkaz">Odkaz na mapu, obrázok alebo článok</label><input id="pribeh_odkaz" name="pribeh_odkaz" type="url" maxlength="300" placeholder="https://"></div>
-      </fieldset>
+      </div>
       <div class="hp" aria-hidden="true"><label>Web stránka <input name="web_stranka" type="text" tabindex="-1" autocomplete="off"></label></div>
       <div class="field two"><div><label for="kontakt_meno">Kontaktná osoba</label><input id="kontakt_meno" name="kontakt_meno" type="text" autocomplete="name" required maxlength="120"></div><div><label for="kontakt_email">Pracovný e-mail</label><input id="kontakt_email" name="kontakt_email" type="email" autocomplete="email" required maxlength="254"></div></div>
       <label class="chk req"><input type="checkbox" name="suhlas" required><span>Som oprávnený/á zaregistrovať organizáciu a súhlasím so zverejnením jej názvu, sídla, webu a popisu na komunitnej mape qgis.sk. <a href="pravidla.html#osobne-udaje" target="_blank" rel="noopener">Ako s údajmi narábame</a></span></label>

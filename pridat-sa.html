@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="alternate" type="application/rss+xml" title="QGIS Slovensko – novinky" href="feed.xml">
-  <link rel="stylesheet" href="styles.css?v=15">
+  <link rel="stylesheet" href="styles.css?v=16">
 </head>
 <body>
 <header class="site-header">
@@ -60,12 +60,12 @@
         <label class="chk"><input type="checkbox" name="clenstvo"><span>Mám záujem aj o formálne členstvo v občianskom združení QGIS Slovensko, ozvite sa mi.</span></label>
       </details>
 
-      <fieldset class="usecase">
-        <legend>Riešite s QGIS niečo zaujímavé? Ukážte to ostatným <em>nepovinné</em></legend>
+      <div class="usecase" role="group" aria-labelledby="usecase-h">
+        <h3 id="usecase-h">Riešite s QGIS niečo zaujímavé? Ukážte to ostatným <em>nepovinné</em></h3>
         <p>Pekná mapa, nezvyčajná analýza, mapovanie v teréne, vlastný plugin alebo postup, ktorý vám ušetril hodiny práce. Stačia dve-tri vety alebo odkaz. Zaujímavé príklady by sme radi predstavili na webe a na stretnutiach komunity, vždy až po dohode s vami.</p>
         <div class="field"><label for="pribeh">Čo ste robili a čo sa podarilo?</label><textarea id="pribeh" name="pribeh" rows="4" maxlength="1200" placeholder="Napríklad: V teréne zbierame údaje o studniach cez QField a v QGIS z nich robíme mapu sucha pre obec."></textarea></div>
         <div class="field"><label for="pribeh_odkaz">Odkaz na mapu, obrázok alebo článok</label><input id="pribeh_odkaz" name="pribeh_odkaz" type="url" maxlength="300" placeholder="https://"></div>
-      </fieldset>
+      </div>
 
       <label class="chk"><input type="checkbox" name="novinky"><span>Chcem dostávať e-mailom novinky QGIS Slovensko.</span></label>
       <label class="chk req"><input type="checkbox" name="suhlas" required><span>Súhlasím, aby QGIS Slovensko, o. z. spracúvalo uvedené údaje na účel vedenia zoznamu členov komunity. Súhlas môžem kedykoľvek odvolať. <a href="pravidla.html#osobne-udaje" target="_blank" rel="noopener">Ako s údajmi narábame</a></span></label>
