@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <title>Pridať organizáciu na mapu – QGIS Slovensko</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Pridajte firmu, úrad, školu alebo samosprávu, ktorá pracuje s QGIS, na komunitnú mapu Slovenska.">
+  <link rel="icon" href="images/qgis-logo_SK_color.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="alternate" type="application/rss+xml" title="QGIS Slovensko – novinky" href="feed.xml">
+  <link rel="stylesheet" href="styles.css?v=14">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href=""><img src="images/qgis-logo_SK_color.svg" alt="QGIS SK"><span>QGIS Slovensko</span></a>
+    <button class="nav-toggle" aria-label="Menu">☰</button>
+    <nav class="nav">
+      <a href="index.html#ciele">Ciele</a>
+      <a href="index.html#komunita">Komunita</a>
+      <a href="index.html#podujatia">Podujatia</a>
+      <a href="index.html#zdroje">Zdroje</a>
+      <a href="o-nas.html">Kto sme</a>
+      <a href="blog/">Blog</a>
+      <a class="btn" href="pridat-sa.html">Pridať sa</a>
+    </nav>
+  </div>
+</header>
+<section class="page">
+  <div class="wrap narrow">
+    <span class="eyebrow">Sme organizácia</span>
+    <h1>Pridajte organizáciu na komunitnú mapu</h1>
+    <p class="lead">Pre firmy, úrady, školy a samosprávy so sídlom na Slovensku, ktoré pracujú s QGIS. Zápis je bezplatný. Na mape zverejníme názov, sídlo, web a krátky popis. Kontaktné údaje nezverejňujeme.</p>
+
+    <form class="form" id="form-organizacia" novalidate>
+      <div class="field"><label for="ico">IČO</label><div class="row"><input id="ico" name="ico" type="text" inputmode="numeric" required maxlength="8" placeholder="8 číslic"><button class="btn ghost" type="button" id="ico-btn">Nájsť v registri</button></div><small id="ico-info">Podľa IČO nájdeme názov a sídlo v Registri právnických osôb, adresu vypĺňať nemusíte.</small></div>
+      <div class="field"><label for="nazov">Názov organizácie</label><input id="nazov" name="nazov" type="text" required maxlength="200"><small>Ako sa má zobraziť na mape. Môžete uviesť aj katedru alebo odbor.</small></div>
+      <div class="field"><label for="typ">Typ organizácie</label><select id="typ" name="typ" required><option value="">Vyberte…</option><option value="firma">Firma</option><option value="institucia">Štátna inštitúcia</option><option value="skola">Škola alebo univerzita</option><option value="samosprava">Samospráva (obec, mesto, kraj)</option><option value="komunita">Občianske združenie alebo komunita</option></select></div>
+      <div class="field"><label for="popis">Ako QGIS používate? Jedna veta, zobrazí sa na mape.</label><input id="popis" name="popis" type="text" required maxlength="150" placeholder="Napríklad: Územné plánovanie a pasport zelene."><small><span id="popis-n">0</span> / 150 znakov</small></div>
+      <div class="field"><label for="web">Web <em>nepovinné</em></label><input id="web" name="web" type="url" maxlength="200" placeholder="https://"></div>
+      <div class="field"><label for="pracovisko">Pracovisko, ktoré sa má zobraziť na mape <em>nepovinné</em></label><input id="pracovisko" name="pracovisko" type="text" maxlength="200" placeholder="Ulica, číslo, obec"><small>Iba ak sa má zobraziť iná adresa ako sídlo, napríklad katedra alebo pobočka.</small></div>
+      <div class="field"><span class="lbl">Čo môžete komunite ponúknuť? <em>nepovinné</em></span><div class="checks"><label class="chk"><input type="checkbox" name="ponuka" value="Školenia"><span>Školenia</span></label><label class="chk"><input type="checkbox" name="ponuka" value="Služby alebo vývoj"><span>Služby alebo vývoj</span></label><label class="chk"><input type="checkbox" name="ponuka" value="Stáže a témy záverečných prác"><span>Stáže a témy záverečných prác</span></label><label class="chk"><input type="checkbox" name="ponuka" value="Priestory na stretnutie"><span>Priestory na stretnutie</span></label><label class="chk"><input type="checkbox" name="ponuka" value="Otvorené dáta"><span>Otvorené dáta</span></label><label class="chk"><input type="checkbox" name="ponuka" value="Prípadová štúdia na web"><span>Prípadová štúdia na web</span></label></div></div>
+      <div class="hp" aria-hidden="true"><label>Web stránka <input name="web_stranka" type="text" tabindex="-1" autocomplete="off"></label></div>
+      <div class="field two"><div><label for="kontakt_meno">Kontaktná osoba</label><input id="kontakt_meno" name="kontakt_meno" type="text" autocomplete="name" required maxlength="120"></div><div><label for="kontakt_email">Pracovný e-mail</label><input id="kontakt_email" name="kontakt_email" type="email" autocomplete="email" required maxlength="254"></div></div>
+      <label class="chk req"><input type="checkbox" name="suhlas" required><span>Som oprávnený/á zaregistrovať organizáciu a súhlasím so zverejnením jej názvu, sídla, webu a popisu na komunitnej mape qgis.sk. <a href="pravidla.html#osobne-udaje" target="_blank" rel="noopener">Ako s údajmi narábame</a></span></label>
+
+      <p class="form-error" role="alert" hidden></p>
+      <button class="btn" type="submit">Odoslať registráciu</button>
+    </form>
+
+    <div class="form-done" id="done-organizacia" hidden>
+      <span class="featured-tag">Odoslané</span>
+      <h2>Ďakujeme, registráciu máme</h2>
+      <p class="lead">Sídlo overíme v registri a organizácia sa objaví na mape pri najbližšej aktualizácii, spravidla do niekoľkých dní.</p>
+      <div class="actions"><a class="btn" href="index.html#komunita">Pozrieť mapu</a><a class="btn ghost" href="pridat-sa.html">Pridať sa aj ako jednotlivec</a></div>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="wrap">
+    <div>© QGIS Slovensko, o. z. · Obsah je licencovaný pod <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></div>
+    <div class="links"><a href="https://qgis.org">qgis.org</a><a href="feed.xml">RSS</a><a href="pravidla.html">Pravidlá</a><a href="https://github.com/qgis-sk/qgis-sk.github.io">Zdrojový kód stránky</a></div>
+  </div>
+</footer>
+<script src="js/config.js?v=2"></script>
+<script src="js/formular.js?v=1"></script>
+<script src="js/komunita.js?v=12"></script>
+</body>
+</html>

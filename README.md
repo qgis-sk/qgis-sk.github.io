@@ -34,6 +34,11 @@ blog/<slug>.html           jednotlivé články
 feed.xml                   RSS kanál noviniek (odporúčanie QGIS.org pre user groups)
 1_qgis_advent.html         starší adventný kalendár 2020 (ponechaný)
 styles.css                 všetky štýly (farby QGIS: #589632, #93b023, #ee7913, #f0e64a)
+js/config.js               adresa registračnej služby
+js/formular.js             odosielanie formulárov, dohľadanie IČO
+pridat-sa.html             formulár pre jednotlivcov
+pridat-organizaciu.html    formulár pre organizácie
+server/                    registračná služba (beží na serveri Geosupportu)
 js/komunita.js             mapa organizácií (Leaflet + OpenStreetMap), vyhľadávanie, filtre,
                            mobilné menu, SVG mapa Slovenska v hlavičke (kraje + body organizácií)
 data/organizacie.json      dáta pre mapu – GENEROVANÉ, needitovať ručne
@@ -106,6 +111,42 @@ formulára. Formulár obsahuje osobné údaje, preto sa nečíta automaticky; po
 (unikátne e-maily bez riadkov, kde sa registrovala iba organizácia). Číslo sa zobrazuje v páse
 s číslami a nad mapou.
 
+## Registračné formuláre a komunitná výzva
+
+Dva vlastné formuláre na webe, bez Google:
+
+- `pridat-sa.html` – jednotlivec (meno, e-mail, kraj, súhlas; ostatné nepovinné),
+- `pridat-organizaciu.html` – organizácia (IČO, názov, typ, popis, kontakt). Názov a sídlo sa
+  dohľadajú podľa IČO v Registri právnických osôb.
+
+Odosielajú sa do **registračnej služby** v priečinku `server/` (čistý Python + SQLite, bez závislostí),
+ktorá beží na serveri Geosupportu (Hetzner, Norimberg) na adrese z `js/config.js` (`api`).
+
+| Súbor | Účel |
+|---|---|
+| `server/app.py` | služba: `POST /api/jednotlivec`, `POST /api/organizacia`, `GET /api/stat`, `GET /api/ico` |
+| `server/test_app.py` | testy na dočasnej databáze (`python3 server/test_app.py`) |
+| `server/deploy.sh` | nasadenie: testy → kód do `/opt/qgis-sk` → systemd `qgis-sk` (používateľ `qgissk`) → nginx `qgis.geosupport.sk` → kontrola |
+| `server/export.py` | export pre správcu (na serveri): `jednotlivci`, `organizacie [nová]`, `oznac <IČO> overená` |
+| `server/import_povodni.py` | načíta odtlačky e-mailov pôvodných registrácií, aby sa ľudia nepočítali dvakrát |
+| `server/backup.py` | denná záloha databázy do `/var/backups/qgis-sk` (30 dní) |
+
+Zásady: API nikdy nevracia osobné údaje, iba súčty. Služba nezapisuje IP adresy ani obsah do logov.
+Databáza je na serveri v `/var/lib/qgis-sk/registracie.db`, čitateľná len pre používateľa služby.
+Ochrana pred robotmi: skryté pole, minimálny čas vyplnenia, limit požiadaviek, kontrola pôvodu.
+
+**Jednotlivci** sa na mape nezobrazujú. Dashboard „Komunita podľa krajov“ berie živé súčty z `/api/stat`
+(nové registrácie + pôvodní členovia, ktorí sa ešte neregistrovali nanovo). Ak služba nie je dostupná,
+použijú sa záložné čísla z `data/stat.json`.
+
+**Organizácie** z formulára idú do stavu „nová“. Na mapu sa dostanú po overení: export čakajúcich
+(`export.py organizacie nová`), kontrola sídla, doplnenie riadku do zdieľanej tabuľky pre mapu
+(súradnice), potom `export.py oznac <IČO> overená`. Kraj organizácie sa určí zo súradníc pri synchronizácii.
+
+Lokálny test formulárov: spustiť službu
+`PORT=18774 QGISSK_DB=/tmp/q.db QGISSK_ORIGINS=http://localhost:8765 python3 server/app.py`
+a web cez `python3 -m http.server 8765`.
+
 ## Blog a RSS
 
 Nový článok = nový súbor `blog/<slug>.html` (skopírovať existujúci, upraviť obsah) + riadok v
@@ -118,8 +159,8 @@ posielať aj na https://feed.qgis.org.
 
 ## Podujatia
 
-Časová os je v `index.html` v sekcii `#podujatia`. Nové podujatie sa pridá ako prvý `<li>` v zozname
-`.timeline`; položku „Pripravujeme“ ponecháme na vrchu.
+Časová os je v `index.html` v sekcii `#podujatia`. Poradie je: zvýraznená novinka (karta `.featured` nad zoznamom), potom položka „Pripravujeme“ ako
+prvý `<li>` v zozname `.timeline`, pod ňou podujatia od najnovšieho. Nové podujatie sa vkladá hneď pod „Pripravujeme“.
 
 ## Tím a údaje o združení
 

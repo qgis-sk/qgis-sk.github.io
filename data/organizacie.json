@@ -1,10 +1,23 @@
 {
   "_poznamka": "Generované automaticky zo zdieľanej tabuľky organizácií; needitovať ručne.",
-  "aktualizovane": "2026-11-01",
+  "aktualizovane": "2026-11-17",
   "stat": {
     "individualni_clenovia": 105,
-    "registracii_spolu": 124,
-    "aktualizovane": "2026-10-06"
+    "registracii_spolu": 126,
+    "aktualizovane": "2026-11-17",
+    "jednotlivci_kraje": {
+      "Bratislavský": 15,
+      "Trnavský": 1,
+      "Trenčiansky": 2,
+      "Nitriansky": 1,
+      "Žilinský": 2,
+      "Banskobystrický": 2,
+      "Prešovský": 1,
+      "Košický": 0
+    },
+    "jednotlivci_kraje_odhad": true,
+    "jednotlivci_mimo_sr": 4,
+    "jednotlivci_kraj_neznamy": 77
   },
   "organizacie": [
     {
@@ -17,7 +30,8 @@
       "web": "https://www.videomanual.eu",
       "popis": "Video manuály a videoprodukcia.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "AKUSON s. r. o.",
@@ -29,7 +43,8 @@
       "web": "https://www.akuson.sk",
       "popis": "Geodézia, GIS.",
       "stav": "overené",
-      "registracia": "člen"
+      "registracia": "člen",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "AMAVET klub č. 962",
@@ -41,7 +56,8 @@
       "web": "https://amavet962.org",
       "popis": "GISkola, popularizácia GIS pre mládež.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "Dopravný úrad",
@@ -53,7 +69,8 @@
       "web": "https://nsat.sk",
       "popis": "Priestorové informácie v agende úradu.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "Ekonomická univerzita v Bratislave",
@@ -65,7 +82,8 @@
       "web": "https://www.euba.sk",
       "popis": "",
       "stav": "overené",
-      "registracia": "člen"
+      "registracia": "člen",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "Geografický ústav SAV, v. v. i.",
@@ -77,7 +95,8 @@
       "web": "https://geography.sav.sk",
       "popis": "Výskum v geografii a geoinformatike.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "Geosupport, s.r.o.",
@@ -89,7 +108,8 @@
       "web": "https://www.geosupport.sk",
       "popis": "Geoportály, priestorové analýzy, dokumenty pre obce.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Prešovský kraj"
     },
     {
       "nazov": "GT DATA s.r.o.",
@@ -101,7 +121,8 @@
       "web": "https://gtdata.sk",
       "popis": "GIS konzultácie a riešenia.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Banskobystrický kraj"
     },
     {
       "nazov": "KAJO, s. r. o.",
@@ -113,7 +134,8 @@
       "web": "https://www.kajoservices.com",
       "popis": "GIS služby a vývoj.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Žilinský kraj"
     },
     {
       "nazov": "KaNET Software s. r. o.",
@@ -125,7 +147,8 @@
       "web": "https://www.kanet.sk",
       "popis": "Vývoj PyQGIS aplikácií.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Trenčiansky kraj"
     },
     {
       "nazov": "LANDGEO, s.r.o.",
@@ -137,7 +160,8 @@
       "web": "",
       "popis": "Geodézia a GIS.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Žilinský kraj"
     },
     {
       "nazov": "Lutra Consulting (LUTRA CONSULTING SK s. r. o.)",
@@ -149,7 +173,8 @@
       "web": "https://www.lutraconsulting.co.uk",
       "popis": "Vývoj QGIS, Mergin Maps, konzultácie a školenia.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "Mesto Banská Bystrica",
@@ -161,7 +186,8 @@
       "web": "https://www.banskabystrica.sk",
       "popis": "Územné plánovanie.",
       "stav": "overené",
-      "registracia": "člen"
+      "registracia": "člen",
+      "kraj": "Banskobystrický kraj"
     },
     {
       "nazov": "Mesto Bánovce nad Bebravou",
@@ -173,7 +199,8 @@
       "web": "https://www.banovce.sk",
       "popis": "",
       "stav": "overené",
-      "registracia": "člen"
+      "registracia": "člen",
+      "kraj": "Trenčiansky kraj"
     },
     {
       "nazov": "Ministerstvo dopravy SR",
@@ -185,7 +212,8 @@
       "web": "https://www.mindop.sk",
       "popis": "",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "Ministerstvo obrany SR",
@@ -197,7 +225,8 @@
       "web": "https://www.mosr.sk",
       "popis": "",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "Ministerstvo životného prostredia SR",
@@ -209,7 +238,8 @@
       "web": "https://www.minzp.sk",
       "popis": "Geozdroje verejnej správy, INSPIRE.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "NEKONEČNO | architekti (nekonečno s.r.o.)",
@@ -221,7 +251,8 @@
       "web": "https://nekonecno.org",
       "popis": "Architektúra a urbanizmus.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Košický kraj"
     },
     {
       "nazov": "Prešovská univerzita v Prešove",
@@ -233,7 +264,8 @@
       "web": "https://www.unipo.sk",
       "popis": "Katedra geografie a aplikovanej geoinformatiky; výskum QGIS user groups.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Prešovský kraj"
     },
     {
       "nazov": "Real Forest s. r. o.",
@@ -245,7 +277,8 @@
       "web": "https://www.realforest.sk",
       "popis": "Lesníctvo a GIS.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Prešovský kraj"
     },
     {
       "nazov": "RELAND, s.r.o.",
@@ -257,7 +290,8 @@
       "web": "https://www.reland.com",
       "popis": "",
       "stav": "overené",
-      "registracia": "člen"
+      "registracia": "člen",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "Slovenská poľnohospodárska univerzita v Nitre",
@@ -269,7 +303,8 @@
       "web": "https://www.uniag.sk",
       "popis": "",
       "stav": "overené",
-      "registracia": "člen"
+      "registracia": "člen",
+      "kraj": "Nitriansky kraj"
     },
     {
       "nazov": "Slovenská technická univerzita v Bratislave (stuba.sk)",
@@ -281,7 +316,8 @@
       "web": "https://www.stuba.sk",
       "popis": "",
       "stav": "overené",
-      "registracia": "člen"
+      "registracia": "člen",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "Solargis s. r. o.",
@@ -293,7 +329,8 @@
       "web": "https://solargis.com",
       "popis": "Solárne dáta a softvér; bronzový sponzor projektu QGIS.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "Správa a údržba ciest Trnavského samosprávneho kraja",
@@ -305,7 +342,8 @@
       "web": "https://www.spravaciest.sk",
       "popis": "Správa cestnej siete TTSK.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Trnavský kraj"
     },
     {
       "nazov": "STU v Bratislave – Fakulta elektrotechniky a informatiky",
@@ -317,7 +355,8 @@
       "web": "https://www.fei.stuba.sk",
       "popis": "",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "Technická univerzita vo Zvolene",
@@ -329,7 +368,8 @@
       "web": "https://www.tuzvo.sk",
       "popis": "Lesnícka fakulta, GIS v lesníctve.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Banskobystrický kraj"
     },
     {
       "nazov": "Univerzita Komenského v Bratislave (uniba.sk)",
@@ -341,7 +381,8 @@
       "web": "https://uniba.sk",
       "popis": "",
       "stav": "overené",
-      "registracia": "člen"
+      "registracia": "člen",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "Univerzita Komenského v Bratislave – Prírodovedecká fakulta",
@@ -353,7 +394,8 @@
       "web": "https://fns.uniba.sk",
       "popis": "Katedra fyzickej geografie a geoinformatiky.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "Ústav manažmentu STU, Oddelenie priestorového plánovania",
@@ -365,7 +407,8 @@
       "web": "https://www.stuba.sk/um.html",
       "popis": "Priestorové plánovanie, výučba GIS.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "Štátna ochrana prírody SR",
@@ -377,7 +420,8 @@
       "web": "https://www.sopsr.sk",
       "popis": "",
       "stav": "overené",
-      "registracia": "člen"
+      "registracia": "člen",
+      "kraj": "Banskobystrický kraj"
     },
     {
       "nazov": "Štátny geologický ústav Dionýza Štúra",
@@ -389,7 +433,8 @@
       "web": "https://www.geology.sk",
       "popis": "",
       "stav": "overené",
-      "registracia": "člen"
+      "registracia": "člen",
+      "kraj": "Bratislavský kraj"
     },
     {
       "nazov": "Žilinská univerzita – Fakulta riadenia a informatiky",
@@ -401,7 +446,8 @@
       "web": "https://www.fri.uniza.sk",
       "popis": "",
       "stav": "overené",
-      "registracia": "člen"
+      "registracia": "člen",
+      "kraj": "Žilinský kraj"
     },
     {
       "nazov": "Žilinská univerzita – FPEDAS, Katedra cestnej a mestskej dopravy",
@@ -413,7 +459,8 @@
       "web": "https://kcmd.uniza.sk",
       "popis": "Dopravné plánovanie, GIS v doprave.",
       "stav": "overené",
-      "registracia": "organizácia"
+      "registracia": "organizácia",
+      "kraj": "Žilinský kraj"
     }
   ]
 }

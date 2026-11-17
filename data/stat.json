@@ -1,6 +1,19 @@
 {
-  "_poznamka": "Ručne udržiavané počty z registračného formulára (obsahuje osobné údaje, preto sa nesynchronizuje automaticky). Jednotlivcov na mape nezobrazujeme.",
+  "_poznamka": "Záložné počty pre prípad, že registračná služba nie je dostupná. Živé čísla dáva služba (js/config.js → api, /api/stat). Stav k 17. 11. 2026 z pôvodného formulára: kraj je odhad podľa sídla zamestnávateľa, pri ostatných ho nepoznáme. Jednotlivcov na mape nezobrazujeme, iba počty.",
   "individualni_clenovia": 105,
-  "registracii_spolu": 124,
-  "aktualizovane": "2026-10-06"
+  "registracii_spolu": 126,
+  "aktualizovane": "2026-11-17",
+  "jednotlivci_kraje": {
+    "Bratislavský": 15,
+    "Trnavský": 1,
+    "Trenčiansky": 2,
+    "Nitriansky": 1,
+    "Žilinský": 2,
+    "Banskobystrický": 2,
+    "Prešovský": 1,
+    "Košický": 0
+  },
+  "jednotlivci_kraje_odhad": true,
+  "jednotlivci_mimo_sr": 4,
+  "jednotlivci_kraj_neznamy": 77
 }
