@@ -71,7 +71,7 @@ def s_postou(call, env, tmp):
     msg = email.message_from_file(open(mails()[0], encoding="utf-8"), policy=email.policy.default)
     m = msg.get_content()
     tok = re.search(r"potvrdenie\.html\?t=([A-Za-z0-9_-]+)", m)
-    check("e-mail má odkaz a adresáta", tok and msg["To"] == "nova@example.org" and "Potvr" in msg["Subject"] and "QGIS Slovensko" in msg["From"])
+    check("e-mail má odkaz, adresáta a adresu pre odpovede", tok and msg["To"] == "nova@example.org" and "Potvr" in msg["Subject"] and "QGIS Slovensko" in msg["From"] and msg["Reply-To"] == "kontakt@example.org")
     c, r = call("/api/potvrdit", {"t": "x" * 30}); check("zlý token odmietnutý", c == 410)
     c, r = call("/api/potvrdit", {"t": tok.group(1)}); c2, st = call("/api/stat")
     check("potvrdenie zapíše človeka", c == 200 and r["ok"] and r["poradie_v_kraji"] == 1 and st["ludia_spolu"] == 1)
@@ -84,5 +84,5 @@ def s_postou(call, env, tmp):
     check("upozornenie tímu na novú organizáciu", c == 200 and len(mails()) == n + 1 and email.message_from_file(open(mails()[-1], encoding="utf-8"), policy=email.policy.default)["To"] == "tim@example.org")
 
 run(18773, lambda tmp: {}, bez_posty)
-run(18775, lambda tmp: {"QGISSK_MAIL_DIR": os.path.join(tmp, "mail"), "NOTIFY_TO": "tim@example.org", "MAIL_FROM": "registracia@example.org"}, s_postou)
+run(18775, lambda tmp: {"QGISSK_MAIL_DIR": os.path.join(tmp, "mail"), "NOTIFY_TO": "tim@example.org", "MAIL_FROM": "registracia@example.org", "MAIL_REPLY_TO": "kontakt@example.org"}, s_postou)
 sys.exit(0 if ok else 1)

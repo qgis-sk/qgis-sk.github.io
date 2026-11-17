@@ -1,7 +1,9 @@
 #!/bin/bash
 # Nastaví schránku, z ktorej registračná služba QGIS Slovensko posiela potvrdzovacie e-maily.
-# Použitie (na serveri, interaktívne):  qgis-sk-set-smtp <schránka> [kam posielať upozornenia tímu]
-#   napr.  ssh -t root@server qgis-sk-set-smtp registracia@qgis.sk miki.michalko@gmail.com
+# Použitie (na serveri, interaktívne):  qgis-sk-set-smtp <schránka> [upozornenia tímu] [odpovede ľudí]
+#   napr.  ssh -t root@server qgis-sk-set-smtp registracia@qgis.sk kontakt@example.org
+# Druhá adresa dostáva upozornenia na nové organizácie a príklady použitia. Tretia (predvolene
+# rovnaká ako druhá) sa nastaví ako Reply-To: keď niekto na potvrdzovací e-mail odpovie, príde to jej.
 # Heslo sa pýta skryto. Najprv sa overí prihlásenie a odošle testovací e-mail, až potom sa
 # konfigurácia zapíše do /etc/qgis-sk/env a služba sa reštartuje. Pri chybe sa nič nemení.
 # Vypnutie potvrdzovania:  qgis-sk-set-smtp --vypnut
@@ -14,6 +16,7 @@ if [ "${1:-}" = "--vypnut" ]; then
 fi
 USER_NEW="${1:?Zadajte adresu schránky, napr. registracia@qgis.sk}"
 NOTIFY="${2:-$USER_NEW}"
+REPLY="${3:-$NOTIFY}"
 HOST="${SMTP_HOST:-smtp.websupport.sk}"; PORT="${SMTP_PORT:-587}"
 
 IFS= read -rsp "Heslo pre $USER_NEW: " P; echo
@@ -22,7 +25,7 @@ case "$P" in *"'"*|*'"'*|*'\'*|*'$'*) echo "Heslo obsahuje znak ' \" \\ alebo \$
 
 TMP=$(mktemp "$DIR/env.new.XXXX"); chmod 600 "$TMP"
 trap 'rm -f "$TMP"' EXIT
-printf 'SMTP_HOST=%s\nSMTP_PORT=%s\nSMTP_USER=%s\nSMTP_PASS=%s\nMAIL_FROM=%s\nNOTIFY_TO=%s\n' "$HOST" "$PORT" "$USER_NEW" "$P" "$USER_NEW" "$NOTIFY" > "$TMP"
+printf 'SMTP_HOST=%s\nSMTP_PORT=%s\nSMTP_USER=%s\nSMTP_PASS=%s\nMAIL_FROM=%s\nNOTIFY_TO=%s\nMAIL_REPLY_TO=%s\n' "$HOST" "$PORT" "$USER_NEW" "$P" "$USER_NEW" "$NOTIFY" "$REPLY" > "$TMP"
 unset P
 
 echo "Overujem prihlásenie a posielam testovací e-mail na $NOTIFY…"
