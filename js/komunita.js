@@ -70,11 +70,16 @@
       return '<div class="kr' + (o || i ? "" : " empty") + '"><span class="kn">' + k + '</span><span class="kb">' +
         (hasInd ? '<i class="i" style="width:' + (100 * i / maxI).toFixed(0) + '%"></i>' : "") +
         '<i class="o" style="width:' + (100 * o / maxO).toFixed(0) + '%"></i></span><span class="kv">' + val + "</span></div>";
-    }).join("") + (hasInd ? '<div class="legend"><span class="i">jednotlivci</span><span>organizácie</span></div>' : "");
+    }).join("") +
+      (hasInd && st.jednotlivci_kraj_neznamy ? '<div class="kr unknown"><span class="kn">Kraj nepoznáme</span><span class="kb"></span><span class="kv">' + st.jednotlivci_kraj_neznamy + " ľudí</span></div>" : "") +
+      (hasInd ? '<div class="legend"><span class="i">jednotlivci</span><span>organizácie</span></div>' : "");
     const note = document.getElementById("kraje-dash-note");
-    if (note) note.textContent = hasInd
-      ? "Jednotlivcov uvádzame iba ako počet za kraj, bez mien a adries."
-      : "Zatiaľ vidno organizácie. Počty ľudí po krajoch pribudnú, keď registračný formulár začne zbierať kraj.";
+    const known = KRAJE.reduce((a, k) => a + (ic[k] || 0), 0);
+    if (note) note.textContent = !hasInd
+      ? "Zatiaľ vidno organizácie. Počty ľudí po krajoch pribudnú, keď registračný formulár začne zbierať kraj."
+      : st.jednotlivci_kraje_odhad
+        ? "Počty ľudí sú odhad: kraj vieme určiť len pri " + known + " z " + (st.individualni_clenovia || "") + " registrovaných, podľa sídla zamestnávateľa. Pomôžte nám mapu spresniť a pridajte sa cez nový formulár."
+        : "Jednotlivcov uvádzame iba ako počet za kraj, bez mien a adries.";
   }
 
   function buildChips() {

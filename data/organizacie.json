@@ -2,10 +2,22 @@
   "_poznamka": "Generované automaticky zo zdieľanej tabuľky organizácií; needitovať ručne.",
   "aktualizovane": "2026-11-17",
   "stat": {
-    "individualni_clenovia": 105,
+    "individualni_clenovia": 103,
     "registracii_spolu": 124,
     "aktualizovane": "2026-10-06",
-    "jednotlivci_kraje": {}
+    "jednotlivci_kraje": {
+      "Bratislavský": 15,
+      "Trnavský": 1,
+      "Trenčiansky": 2,
+      "Nitriansky": 1,
+      "Žilinský": 2,
+      "Banskobystrický": 2,
+      "Prešovský": 1,
+      "Košický": 0
+    },
+    "jednotlivci_kraje_odhad": true,
+    "jednotlivci_mimo_sr": 4,
+    "jednotlivci_kraj_neznamy": 75
   },
   "organizacie": [
     {

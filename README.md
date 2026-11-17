@@ -114,6 +114,11 @@ jednotlivcov a pre organizácie. Oba odkazy sa nastavujú na jednom mieste, v `j
 (`formJednotlivec`, `formOrganizacia`). Kým nie sú dva samostatné formuláre, obe hodnoty vedú na
 pôvodný spoločný formulár.
 
+Nové formuláre vytvorí skript `scripts/vytvor_formulare.gs` (Google Apps Script): vložiť na
+script.google.com, spustiť `vytvorFormulare()`, odkazy zo záznamu preniesť do `js/config.js`.
+Tabuľka odpovedí obsahuje osobné údaje a ostáva neverejná. Organizácie z nej prenášame do verejnej
+tabuľky pre mapu až po overení sídla podľa IČO.
+
 Dashboard „Komunita podľa krajov“:
 - organizácie: kraj sa určí automaticky zo súradníc pri synchronizácii (pole `kraj` v `organizacie.json`),
 - jednotlivci: ručne v `data/stat.json`, pole `jednotlivci_kraje`, napr. `{"Prešovský": 12, "Košický": 9}`.

@@ -308,3 +308,6 @@ section { padding: 96px 0; }
 .news-pill:hover { text-decoration: none; background: #ffeedb; color: var(--ink); }
 .hero .eyebrow { display: block; }
 @media (max-width: 720px) { .featured { padding: 26px 22px; } }
+
+.kr.unknown { margin-top: 6px; padding-top: 10px; border-top: 1px dashed var(--line); color: var(--muted); }
+.kr.unknown .kv { color: var(--muted); }

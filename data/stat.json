@@ -1,7 +1,19 @@
 {
-  "_poznamka": "Ručne udržiavané počty z registračného formulára (obsahuje osobné údaje, preto sa nesynchronizuje automaticky). Jednotlivcov na mape nezobrazujeme, iba počty. jednotlivci_kraje: počet ľudí za kraj (kľúče: Bratislavský, Trnavský, Trenčiansky, Nitriansky, Žilinský, Banskobystrický, Prešovský, Košický); prázdne, kým formulár nezbiera kraj.",
-  "individualni_clenovia": 105,
+  "_poznamka": "Ručne udržiavané počty z registračného formulára (obsahuje osobné údaje, preto sa nesynchronizuje automaticky). Jednotlivcov na mape nezobrazujeme, iba počty. jednotlivci_kraje = ODHAD k 6. 10. 2026 podľa sídla zamestnávateľa (pracovná e-mailová doména alebo organizácia uvedená pri mene); pri ostatných kraj nepoznáme. Po spustení nového formulára nahradiť skutočnými údajmi a jednotlivci_kraje_odhad nastaviť na false.",
+  "individualni_clenovia": 103,
   "registracii_spolu": 124,
   "aktualizovane": "2026-10-06",
-  "jednotlivci_kraje": {}
+  "jednotlivci_kraje": {
+    "Bratislavský": 15,
+    "Trnavský": 1,
+    "Trenčiansky": 2,
+    "Nitriansky": 1,
+    "Žilinský": 2,
+    "Banskobystrický": 2,
+    "Prešovský": 1,
+    "Košický": 0
+  },
+  "jednotlivci_kraje_odhad": true,
+  "jednotlivci_mimo_sr": 4,
+  "jednotlivci_kraj_neznamy": 75
 }
