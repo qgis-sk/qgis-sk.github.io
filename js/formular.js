@@ -39,8 +39,15 @@
     meno: f.elements.meno.value, email: f.elements.email.value, kraj: f.elements.kraj.value,
     oblast: vals(f, "oblast"), skusenost: f.elements.skusenost.value, organizacia: f.elements.organizacia.value,
     zaujmy: vals(f, "zaujmy"), prispiet: vals(f, "prispiet"),
-    novinky: f.elements.novinky.checked, clenstvo: f.elements.clenstvo.checked, suhlas: f.elements.suhlas.checked
+    novinky: f.elements.novinky.checked, clenstvo: f.elements.clenstvo.checked, suhlas: f.elements.suhlas.checked,
+    pribeh: f.elements.pribeh.value, pribeh_odkaz: f.elements.pribeh_odkaz.value
   }), (f, j, d) => {
+    if (j.potvrdit) {
+      const w = document.getElementById("wait-jednotlivec");
+      document.getElementById("wait-email").textContent = d.email;
+      f.hidden = true; w.hidden = false; w.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
     const box = document.getElementById("done-jednotlivec");
     const kde = d.kraj === "Mimo Slovenska" ? "mimo Slovenska" : "v kraji " + d.kraj;
     document.getElementById("done-text").textContent =
@@ -53,11 +60,31 @@
     ico: f.elements.ico.value.replace(/\s/g, ""), nazov: f.elements.nazov.value, typ: f.elements.typ.value,
     popis: f.elements.popis.value, web: f.elements.web.value, pracovisko: f.elements.pracovisko.value,
     ponuka: vals(f, "ponuka"), kontakt_meno: f.elements.kontakt_meno.value, kontakt_email: f.elements.kontakt_email.value,
-    suhlas: f.elements.suhlas.checked
+    suhlas: f.elements.suhlas.checked, pribeh: f.elements.pribeh.value, pribeh_odkaz: f.elements.pribeh_odkaz.value
   }), (f) => {
     const box = document.getElementById("done-organizacia");
     f.hidden = true; box.hidden = false; box.scrollIntoView({ behavior: "smooth", block: "center" });
   });
+
+  // Potvrdenie registrácie odkazom z e-mailu (potvrdenie.html?t=…)
+  const potv = document.getElementById("potv-title");
+  if (potv) {
+    const t = new URLSearchParams(location.search).get("t") || "";
+    const fail = (msg) => { potv.textContent = "Registráciu sa nepodarilo potvrdiť"; document.getElementById("potv-err-text").textContent = msg; document.getElementById("potv-err").hidden = false; };
+    fetch(API + "/api/potvrdit", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ t: t }) })
+      .then((r) => r.json().then((j) => ({ ok: r.ok, j: j })))
+      .then(({ ok, j }) => {
+        if (!ok) return fail(j.chyba || "Odkaz nie je platný.");
+        const kde = j.kraj === "Mimo Slovenska" ? "mimo Slovenska" : "v kraji " + j.kraj;
+        potv.textContent = "Registrácia je potvrdená";
+        document.getElementById("potv-text").textContent =
+          (j.aktualizacia ? "Vaše údaje sme aktualizovali. " : j.povodna_registracia ? "Vašu pôvodnú registráciu sme doplnili o kraj. " : "") +
+          "Ste " + j.poradie_v_kraji + ". človek " + kde + " a v komunite je nás už " + j.ludia_spolu + ".";
+        document.getElementById("potv-ok").hidden = false;
+        history.replaceState(null, "", location.pathname);
+      })
+      .catch(() => fail("Nepodarilo sa spojiť so serverom. Skúste odkaz otvoriť o chvíľu znova."));
+  }
 
   // IČO → názov a sídlo z registra
   const ico = document.getElementById("ico");

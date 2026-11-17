@@ -14,6 +14,9 @@ rsync -a --delete --exclude deploy --exclude .private --exclude '__pycache__' --
 scp -q deploy/qgis-sk.service deploy/qgis-sk-backup.service deploy/qgis-sk-backup.timer "$HOST:/etc/systemd/system/"
 scp -q deploy/qgis.geosupport.sk.nginx "$HOST:/etc/nginx/sites-available/qgis.geosupport.sk"
 scp -q deploy/qgis-sk-limit.conf "$HOST:/etc/nginx/conf.d/qgis-sk-limit.conf"
+scp -q deploy/qgis-sk-set-smtp "$HOST:/usr/local/sbin/qgis-sk-set-smtp"
+ssh "$HOST" 'chmod 700 /usr/local/sbin/qgis-sk-set-smtp'
+
 
 echo "== služba =="
 ssh "$HOST" '
