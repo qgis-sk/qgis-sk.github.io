@@ -46,6 +46,7 @@
       const ib = document.getElementById("ind-count-band"); if (ib && st.individualni_clenovia) ib.textContent = st.individualni_clenovia;
       const su = document.getElementById("stat-upd"); if (su && d.aktualizovane) su.textContent = d.aktualizovane.split("-").reverse().join(". ");
       renderDash(all, st);
+      liveStat(all);
       buildChips();
       render();
     })
@@ -66,7 +67,8 @@
     const maxI = Math.max(1, ...KRAJE.map((k) => ic[k] || 0));
     el.innerHTML = KRAJE.map((k) => {
       const o = oc[k] || 0, i = ic[k] || 0;
-      const val = hasInd ? (i + " ľudí · " + o + " org.") : (o ? o + " org." : "zatiaľ nikto");
+      const lud = i === 1 ? "človek" : (i >= 2 && i <= 4 ? "ľudia" : "ľudí");
+      const val = hasInd ? (i + " " + lud + " · " + o + " org.") : (o ? o + " org." : "zatiaľ nikto");
       return '<div class="kr' + (o || i ? "" : " empty") + '"><span class="kn">' + k + '</span><span class="kb">' +
         (hasInd ? '<i class="i" style="width:' + (100 * i / maxI).toFixed(0) + '%"></i>' : "") +
         '<i class="o" style="width:' + (100 * o / maxO).toFixed(0) + '%"></i></span><span class="kv">' + val + "</span></div>";
@@ -74,12 +76,23 @@
       (hasInd && st.jednotlivci_kraj_neznamy ? '<div class="kr unknown"><span class="kn">Kraj nepoznáme</span><span class="kb"></span><span class="kv">' + st.jednotlivci_kraj_neznamy + " ľudí</span></div>" : "") +
       (hasInd ? '<div class="legend"><span class="i">jednotlivci</span><span>organizácie</span></div>' : "");
     const note = document.getElementById("kraje-dash-note");
-    const known = KRAJE.reduce((a, k) => a + (ic[k] || 0), 0);
     if (note) note.textContent = !hasInd
-      ? "Zatiaľ vidno organizácie. Počty ľudí po krajoch pribudnú, keď registračný formulár začne zbierať kraj."
-      : st.jednotlivci_kraje_odhad
-        ? "Počty ľudí sú odhad: kraj vieme určiť len pri " + known + " z " + (st.individualni_clenovia || "") + " registrovaných, podľa sídla zamestnávateľa. Pomôžte nám mapu spresniť a pridajte sa cez nový formulár."
+      ? "Zatiaľ vidno organizácie. Počty ľudí po krajoch pribudnú s prvými registráciami."
+      : st.jednotlivci_kraj_neznamy
+        ? "Pri pôvodných registráciách kraj odhadujeme podľa zamestnávateľa alebo ho nepoznáme (" + st.jednotlivci_kraj_neznamy + " ľudí). Ak ste medzi nimi, doplňte si ho v novom formulári, zaberie to minútu."
         : "Jednotlivcov uvádzame iba ako počet za kraj, bez mien a adries.";
+  }
+
+  // Živé počty ľudí z registračnej služby (ak je dostupná); inak ostávajú čísla zo stat.json
+  function liveStat(orgs) {
+    const api = (window.QGISSK || {}).api;
+    if (!api) return;
+    fetch(api + "/api/stat").then((r) => r.ok ? r.json() : null).then((s) => {
+      if (!s || !s.povodni_nacitani) return;   // bez načítaných pôvodných registrácií by číslo bolo neúplné
+      const st = { individualni_clenovia: s.ludia_spolu, jednotlivci_kraje: s.kraje, jednotlivci_kraj_neznamy: s.kraj_neznamy };
+      ["stat-ind", "ind-count-band"].forEach((id) => { const el = document.getElementById(id); if (el) el.textContent = s.ludia_spolu; });
+      renderDash(orgs, st);
+    }).catch(() => {});
   }
 
   function buildChips() {

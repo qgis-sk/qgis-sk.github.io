@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <title>Pridať sa ku komunite – QGIS Slovensko</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Pridajte sa k slovenskej QGIS komunite. Registrácia je bezplatná, nezáväzná a trvá minútu.">
+  <link rel="icon" href="images/qgis-logo_SK_color.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="alternate" type="application/rss+xml" title="QGIS Slovensko – novinky" href="feed.xml">
+  <link rel="stylesheet" href="styles.css?v=14">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href=""><img src="images/qgis-logo_SK_color.svg" alt="QGIS SK"><span>QGIS Slovensko</span></a>
+    <button class="nav-toggle" aria-label="Menu">☰</button>
+    <nav class="nav">
+      <a href="index.html#ciele">Ciele</a>
+      <a href="index.html#komunita">Komunita</a>
+      <a href="index.html#podujatia">Podujatia</a>
+      <a href="index.html#zdroje">Zdroje</a>
+      <a href="o-nas.html">Kto sme</a>
+      <a href="blog/">Blog</a>
+      <a class="btn" href="pridat-sa.html">Pridať sa</a>
+    </nav>
+  </div>
+</header>
+<section class="page">
+  <div class="wrap narrow">
+    <span class="eyebrow">Som jednotlivec</span>
+    <h1>Pridajte sa na mapu slovenskej QGIS komunity</h1>
+    <p class="lead">Tri údaje a ste tam. Registrácia je bezplatná a nezáväzná a neznamená členstvo v občianskom združení. Na mape sa nezobrazíte, pripočítame vás iba do počtu za váš kraj.</p>
+
+    <form class="form" id="form-jednotlivec" novalidate>
+      <div class="field"><label for="meno">Meno a priezvisko</label><input id="meno" name="meno" type="text" autocomplete="name" required maxlength="120"></div>
+      <div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="254"><small>Ak ste sa už registrovali v pôvodnom formulári, použite rovnaký e-mail. Nezapočítame vás dvakrát.</small></div>
+      <div class="field"><label for="kraj">Kraj, v ktorom pôsobíte</label><select id="kraj" name="kraj" required><option value="">Vyberte kraj…</option><option>Bratislavský</option><option>Trnavský</option><option>Trenčiansky</option><option>Nitriansky</option><option>Žilinský</option><option>Banskobystrický</option><option>Prešovský</option><option>Košický</option><option value="Mimo Slovenska">Pôsobím mimo Slovenska</option></select><small>Kde pracujete, študujete alebo žijete.</small></div>
+      <div class="hp" aria-hidden="true"><label>Web stránka <input name="web_stranka" type="text" tabindex="-1" autocomplete="off"></label></div>
+
+      <details class="more">
+        <summary>Povedzte nám o sebe viac <span>nepovinné, pomôže nám to pripravovať podujatia</span></summary>
+        <div class="field"><span class="lbl">Oblasť, v ktorej pôsobíte</span><div class="checks"><label class="chk"><input type="checkbox" name="oblast" value="Verejná správa a samospráva"><span>Verejná správa a samospráva</span></label><label class="chk"><input type="checkbox" name="oblast" value="Súkromný sektor"><span>Súkromný sektor</span></label><label class="chk"><input type="checkbox" name="oblast" value="Akademická sféra a výskum"><span>Akademická sféra a výskum</span></label><label class="chk"><input type="checkbox" name="oblast" value="Študent/ka"><span>Študent/ka</span></label><label class="chk"><input type="checkbox" name="oblast" value="Občianska spoločnosť"><span>Občianska spoločnosť</span></label><label class="chk"><input type="checkbox" name="oblast" value="Voľný čas"><span>Voľný čas</span></label></div></div>
+        <div class="field"><label for="skusenost">Ako dlho pracujete s QGIS?</label><select id="skusenost" name="skusenost"><option value="">Nechcem uviesť</option><option>Začínam</option><option>Bežne ho používam</option><option>Pokročilý používateľ</option><option>Vyvíjam pluginy alebo učím QGIS</option></select></div>
+        <div class="field"><label for="organizacia">Organizácia, kde pracujete alebo študujete</label><input id="organizacia" name="organizacia" type="text" maxlength="160"><small>Neznamená to registráciu organizácie. Tú má <a href="pridat-organizaciu.html">samostatný formulár</a>.</small></div>
+        <div class="field"><span class="lbl">Čo vás zaujíma?</span><div class="checks"><label class="chk"><input type="checkbox" name="zaujmy" value="Novinky o QGIS"><span>Novinky o QGIS</span></label><label class="chk"><input type="checkbox" name="zaujmy" value="Stretnutia a konferencie"><span>Stretnutia a konferencie</span></label><label class="chk"><input type="checkbox" name="zaujmy" value="Školenia a workshopy"><span>Školenia a workshopy</span></label><label class="chk"><input type="checkbox" name="zaujmy" value="Pomoc pri riešení problémov"><span>Pomoc pri riešení problémov</span></label><label class="chk"><input type="checkbox" name="zaujmy" value="Ponuky spolupráce a práce"><span>Ponuky spolupráce a práce</span></label><label class="chk"><input type="checkbox" name="zaujmy" value="Slovenské dáta a návody"><span>Slovenské dáta a návody</span></label></div></div>
+        <div class="field"><span class="lbl">Vedeli by ste niečím prispieť?</span><div class="checks"><label class="chk"><input type="checkbox" name="prispiet" value="Prednáška alebo ukážka"><span>Prednáška alebo ukážka</span></label><label class="chk"><input type="checkbox" name="prispiet" value="Návod alebo článok"><span>Návod alebo článok</span></label><label class="chk"><input type="checkbox" name="prispiet" value="Preklad QGIS do slovenčiny"><span>Preklad QGIS do slovenčiny</span></label><label class="chk"><input type="checkbox" name="prispiet" value="Pomoc s organizáciou podujatia"><span>Pomoc s organizáciou podujatia</span></label><label class="chk"><input type="checkbox" name="prispiet" value="Lektorovanie"><span>Lektorovanie</span></label></div></div>
+        <label class="chk"><input type="checkbox" name="clenstvo"><span>Mám záujem aj o formálne členstvo v občianskom združení QGIS Slovensko, ozvite sa mi.</span></label>
+      </details>
+
+      <label class="chk"><input type="checkbox" name="novinky"><span>Chcem dostávať e-mailom novinky QGIS Slovensko.</span></label>
+      <label class="chk req"><input type="checkbox" name="suhlas" required><span>Súhlasím, aby QGIS Slovensko, o. z. spracúvalo uvedené údaje na účel vedenia zoznamu členov komunity. Súhlas môžem kedykoľvek odvolať. <a href="pravidla.html#osobne-udaje" target="_blank" rel="noopener">Ako s údajmi narábame</a></span></label>
+
+      <p class="form-error" role="alert" hidden></p>
+      <button class="btn" type="submit">Pridať sa na mapu</button>
+    </form>
+
+    <div class="form-done" id="done-jednotlivec" hidden>
+      <span class="featured-tag">Ste na mape</span>
+      <h2 id="done-title">Vitajte v slovenskej QGIS komunite</h2>
+      <p class="lead" id="done-text"></p>
+      <div class="actions"><a class="btn" href="index.html#komunita">Pozrieť mapu</a><a class="btn ghost" id="share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fqgis.sk%2F%23komunita" target="_blank" rel="noopener">Zdieľať výzvu na Facebooku</a></div>
+      <p class="muted small">Pracujete vo firme, na úrade alebo v škole, kde sa používa QGIS? <a href="pridat-organizaciu.html">Pridajte na mapu aj organizáciu.</a></p>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="wrap">
+    <div>© QGIS Slovensko, o. z. · Obsah je licencovaný pod <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></div>
+    <div class="links"><a href="https://qgis.org">qgis.org</a><a href="feed.xml">RSS</a><a href="pravidla.html">Pravidlá</a><a href="https://github.com/qgis-sk/qgis-sk.github.io">Zdrojový kód stránky</a></div>
+  </div>
+</footer>
+<script src="js/config.js?v=2"></script>
+<script src="js/formular.js?v=1"></script>
+<script src="js/komunita.js?v=12"></script>
+</body>
+</html>

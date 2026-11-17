@@ -34,7 +34,11 @@ blog/<slug>.html           jednotlivé články
 feed.xml                   RSS kanál noviniek (odporúčanie QGIS.org pre user groups)
 1_qgis_advent.html         starší adventný kalendár 2020 (ponechaný)
 styles.css                 všetky štýly (farby QGIS: #589632, #93b023, #ee7913, #f0e64a)
-js/config.js               odkazy na registračné formuláre (jednotlivec / organizácia)
+js/config.js               adresa registračnej služby
+js/formular.js             odosielanie formulárov, dohľadanie IČO
+pridat-sa.html             formulár pre jednotlivcov
+pridat-organizaciu.html    formulár pre organizácie
+server/                    registračná služba (beží na serveri Geosupportu)
 js/komunita.js             mapa organizácií (Leaflet + OpenStreetMap), vyhľadávanie, filtre,
                            mobilné menu, SVG mapa Slovenska v hlavičke (kraje + body organizácií)
 data/organizacie.json      dáta pre mapu – GENEROVANÉ, needitovať ručne
@@ -109,20 +113,39 @@ s číslami a nad mapou.
 
 ## Registračné formuláre a komunitná výzva
 
-Sekcia „Zaplníme mapu Slovenska používateľmi QGIS?“ a sekcia „Zapojte sa“ majú dve tlačidlá: pre
-jednotlivcov a pre organizácie. Oba odkazy sa nastavujú na jednom mieste, v `js/config.js`
-(`formJednotlivec`, `formOrganizacia`). Kým nie sú dva samostatné formuláre, obe hodnoty vedú na
-pôvodný spoločný formulár.
+Dva vlastné formuláre na webe, bez Google:
 
-Nové formuláre vytvorí skript `scripts/vytvor_formulare.gs` (Google Apps Script): vložiť na
-script.google.com, spustiť `vytvorFormulare()`, odkazy zo záznamu preniesť do `js/config.js`.
-Tabuľka odpovedí obsahuje osobné údaje a ostáva neverejná. Organizácie z nej prenášame do verejnej
-tabuľky pre mapu až po overení sídla podľa IČO.
+- `pridat-sa.html` – jednotlivec (meno, e-mail, kraj, súhlas; ostatné nepovinné),
+- `pridat-organizaciu.html` – organizácia (IČO, názov, typ, popis, kontakt). Názov a sídlo sa
+  dohľadajú podľa IČO v Registri právnických osôb.
 
-Dashboard „Komunita podľa krajov“:
-- organizácie: kraj sa určí automaticky zo súradníc pri synchronizácii (pole `kraj` v `organizacie.json`),
-- jednotlivci: ručne v `data/stat.json`, pole `jednotlivci_kraje`, napr. `{"Prešovský": 12, "Košický": 9}`.
-  Kým je prázdne, dashboard ukazuje iba organizácie. Jednotlivci sa nikdy nezobrazujú ako body ani menovite.
+Odosielajú sa do **registračnej služby** v priečinku `server/` (čistý Python + SQLite, bez závislostí),
+ktorá beží na serveri Geosupportu (Hetzner, Norimberg) na adrese z `js/config.js` (`api`).
+
+| Súbor | Účel |
+|---|---|
+| `server/app.py` | služba: `POST /api/jednotlivec`, `POST /api/organizacia`, `GET /api/stat`, `GET /api/ico` |
+| `server/test_app.py` | testy na dočasnej databáze (`python3 server/test_app.py`) |
+| `server/deploy.sh` | nasadenie: testy → kód do `/opt/qgis-sk` → systemd `qgis-sk` (používateľ `qgissk`) → nginx `qgis.geosupport.sk` → kontrola |
+| `server/export.py` | export pre správcu (na serveri): `jednotlivci`, `organizacie [nová]`, `oznac <IČO> overená` |
+| `server/import_povodni.py` | načíta odtlačky e-mailov pôvodných registrácií, aby sa ľudia nepočítali dvakrát |
+| `server/backup.py` | denná záloha databázy do `/var/backups/qgis-sk` (30 dní) |
+
+Zásady: API nikdy nevracia osobné údaje, iba súčty. Služba nezapisuje IP adresy ani obsah do logov.
+Databáza je na serveri v `/var/lib/qgis-sk/registracie.db`, čitateľná len pre používateľa služby.
+Ochrana pred robotmi: skryté pole, minimálny čas vyplnenia, limit požiadaviek, kontrola pôvodu.
+
+**Jednotlivci** sa na mape nezobrazujú. Dashboard „Komunita podľa krajov“ berie živé súčty z `/api/stat`
+(nové registrácie + pôvodní členovia, ktorí sa ešte neregistrovali nanovo). Ak služba nie je dostupná,
+použijú sa záložné čísla z `data/stat.json`.
+
+**Organizácie** z formulára idú do stavu „nová“. Na mapu sa dostanú po overení: export čakajúcich
+(`export.py organizacie nová`), kontrola sídla, doplnenie riadku do zdieľanej tabuľky pre mapu
+(súradnice), potom `export.py oznac <IČO> overená`. Kraj organizácie sa určí zo súradníc pri synchronizácii.
+
+Lokálny test formulárov: spustiť službu
+`PORT=18774 QGISSK_DB=/tmp/q.db QGISSK_ORIGINS=http://localhost:8765 python3 server/app.py`
+a web cez `python3 -m http.server 8765`.
 
 ## Blog a RSS
 

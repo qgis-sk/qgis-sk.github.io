@@ -1,0 +1,7 @@
+[Unit]
+Description=QGIS Slovensko – denná záloha databázy registrácií
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/usr/bin/python3 /opt/qgis-sk/backup.py
