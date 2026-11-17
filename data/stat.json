@@ -1,6 +1,7 @@
 {
-  "_poznamka": "Ručne udržiavané počty z registračného formulára (obsahuje osobné údaje, preto sa nesynchronizuje automaticky). Jednotlivcov na mape nezobrazujeme.",
+  "_poznamka": "Ručne udržiavané počty z registračného formulára (obsahuje osobné údaje, preto sa nesynchronizuje automaticky). Jednotlivcov na mape nezobrazujeme, iba počty. jednotlivci_kraje: počet ľudí za kraj (kľúče: Bratislavský, Trnavský, Trenčiansky, Nitriansky, Žilinský, Banskobystrický, Prešovský, Košický); prázdne, kým formulár nezbiera kraj.",
   "individualni_clenovia": 105,
   "registracii_spolu": 124,
-  "aktualizovane": "2026-10-06"
+  "aktualizovane": "2026-10-06",
+  "jednotlivci_kraje": {}
 }

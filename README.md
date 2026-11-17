@@ -34,6 +34,7 @@ blog/<slug>.html           jednotlivé články
 feed.xml                   RSS kanál noviniek (odporúčanie QGIS.org pre user groups)
 1_qgis_advent.html         starší adventný kalendár 2020 (ponechaný)
 styles.css                 všetky štýly (farby QGIS: #589632, #93b023, #ee7913, #f0e64a)
+js/config.js               odkazy na registračné formuláre (jednotlivec / organizácia)
 js/komunita.js             mapa organizácií (Leaflet + OpenStreetMap), vyhľadávanie, filtre,
                            mobilné menu, SVG mapa Slovenska v hlavičke (kraje + body organizácií)
 data/organizacie.json      dáta pre mapu – GENEROVANÉ, needitovať ručne
@@ -105,6 +106,18 @@ SHEET_CSV_URL="https://docs.google.com/spreadsheets/d/1Yge6hcfhaaxkVRBLft4XKlQN3
 formulára. Formulár obsahuje osobné údaje, preto sa nečíta automaticky; počet aktualizujeme ručne
 (unikátne e-maily bez riadkov, kde sa registrovala iba organizácia). Číslo sa zobrazuje v páse
 s číslami a nad mapou.
+
+## Registračné formuláre a komunitná výzva
+
+Sekcia „Zaplníme mapu Slovenska používateľmi QGIS?“ a sekcia „Zapojte sa“ majú dve tlačidlá: pre
+jednotlivcov a pre organizácie. Oba odkazy sa nastavujú na jednom mieste, v `js/config.js`
+(`formJednotlivec`, `formOrganizacia`). Kým nie sú dva samostatné formuláre, obe hodnoty vedú na
+pôvodný spoločný formulár.
+
+Dashboard „Komunita podľa krajov“:
+- organizácie: kraj sa určí automaticky zo súradníc pri synchronizácii (pole `kraj` v `organizacie.json`),
+- jednotlivci: ručne v `data/stat.json`, pole `jednotlivci_kraje`, napr. `{"Prešovský": 12, "Košický": 9}`.
+  Kým je prázdne, dashboard ukazuje iba organizácie. Jednotlivci sa nikdy nezobrazujú ako body ani menovite.
 
 ## Blog a RSS
 

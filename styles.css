@@ -240,3 +240,58 @@ section { padding: 96px 0; }
 .takeaways .card p { margin: 0; font-size: .95rem; color: var(--ink-2); }
 @media (max-width: 960px) { .policy { grid-template-columns: 1fr; gap: 32px; } }
 @media (max-width: 560px) { .takeaways .grid { grid-template-columns: 1fr; } }
+
+/* ---- November 2026: challenge, dashboard, split registration, articles ---- */
+.small { font-size: .9rem; }
+.why .cols { align-items: center; }
+.why .photo { margin: 0; }
+.quote-row { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--line); align-items: start; }
+.quote-row .quote { margin: 0; }
+.quote-row cite a { color: var(--green-dark); }
+.why-more { margin: 32px 0 0; font-weight: 600; }
+
+.challenge { display: grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items: start; margin: 8px 0 48px; }
+.challenge .actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 20px 0 14px; }
+.challenge .stat-row { margin: 20px 0 0; }
+.challenge .stat-row .big { font-size: 3rem; }
+.dash { border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 26px; background: var(--paper-2); }
+.dash h3 { font-size: .85rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+.kr { display: grid; grid-template-columns: 128px 1fr auto; gap: 12px; align-items: center; padding: 5px 0; font-size: .95rem; }
+.kr .kb { display: flex; flex-direction: column; gap: 3px; }
+.kr .kb i { display: block; height: 8px; border-radius: 4px; min-width: 2px; }
+.kr .kb i.o { background: var(--green); }
+.kr .kb i.i { background: var(--orange); }
+.kr .kv { color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.kr.empty .kn, .kr.empty .kv { color: var(--muted); }
+.dash .legend { display: flex; gap: 16px; font-size: .82rem; color: var(--muted); margin-top: 12px; }
+.dash .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; background: var(--green); }
+.dash .legend span.i::before { background: var(--orange); }
+.dash #kraje-dash-note { margin: 10px 0 0; }
+.hub-teaser.one { grid-template-columns: 1fr; }
+
+.resources h3.sub { margin: 56px 0 0; font-size: 1.5rem; }
+.card .meta { display: block; font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--green-dark); margin-bottom: 8px; }
+
+.join .grid.two { grid-template-columns: 1fr 1fr; }
+.join .grid.three { grid-template-columns: repeat(3, 1fr); margin-top: 20px; }
+.join .card.cta { padding: 32px; border-color: rgba(156,207,122,.35); }
+.join .card.cta .meta { color: #9ccf7a; }
+.join .card.cta h3 { font-size: 1.5rem; }
+.join .card.cta .btn { margin-top: 8px; text-decoration: none; }
+.join-note { color: rgba(255,255,255,.7); font-size: .95rem; margin: 20px 0 36px; max-width: 80ch; }
+.join-note a { color: #fff; text-decoration: underline; text-decoration-color: var(--green); }
+
+.sustaining { display: flex; gap: 24px; align-items: center; margin: 28px 0; padding: 22px 24px; border: 1px solid var(--line); border-radius: var(--radius); max-width: 760px; }
+.sustaining a:first-child { display: flex; gap: 12px; flex: none; }
+.sustaining img { height: 104px; width: auto; border-radius: 4px; }
+.sustaining p { margin: 0; color: var(--ink-2); }
+
+@media (max-width: 960px) {
+  .challenge, .quote-row { grid-template-columns: 1fr; gap: 28px; }
+  .join .grid.two, .join .grid.three { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .sustaining { flex-direction: column; align-items: flex-start; }
+  .kr { grid-template-columns: 104px 1fr auto; }
+}
+.join .card.cta a.btn.light { color: var(--dark); text-decoration: none; font-weight: 700; }

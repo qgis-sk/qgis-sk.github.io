@@ -21,6 +21,26 @@ OUT = pathlib.Path(__file__).resolve().parent.parent / "data" / "organizacie.jso
 TYPY = {"firma", "institucia", "skola", "samosprava", "komunita"}
 KEEP = ["nazov", "typ", "mesto", "krajina", "lat", "lon", "web", "popis", "stav"]
 
+KRAJE = json.loads((pathlib.Path(__file__).resolve().parent.parent / "data" / "sk-kraje.json").read_text(encoding="utf-8"))
+
+def _in_ring(lon, lat, ring):
+    inside = False
+    for i in range(len(ring)):
+        x1, y1 = ring[i]; x2, y2 = ring[i - 1]
+        if (y1 > lat) != (y2 > lat) and lon < (x2 - x1) * (lat - y1) / (y2 - y1) + x1:
+            inside = not inside
+    return inside
+
+def kraj_of(lon, lat):
+    """Kraj podľa súradníc (bod v polygóne nad zjednodušenými hranicami krajov)."""
+    for f in KRAJE["features"]:
+        g = f["geometry"]
+        polys = [g["coordinates"]] if g["type"] == "Polygon" else g["coordinates"]
+        for poly in polys:
+            if _in_ring(lon, lat, poly[0]) and not any(_in_ring(lon, lat, h) for h in poly[1:]):
+                return f["properties"]["nazov"]
+    return ""
+
 def norm(s): return (s or "").strip()
 def hidden(s): return norm(s).lower() in ("skryť", "skryt", "hide", "nezobrazovať")
 
@@ -44,6 +64,7 @@ for r in rows:
         "web": norm(r.get("web")), "popis": norm(r.get("popis")),
         "stav": "overené" if norm(r.get("stav")).lower().startswith("over") else "neoverené",
         "registracia": "člen" if norm(r.get("zaradenie")).lower().startswith("člen") else "organizácia",
+        "kraj": kraj_of(lon, lat),
     })
 out.sort(key=lambda o: o["nazov"].lower())
 stat = {}

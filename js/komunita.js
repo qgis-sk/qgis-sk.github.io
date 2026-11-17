@@ -45,12 +45,37 @@
       const sb = document.getElementById("org-count-band"); if (sb) sb.textContent = all.length;
       const ib = document.getElementById("ind-count-band"); if (ib && st.individualni_clenovia) ib.textContent = st.individualni_clenovia;
       const su = document.getElementById("stat-upd"); if (su && d.aktualizovane) su.textContent = d.aktualizovane.split("-").reverse().join(". ");
+      renderDash(all, st);
       buildChips();
       render();
     })
     .catch(() => {
       listEl.innerHTML = '<p class="muted">Zoznam organizácií sa nepodarilo načítať.</p>';
     });
+
+  // Malý dashboard: komunita podľa krajov (organizácie z dát mapy, jednotlivci zo stat.json)
+  function renderDash(orgs, st) {
+    const el = document.getElementById("kraje-dash");
+    if (!el) return;
+    const KRAJE = ["Bratislavský", "Trnavský", "Trenčiansky", "Nitriansky", "Žilinský", "Banskobystrický", "Prešovský", "Košický"];
+    const oc = {};
+    orgs.forEach((o) => { const k = (o.kraj || "").replace(" kraj", ""); if (k) oc[k] = (oc[k] || 0) + 1; });
+    const ic = st.jednotlivci_kraje || {};
+    const hasInd = Object.keys(ic).length > 0;
+    const maxO = Math.max(1, ...KRAJE.map((k) => oc[k] || 0));
+    const maxI = Math.max(1, ...KRAJE.map((k) => ic[k] || 0));
+    el.innerHTML = KRAJE.map((k) => {
+      const o = oc[k] || 0, i = ic[k] || 0;
+      const val = hasInd ? (i + " ľudí · " + o + " org.") : (o ? o + " org." : "zatiaľ nikto");
+      return '<div class="kr' + (o || i ? "" : " empty") + '"><span class="kn">' + k + '</span><span class="kb">' +
+        (hasInd ? '<i class="i" style="width:' + (100 * i / maxI).toFixed(0) + '%"></i>' : "") +
+        '<i class="o" style="width:' + (100 * o / maxO).toFixed(0) + '%"></i></span><span class="kv">' + val + "</span></div>";
+    }).join("") + (hasInd ? '<div class="legend"><span class="i">jednotlivci</span><span>organizácie</span></div>' : "");
+    const note = document.getElementById("kraje-dash-note");
+    if (note) note.textContent = hasInd
+      ? "Jednotlivcov uvádzame iba ako počet za kraj, bez mien a adries."
+      : "Zatiaľ vidno organizácie. Počty ľudí po krajoch pribudnú, keď registračný formulár začne zbierať kraj.";
+  }
 
   function buildChips() {
     const present = new Set(all.map((o) => o.typ));
@@ -189,3 +214,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (note) note.textContent = orgs.length + " organizácií na Slovensku · zelená: inštitúcie, školy, samosprávy · oranžová: firmy";
   }).catch(() => {});
 })();
+
+// Odkazy na registračné formuláre sa berú z js/config.js
+document.addEventListener("DOMContentLoaded", () => {
+  const cfg = window.QGISSK || {};
+  document.querySelectorAll("a[data-form]").forEach((a) => {
+    const url = a.dataset.form === "organizacia" ? cfg.formOrganizacia : cfg.formJednotlivec;
+    if (url) a.href = url;
+  });
+});
