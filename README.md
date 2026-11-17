@@ -128,6 +128,7 @@ ktorá beží na serveri Geosupportu (Hetzner, Norimberg) na adrese z `js/config
 | `server/test_app.py` | testy na dočasnej databáze (`python3 server/test_app.py`) |
 | `server/deploy.sh` | nasadenie: testy → kód do `/opt/qgis-sk` → systemd `qgis-sk` (používateľ `qgissk`) → nginx `qgis.geosupport.sk` → kontrola |
 | `server/export.py` | export pre správcu (na serveri): `jednotlivci`, `organizacie [nová]`, `oznac <IČO> overená` |
+| `server/admin.sh` | to isté zo svojho počítača cez SSH: `zoznam`, `organizacie`, `csv`, `navstevnost`, `pribehy`, `sledovat` |
 | `server/import_povodni.py` | načíta odtlačky e-mailov pôvodných registrácií, aby sa ľudia nepočítali dvakrát |
 | `server/backup.py` | denná záloha databázy do `/var/backups/qgis-sk` (30 dní) |
 
