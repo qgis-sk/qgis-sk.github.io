@@ -131,8 +131,8 @@ posielať aj na https://feed.qgis.org.
 
 ## Podujatia
 
-Časová os je v `index.html` v sekcii `#podujatia`. Nové podujatie sa pridá ako prvý `<li>` v zozname
-`.timeline`; položku „Pripravujeme“ ponecháme na vrchu.
+Časová os je v `index.html` v sekcii `#podujatia`. Poradie je: zvýraznená novinka (karta `.featured` nad zoznamom), potom položka „Pripravujeme“ ako
+prvý `<li>` v zozname `.timeline`, pod ňou podujatia od najnovšieho. Nové podujatie sa vkladá hneď pod „Pripravujeme“.
 
 ## Tím a údaje o združení
 
