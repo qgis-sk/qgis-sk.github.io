@@ -15,23 +15,11 @@
   const countEl = document.getElementById("org-count");
   if (!mapEl || !listEl) return;
 
-  const map = L.map(mapEl, { scrollWheelZoom: false }).setView([48.7, 19.7], 7);
-  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 18,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">prispievatelia OpenStreetMap</a>'
-  }).addTo(map);
-
-  const icon = (typ) => L.divIcon({
-    className: "org-marker",
-    html: '<span style="display:block;width:16px;height:16px;border-radius:50%;background:' +
-      (typ === "firma" ? "#ee7913" : "#589632") +
-      ';border:3px solid #fff;box-shadow:0 1px 6px rgba(0,0,0,.35)"></span>',
-    iconSize: [16, 16],
-    iconAnchor: [8, 8]
-  });
+  const Mapa = window.QgisMapa;
+  Mapa.init(mapEl);
+  Mapa.onSelect((id) => highlight(id));
 
   let all = [];
-  let markers = {};
   let filterTyp = "all";
   let q = "";
 
@@ -63,6 +51,8 @@
     orgs.forEach((o) => { const k = (o.kraj || "").replace(" kraj", ""); if (k) oc[k] = (oc[k] || 0) + 1; });
     const ic = st.jednotlivci_kraje || {};
     const hasInd = Object.keys(ic).length > 0;
+    const pocty = {}; KRAJE.forEach((k) => { pocty[k] = { ludia: ic[k] || 0, org: oc[k] || 0 }; });
+    Mapa.setKraje(pocty);
     const maxO = Math.max(1, ...KRAJE.map((k) => oc[k] || 0));
     const maxI = Math.max(1, ...KRAJE.map((k) => ic[k] || 0));
     el.innerHTML = KRAJE.map((k) => {
@@ -126,39 +116,28 @@
   }
 
   function render() {
-    Object.values(markers).forEach((m) => map.removeLayer(m));
-    markers = {};
     const list = visible();
     countEl && (countEl.textContent = list.length);
     listEl.innerHTML = list.length ? "" : '<p class="muted">Nič sa nenašlo.</p>';
-    const bounds = [];
-    list.forEach((o, i) => {
-      const id = "org-" + i;
-      if (o.lat && o.lon) {
-        const m = L.marker([o.lat, o.lon], { icon: icon(o.typ) })
-          .addTo(map)
-          .bindPopup("<strong>" + esc(o.nazov) + "</strong><br>" + esc(o.mesto) +
-            (o.web ? '<br><a href="' + o.web + '" target="_blank" rel="noopener">web</a>' : ""));
-        m.on("click", () => highlight(id));
-        markers[id] = m;
-        bounds.push([o.lat, o.lon]);
-      }
+    list.forEach((o) => {
+      o.id = "org-" + all.indexOf(o);
       const el = document.createElement("div");
       el.className = "org";
-      el.id = id;
+      el.id = o.id;
       el.innerHTML =
-        '<div class="t">' + (TYPY[o.typ] || o.typ) + (o.registracia === "člen" ? ' · <span style="color:#ee7913">na potvrdenie</span>' : (o.stav === "overené" ? ' · <span style="color:#589632">sídlo overené</span>' : ' · <span style="color:#ee7913">sídlo neoverené</span>')) + (o.krajina && o.krajina !== "SK" ? " · " + esc(o.krajina) : "") + "</div>" +
+        '<div class="t"><i class="bodka ' + (o.typ === "firma" ? "ora" : "zel") + '"></i>' + (TYPY[o.typ] || o.typ) + (o.registracia === "člen" ? ' · <span style="color:#ee7913">na potvrdenie</span>' : (o.stav === "overené" ? ' · <span style="color:#589632">sídlo overené</span>' : ' · <span style="color:#ee7913">sídlo neoverené</span>')) + "</div>" +
         "<h4>" + esc(o.nazov) + "</h4>" +
         '<div class="city">' + esc(o.mesto) + "</div>" +
         (o.popis ? "<p>" + esc(o.popis) + "</p>" : "") +
         (o.web ? '<p><a href="' + o.web + '" target="_blank" rel="noopener">' + esc(o.web.replace(/^https?:\/\//, "").replace(/\/$/, "")) + "</a></p>" : "");
-      el.addEventListener("click", () => {
-        highlight(id);
-        if (markers[id]) { map.flyTo(markers[id].getLatLng(), 11, { duration: .6 }); markers[id].openPopup(); }
+      el.addEventListener("click", (e) => {
+        if (e.target.closest("a")) return;
+        highlight(o.id);
+        Mapa.focus(o);
       });
       listEl.appendChild(el);
     });
-    if (bounds.length > 1) map.fitBounds(bounds, { padding: [40, 40], maxZoom: 9 });
+    Mapa.setOrgs(list, list.length === all.length);
   }
 
   function highlight(id) {
