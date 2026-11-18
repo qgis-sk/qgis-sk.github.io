@@ -109,7 +109,7 @@ def init_db():
         """)
         for tab in ("jednotlivci", "organizacie"):
             cols = [r[1] for r in con.execute("PRAGMA table_info(" + tab + ")")]
-            for col in ("pribeh", "pribeh_odkaz"):
+            for col in ("pribeh", "pribeh_odkaz") + (("obec",) if tab == "organizacie" else ()):
                 if col not in cols:
                     con.execute("ALTER TABLE " + tab + " ADD COLUMN " + col + " TEXT")
 
@@ -307,7 +307,11 @@ def stat():
 def rpo(ico):
     url = "https://api.statistics.sk/rpo/v1/search?" + urllib.parse.urlencode({"identifier": ico})
     req = urllib.request.Request(url, headers={"User-Agent": "qgis.sk registracia"})
-    d = json.load(urllib.request.urlopen(req, timeout=8))
+    try:                                   # verejný register občas neodpovie, skúsime to dvakrát
+        d = json.load(urllib.request.urlopen(req, timeout=6))
+    except Exception:
+        time.sleep(0.5)
+        d = json.load(urllib.request.urlopen(req, timeout=6))
     res = d.get("results") or []
     if not res:
         return None
@@ -507,10 +511,13 @@ class H(BaseHTTPRequestHandler):
         k_meno = s(d.get("kontakt_meno"), 120)
         k_email = s(d.get("kontakt_email"), 254).lower()
         web = s(d.get("web"), 200)
+        obec = s(d.get("obec"), 100)
         if len(nazov) < 2:
             return self.send_json(400, {"chyba": "Uveďte názov organizácie.", "pole": "nazov"})
-        if not ICO_RE.match(ico):
-            return self.send_json(400, {"chyba": "IČO má 8 číslic.", "pole": "ico"})
+        if len(obec) < 2:
+            return self.send_json(400, {"chyba": "Uveďte obec alebo mesto, kde organizácia sídli.", "pole": "obec"})
+        if ico and not ICO_RE.match(ico):
+            return self.send_json(400, {"chyba": "IČO má 8 číslic. Ak ho neviete, nechajte pole prázdne.", "pole": "ico"})
         if typ not in TYPY:
             return self.send_json(400, {"chyba": "Vyberte typ organizácie.", "pole": "typ"})
         if len(popis) < 5:
@@ -525,18 +532,22 @@ class H(BaseHTTPRequestHandler):
             return self.send_json(400, {"chyba": "Potvrďte prosím oprávnenie a súhlas so zverejnením.", "pole": "suhlas"})
         if bot:
             return self.send_json(200, {"ok": True})
-        try:
-            r = rpo(ico) or {}
-        except Exception:
-            r = {}
-        vals = dict(nazov=nazov, ico=ico, typ=typ, pracovisko=s(d.get("pracovisko"), 200), web=web, popis=popis,
+        r = {}
+        if ico:
+            try:
+                r = rpo(ico) or {}
+            except Exception:
+                r = {}
+        # bez IČO je kľúčom názov + obec (interná značka začína otáznikom)
+        kluc = ico or "?" + hashlib.sha256((nazov.lower() + "|" + obec.lower()).encode("utf-8")).hexdigest()[:14]
+        vals = dict(nazov=nazov, ico=kluc, obec=obec, typ=typ, pracovisko=s(d.get("pracovisko"), 200), web=web, popis=popis,
                     ponuka=json.dumps(pick(d.get("ponuka"), PONUKA), ensure_ascii=False),
                     kontakt_meno=k_meno, kontakt_email=k_email,
                     rpo_nazov=r.get("nazov", ""), rpo_adresa=r.get("adresa", ""),
                     pribeh=text(d.get("pribeh"), 1200), pribeh_odkaz=url(d.get("pribeh_odkaz")))
         t = now()
         with db() as con:
-            row = con.execute("SELECT id FROM organizacie WHERE ico = ?", (ico,)).fetchone()
+            row = con.execute("SELECT id FROM organizacie WHERE ico = ?", (kluc,)).fetchone()
             if row:
                 zmeny = bez_prazdneho_pribehu(vals)
                 con.execute("UPDATE organizacie SET upravene=?, stav='nová', " + ", ".join(k + "=?" for k in zmeny) + " WHERE id=?",
@@ -547,7 +558,7 @@ class H(BaseHTTPRequestHandler):
                             [t, t, t] + list(vals.values()))
         _stat_cache["v"] = None
         oznam_timu("QGIS SK – organizácia čaká na overenie: " + nazov,
-                   "Nová registrácia organizácie na komunitnú mapu.\n\nNázov: " + nazov + "\nIČO: " + ico +
+                   "Nová registrácia organizácie na komunitnú mapu.\n\nNázov: " + nazov + "\nObec: " + obec + "\nIČO: " + (ico or "neuvedené") +
                    "\nRegister: " + (r.get("nazov", "") + ", " + r.get("adresa", "") if r.get("nazov") else "nenájdené") +
                    ("\nPridali aj príklad použitia." if vals["pribeh"] else "") +
                    "\n\nČakajúce: python3 /opt/qgis-sk/export.py organizacie nová\n")

@@ -42,15 +42,16 @@
   <div class="wrap narrow">
     <span class="eyebrow">Sme organizácia</span>
     <h1>Pridajte organizáciu na komunitnú mapu</h1>
-    <p class="lead">Pre firmy, úrady, školy a samosprávy so sídlom na Slovensku, ktoré pracujú s QGIS. Zápis je bezplatný. Na mape zverejníme názov, sídlo, web a krátky popis. Kontaktné údaje nezverejňujeme.</p>
+    <p class="lead">Pre firmy, úrady, školy a samosprávy na Slovensku, ktoré pracujú s QGIS. Zápis je bezplatný a zaberie dve minúty. Na mape zverejníme názov, sídlo, web a krátky popis. Kontaktné údaje nezverejňujeme.</p>
 
     <form class="form" id="form-organizacia" novalidate>
-      <div class="field"><label for="ico">IČO</label><div class="row"><input id="ico" name="ico" type="text" inputmode="numeric" required maxlength="8" placeholder="8 číslic"><button class="btn ghost" type="button" id="ico-btn">Nájsť v registri</button></div><small id="ico-info">Podľa IČO nájdeme názov a sídlo v Registri právnických osôb, adresu vypĺňať nemusíte.</small></div>
-      <div class="field"><label for="nazov">Názov organizácie</label><input id="nazov" name="nazov" type="text" required maxlength="200"><small>Ako sa má zobraziť na mape. Môžete uviesť aj katedru alebo odbor.</small></div>
+      <div class="field"><label for="nazov">Názov organizácie</label><input id="nazov" name="nazov" type="text" required maxlength="200" autocomplete="organization"><small>Ako sa má zobraziť na mape. Môžete uviesť aj katedru alebo odbor.</small></div>
+      <div class="field"><label for="obec">Obec alebo mesto</label><input id="obec" name="obec" type="text" required maxlength="100"><small>Kde organizácia sídli alebo kde je pracovisko, ktoré sa má zobraziť na mape.</small></div>
       <div class="field"><label for="typ">Typ organizácie</label><select id="typ" name="typ" required><option value="">Vyberte…</option><option value="firma">Firma</option><option value="institucia">Štátna inštitúcia</option><option value="skola">Škola alebo univerzita</option><option value="samosprava">Samospráva (obec, mesto, kraj)</option><option value="komunita">Občianske združenie alebo komunita</option></select></div>
       <div class="field"><label for="popis">Ako QGIS používate? Jedna veta, zobrazí sa na mape.</label><input id="popis" name="popis" type="text" required maxlength="150" placeholder="Napríklad: Územné plánovanie a pasport zelene."><small><span id="popis-n">0</span> / 150 znakov</small></div>
       <div class="field"><label for="web">Web <em>nepovinné</em></label><input id="web" name="web" type="url" maxlength="200" placeholder="https://"></div>
-      <div class="field"><label for="pracovisko">Pracovisko, ktoré sa má zobraziť na mape <em>nepovinné</em></label><input id="pracovisko" name="pracovisko" type="text" maxlength="200" placeholder="Ulica, číslo, obec"><small>Iba ak sa má zobraziť iná adresa ako sídlo, napríklad katedra alebo pobočka.</small></div>
+      <div class="field two"><div><label for="pracovisko">Ulica a číslo <em>nepovinné</em></label><input id="pracovisko" name="pracovisko" type="text" maxlength="200"></div><div><label for="ico">IČO <em>nepovinné</em></label><input id="ico" name="ico" type="text" inputmode="numeric" maxlength="8" placeholder="8 číslic"></div></div>
+      <p class="muted small" style="margin:-10px 0 0">Adresa spresní polohu bodu na mape, IČO nám urýchli overenie. Ak ich neviete, nevadí.</p>
       <div class="field"><span class="lbl">Čo môžete komunite ponúknuť? <em>nepovinné</em></span><div class="checks"><label class="chk"><input type="checkbox" name="ponuka" value="Školenia"><span>Školenia</span></label><label class="chk"><input type="checkbox" name="ponuka" value="Služby alebo vývoj"><span>Služby alebo vývoj</span></label><label class="chk"><input type="checkbox" name="ponuka" value="Stáže a témy záverečných prác"><span>Stáže a témy záverečných prác</span></label><label class="chk"><input type="checkbox" name="ponuka" value="Priestory na stretnutie"><span>Priestory na stretnutie</span></label><label class="chk"><input type="checkbox" name="ponuka" value="Otvorené dáta"><span>Otvorené dáta</span></label><label class="chk"><input type="checkbox" name="ponuka" value="Prípadová štúdia na web"><span>Prípadová štúdia na web</span></label></div></div>
       <div class="usecase" role="group" aria-labelledby="usecase-h">
         <h3 id="usecase-h">Riešite s QGIS niečo zaujímavé? Ukážte to ostatným <em>nepovinné</em></h3>
@@ -81,7 +82,7 @@
   </div>
 </footer>
 <script src="js/config.js?v=2"></script>
-<script src="js/formular.js?v=2"></script>
+<script src="js/formular.js?v=3"></script>
 <script src="js/komunita.js?v=12"></script>
 <script src="js/meranie.js?v=1" defer></script>
 </body>

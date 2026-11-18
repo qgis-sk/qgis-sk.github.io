@@ -57,7 +57,7 @@
   });
 
   wire("form-organizacia", "/api/organizacia", (f) => ({
-    ico: f.elements.ico.value.replace(/\s/g, ""), nazov: f.elements.nazov.value, typ: f.elements.typ.value,
+    ico: f.elements.ico.value.replace(/\s/g, ""), nazov: f.elements.nazov.value, obec: f.elements.obec.value, typ: f.elements.typ.value,
     popis: f.elements.popis.value, web: f.elements.web.value, pracovisko: f.elements.pracovisko.value,
     ponuka: vals(f, "ponuka"), kontakt_meno: f.elements.kontakt_meno.value, kontakt_email: f.elements.kontakt_email.value,
     suhlas: f.elements.suhlas.checked, pribeh: f.elements.pribeh.value, pribeh_odkaz: f.elements.pribeh_odkaz.value
@@ -86,26 +86,7 @@
       .catch(() => fail("Nepodarilo sa spojiť so serverom. Skúste odkaz otvoriť o chvíľu znova."));
   }
 
-  // IČO → názov a sídlo z registra
-  const ico = document.getElementById("ico");
-  if (ico) {
-    const info = document.getElementById("ico-info");
-    const nazov = document.getElementById("nazov");
-    const look = async () => {
-      const v = ico.value.replace(/\s/g, "");
-      if (!/^\d{8}$/.test(v)) { info.textContent = "IČO má 8 číslic."; info.className = "warn"; return; }
-      info.textContent = "Hľadám v registri…"; info.className = "";
-      try {
-        const r = await fetch(API + "/api/ico?ico=" + v); const j = await r.json();
-        if (!r.ok) { info.textContent = j.chyba; info.className = "warn"; return; }
-        info.textContent = "Našli sme: " + j.nazov + ", " + j.adresa + (j.zaniknuta ? " (v registri vedená ako zaniknutá)" : "");
-        info.className = "good";
-        if (!nazov.value) nazov.value = j.nazov;
-      } catch (x) { info.textContent = "Register sa nepodarilo načítať. Pokračujte, sídlo overíme neskôr."; info.className = "warn"; }
-    };
-    document.getElementById("ico-btn").addEventListener("click", look);
-    ico.addEventListener("change", look);
-    const popis = document.getElementById("popis"), n = document.getElementById("popis-n");
-    popis.addEventListener("input", () => { n.textContent = popis.value.length; });
-  }
+  // počítadlo znakov popisu organizácie
+  const popis = document.getElementById("popis"), n = document.getElementById("popis-n");
+  if (popis && n) popis.addEventListener("input", () => { n.textContent = popis.value.length; });
 })();

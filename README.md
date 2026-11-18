@@ -116,8 +116,9 @@ s číslami a nad mapou.
 Dva vlastné formuláre na webe, bez Google:
 
 - `pridat-sa.html` – jednotlivec (meno, e-mail, kraj, súhlas; ostatné nepovinné),
-- `pridat-organizaciu.html` – organizácia (IČO, názov, typ, popis, kontakt). Názov a sídlo sa
-  dohľadajú podľa IČO v Registri právnických osôb.
+- `pridat-organizaciu.html` – organizácia (názov, obec, typ, popis, kontakt; IČO a ulica nepovinné).
+  Sídlo overujeme ručne pred zápisom na mapu; ak je uvedené IČO, služba si pri registrácii uloží
+  názov a adresu z Registra právnických osôb.
 
 Odosielajú sa do **registračnej služby** v priečinku `server/` (čistý Python + SQLite, bez závislostí),
 ktorá beží na serveri Geosupportu (Hetzner, Norimberg) na adrese z `js/config.js` (`api`).

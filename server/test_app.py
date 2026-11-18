@@ -32,7 +32,7 @@ def run(port, extra_env, body):
         p.terminate()
 
 good = {"meno": "Test Osoba", "email": "nova@example.org", "kraj": "Prešovský", "suhlas": True, "t": 5, "oblast": ["Súkromný sektor", "vymyslené"]}
-org = {"nazov": "Test s.r.o.", "ico": "51287153", "typ": "firma", "popis": "Geoportály a analýzy.", "kontakt_meno": "A B", "kontakt_email": "a@example.org", "suhlas": True, "t": 5}
+org = {"nazov": "Test s.r.o.", "ico": "51287153", "obec": "Klenov", "typ": "firma", "popis": "Geoportály a analýzy.", "kontakt_meno": "A B", "kontakt_email": "a@example.org", "suhlas": True, "t": 5}
 
 def bez_posty(call, env, tmp):
     print("-- bez pošty --")
@@ -50,7 +50,11 @@ def bez_posty(call, env, tmp):
     c, r = call("/api/jednotlivec", dict(good, email="y@example.org"), origin="https://zly.example"); check("cudzí pôvod odmietnutý", c == 403)
     c, r = call("/api/organizacia", dict(org, pribeh="Pasport zelene v QGIS.")); check("registrácia organizácie", c == 200 and r["ok"])
     c, r = call("/api/organizacia", dict(org, ico="123")); check("zlé IČO odmietnuté", c == 400 and r["pole"] == "ico")
-    c, st = call("/api/stat"); check("organizácia čaká na overenie", st["organizacie_cakaju_na_overenie"] == 1)
+    bez = dict(org, ico="", nazov="Základná škola Test", obec="Prešov")
+    c, r = call("/api/organizacia", bez); c2, st = call("/api/stat"); check("organizácia bez IČO", c == 200 and r["ok"] and not r["aktualizacia"] and st["organizacie_cakaju_na_overenie"] == 2)
+    c, r = call("/api/organizacia", dict(bez, nazov="základná škola test", popis="Iný popis školy.")); check("rovnaký názov a obec sa aktualizuje", c == 200 and r["aktualizacia"])
+    c, r = call("/api/organizacia", dict(bez, obec="")); check("bez obce odmietnuté", c == 400 and r["pole"] == "obec")
+    c, st = call("/api/stat"); check("organizácie čakajú na overenie", st["organizacie_cakaju_na_overenie"] == 2)
     check("štatistika neobsahuje osobné údaje", "example.org" not in json.dumps(st))
     exp = lambda *a: subprocess.run([sys.executable, os.path.join(here, "export.py")] + list(a), env=env, capture_output=True, text=True).stdout
     check("export jednotlivcov", "nova@example.org" in exp("jednotlivci"))

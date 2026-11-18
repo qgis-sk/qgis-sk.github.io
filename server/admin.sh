@@ -45,7 +45,8 @@ import csv, sys
 rows = list(csv.DictReader(sys.stdin))
 print("čakajú na overenie: %d" % len(rows))
 for r in rows:
-    print("-" * 70); print(r["nazov"], "| IČO", r["ico"], "|", r["typ"], "|", r["vytvorene"][:16].replace("T", " "), "UTC")
+    ico = "IČO neuvedené" if r["ico"].startswith("?") else "IČO " + r["ico"]
+    print("-" * 70); print(r["nazov"], "|", r.get("obec") or "", "|", ico, "|", r["typ"], "|", r["vytvorene"][:16].replace("T", " "), "UTC")
     print("  register:", r["rpo_nazov"], "|", r["rpo_adresa"]); print("  popis:", r["popis"])
     if r["web"]: print("  web:", r["web"])
     if r["pracovisko"]: print("  pracovisko:", r["pracovisko"])
