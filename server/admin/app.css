@@ -57,3 +57,8 @@ dialog h2 { margin: 0; font-size: 20px; }
 #edit-fields label.wide { grid-column: 1 / -1; } #edit-fields label.check { flex-direction: row; align-items: center; gap: 8px; font-weight: 400; }
 #edit-fields input[type=text], #edit-fields select, #edit-fields textarea { font: inherit; padding: 8px 10px; border: 1px solid #cfcfc9; border-radius: 8px; width: 100%; }
 dialog .row { display: flex; gap: 10px; align-items: center; }
+
+/* Akcie vždy viditeľné: meno otvára úpravu, stĺpec s tlačidlami drží pri pravom okraji */
+button.link { background: none; border: 0; padding: 0; color: var(--green-dk); font-weight: 700; text-align: left; cursor: pointer; border-radius: 0; text-decoration: underline; text-decoration-color: rgba(88,150,50,.4); }
+#t-ludia td:last-child, #t-ludia th:last-child { position: sticky; right: 0; background: #fff; box-shadow: -8px 0 8px -8px rgba(0,0,0,.15); }
+#t-ludia tr.new td:last-child { background: #fff7ee; }
