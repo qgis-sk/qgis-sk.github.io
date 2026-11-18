@@ -10,12 +10,12 @@ python3 test_app.py
 
 echo "== kód =="
 ssh "$HOST" 'install -d -m 755 /opt/qgis-sk'
-rsync -a --delete --exclude deploy --exclude .private --exclude '__pycache__' --exclude 'deploy.sh' --exclude 'test_app.py' ./ "$HOST:/opt/qgis-sk/"
+rsync -a --delete --exclude deploy --exclude .private --exclude '__pycache__' --exclude 'deploy.sh' --exclude 'admin.sh' --exclude 'test_app.py' ./ "$HOST:/opt/qgis-sk/"
 scp -q deploy/qgis-sk.service deploy/qgis-sk-backup.service deploy/qgis-sk-backup.timer "$HOST:/etc/systemd/system/"
 scp -q deploy/qgis.geosupport.sk.nginx "$HOST:/etc/nginx/sites-available/qgis.geosupport.sk"
 scp -q deploy/qgis-sk-limit.conf "$HOST:/etc/nginx/conf.d/qgis-sk-limit.conf"
-scp -q deploy/qgis-sk-set-smtp "$HOST:/usr/local/sbin/qgis-sk-set-smtp"
-ssh "$HOST" 'chmod 700 /usr/local/sbin/qgis-sk-set-smtp'
+scp -q deploy/qgis-sk-set-smtp deploy/qgis-sk-admin "$HOST:/usr/local/sbin/"
+ssh "$HOST" 'chmod 700 /usr/local/sbin/qgis-sk-set-smtp /usr/local/sbin/qgis-sk-admin'
 
 
 echo "== služba =="
@@ -44,4 +44,5 @@ fi
 echo "== kontrola živej služby =="
 curl -fsS https://qgis.geosupport.sk/api/zdravie && echo
 curl -fsS https://qgis.geosupport.sk/api/stat | head -c 300 && echo
+curl -fsS -o /dev/null -w "administrácia: %{http_code}\n" https://qgis.geosupport.sk/admin
 echo "Hotovo."

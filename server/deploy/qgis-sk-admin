@@ -1,0 +1,41 @@
+#!/bin/bash
+# Účty do administrácie registrácií QGIS Slovensko (https://<služba>/admin).
+#   qgis-sk-admin pridat <meno>     vytvorí účet alebo zmení heslo (pýta sa skryto, min. 12 znakov)
+#   qgis-sk-admin odobrat <meno>    zruší účet
+#   qgis-sk-admin zoznam            vypíše mená účtov
+# Heslá sa ukladajú iba ako PBKDF2 odtlačky do /etc/qgis-sk/admin.json. Reštart služby netreba.
+set -euo pipefail
+exec /usr/bin/python3 - "$@" <<'PY'
+import getpass, grp, json, os, re, sys
+sys.path.insert(0, "/opt/qgis-sk")
+import admin
+F = "/etc/qgis-sk/admin.json"
+os.makedirs("/etc/qgis-sk", mode=0o700, exist_ok=True)
+os.chmod("/etc/qgis-sk", 0o750); os.chown("/etc/qgis-sk", 0, grp.getgrnam("qgissk").gr_gid)
+try: acc = json.load(open(F, encoding="utf-8"))
+except Exception: acc = {}
+cmd = sys.argv[1] if len(sys.argv) > 1 else ""
+def save():
+    tmp = F + ".new"
+    with open(tmp, "w", encoding="utf-8") as f: json.dump(acc, f, ensure_ascii=False, indent=1)
+    os.chmod(tmp, 0o640); os.chown(tmp, 0, grp.getgrnam("qgissk").gr_gid); os.replace(tmp, F)
+if cmd == "zoznam":
+    print("\n".join(sorted(acc)) or "(žiadne účty)")
+elif cmd in ("pridat", "odobrat") and len(sys.argv) == 3:
+    meno = sys.argv[2].strip().lower()
+    if not re.match(r"^[a-z0-9._-]{2,40}$", meno): sys.exit("Meno: 2–40 znakov, malé písmená bez diakritiky, číslice, bodka, pomlčka.")
+    if cmd == "odobrat":
+        if acc.pop(meno, None) is None: sys.exit("Taký účet neexistuje.")
+        save(); print("Účet zrušený:", meno)
+    else:
+        with open("/dev/tty") as tty:
+            sys.stdin = tty
+            p1 = getpass.getpass("Nové heslo pre " + meno + " (min. 12 znakov): ")
+            p2 = getpass.getpass("Heslo ešte raz: ")
+        if p1 != p2: sys.exit("Heslá sa nezhodujú.")
+        if len(p1) < 12: sys.exit("Heslo musí mať aspoň 12 znakov.")
+        acc[meno] = admin.hash_pw(p1); save()
+        print("Hotovo. Prihlásenie: meno „%s“ na adrese /admin." % meno)
+else:
+    sys.exit("Použitie: qgis-sk-admin pridat <meno> | odobrat <meno> | zoznam")
+PY

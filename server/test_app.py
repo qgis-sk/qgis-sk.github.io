@@ -32,7 +32,7 @@ def run(port, extra_env, body):
         p.terminate()
 
 good = {"meno": "Test Osoba", "email": "nova@example.org", "kraj": "Prešovský", "suhlas": True, "t": 5, "oblast": ["Súkromný sektor", "vymyslené"]}
-org = {"nazov": "Test s.r.o.", "ico": "51287153", "typ": "firma", "popis": "Geoportály a analýzy.", "kontakt_meno": "A B", "kontakt_email": "a@example.org", "suhlas": True, "t": 5}
+org = {"nazov": "Test s.r.o.", "ico": "51287153", "obec": "Klenov", "typ": "firma", "popis": "Geoportály a analýzy.", "kontakt_meno": "A B", "kontakt_email": "a@example.org", "suhlas": True, "t": 5}
 
 def bez_posty(call, env, tmp):
     print("-- bez pošty --")
@@ -50,7 +50,11 @@ def bez_posty(call, env, tmp):
     c, r = call("/api/jednotlivec", dict(good, email="y@example.org"), origin="https://zly.example"); check("cudzí pôvod odmietnutý", c == 403)
     c, r = call("/api/organizacia", dict(org, pribeh="Pasport zelene v QGIS.")); check("registrácia organizácie", c == 200 and r["ok"])
     c, r = call("/api/organizacia", dict(org, ico="123")); check("zlé IČO odmietnuté", c == 400 and r["pole"] == "ico")
-    c, st = call("/api/stat"); check("organizácia čaká na overenie", st["organizacie_cakaju_na_overenie"] == 1)
+    bez = dict(org, ico="", nazov="Základná škola Test", obec="Prešov")
+    c, r = call("/api/organizacia", bez); c2, st = call("/api/stat"); check("organizácia bez IČO", c == 200 and r["ok"] and not r["aktualizacia"] and st["organizacie_cakaju_na_overenie"] == 2)
+    c, r = call("/api/organizacia", dict(bez, nazov="základná škola test", popis="Iný popis školy.")); check("rovnaký názov a obec sa aktualizuje", c == 200 and r["aktualizacia"])
+    c, r = call("/api/organizacia", dict(bez, obec="")); check("bez obce odmietnuté", c == 400 and r["pole"] == "obec")
+    c, st = call("/api/stat"); check("organizácie čakajú na overenie", st["organizacie_cakaju_na_overenie"] == 2)
     check("štatistika neobsahuje osobné údaje", "example.org" not in json.dumps(st))
     exp = lambda *a: subprocess.run([sys.executable, os.path.join(here, "export.py")] + list(a), env=env, capture_output=True, text=True).stdout
     check("export jednotlivcov", "nova@example.org" in exp("jednotlivci"))
@@ -83,6 +87,43 @@ def s_postou(call, env, tmp):
     n = len(mails()); c, r = call("/api/organizacia", org); time.sleep(0.5)
     check("upozornenie tímu na novú organizáciu", c == 200 and len(mails()) == n + 1 and email.message_from_file(open(mails()[-1], encoding="utf-8"), policy=email.policy.default)["To"] == "tim@example.org")
 
+def administracia(call, env, tmp):
+    print("-- administrácia --")
+    sys.path.insert(0, here); import admin as A
+    base = "http://127.0.0.1:" + env["PORT"]
+    def req(path, data=None, cookie="", headers=None):
+        h = {"Content-Type": "application/json", "Origin": base, "X-Admin": "1"}
+        if headers is not None: h = headers
+        if cookie: h["Cookie"] = cookie
+        r = urllib.request.Request(base + path, data=json.dumps(data).encode() if data is not None else None, headers=h)
+        try:
+            o = urllib.request.urlopen(r, timeout=15); body = o.read(); return o.status, body, o.headers
+        except urllib.error.HTTPError as e:
+            return e.code, e.read(), e.headers
+    c, b, h = req("/admin"); check("stránka administrácie", c == 200 and b"spr" in b and "default-src 'self'" in h["Content-Security-Policy"])
+    c, b, h = req("/admin/api/prehlad"); check("bez prihlásenia žiadne údaje", c == 401 and b"example" not in b)
+    c, b, h = req("/admin/api/login", {"meno": "miki", "heslo": "x"}); check("bez účtov sa nedá prihlásiť", c == 503)
+    json.dump({"miki": A.hash_pw("spravne-heslo-123", it=1000)}, open(env["QGISSK_ADMIN_FILE"], "w"))
+    call("/api/jednotlivec", dict(good, pribeh="Mapa studní."))
+    call("/api/organizacia", dict(org, ico="", nazov="Škola <script>", obec="Prešov"))
+    c, b, h = req("/admin/api/login", {"meno": "miki", "heslo": "zle"}); check("zlé heslo odmietnuté", c == 401)
+    c, b, h = req("/admin/api/login", {"meno": "miki", "heslo": "spravne-heslo-123"}, headers={"Content-Type": "application/json", "Origin": "https://zly.example", "X-Admin": "1"}); check("prihlásenie z cudzej stránky odmietnuté", c == 403)
+    c, b, h = req("/admin/api/login", {"meno": "Miki", "heslo": "spravne-heslo-123"})
+    ck = (h["Set-Cookie"] or "").split(";")[0]
+    check("prihlásenie", c == 200 and ck.startswith("qsa=") and "HttpOnly" in h["Set-Cookie"] and "SameSite=Strict" in h["Set-Cookie"])
+    c, b, h = req("/admin/api/prehlad", cookie=ck); d = json.loads(b)
+    check("prehľad s údajmi", c == 200 and d["jednotlivci"][0]["email"] == "nova@example.org" and d["organizacie"][0]["ico"] == "" and d["stat"]["ludia_spolu"] == 1 and "dni" in d)
+    oid = d["organizacie"][0]["id"]; pid = d["jednotlivci"][0]["id"]
+    c, b, h = req("/admin/api/organizacia", {"id": oid, "stav": "overená"}, cookie=ck, headers={"Content-Type": "application/json", "Origin": base}); check("zmena bez hlavičky X-Admin odmietnutá", c == 403)
+    c, b, h = req("/admin/api/organizacia", {"id": oid, "stav": "overená"}, cookie=ck); c2, st = call("/api/stat"); check("zmena stavu organizácie", c == 200 and st["organizacie_cakaju_na_overenie"] == 0)
+    c, b, h = req("/admin/api/csv?co=jednotlivci", cookie=ck); check("export CSV", c == 200 and b"nova@example.org" in b and "attachment" in h["Content-Disposition"])
+    c, b, h = req("/admin/api/csv?co=povodni", cookie=ck); check("export inej tabuľky odmietnutý", c == 400)
+    c, b, h = req("/admin/api/zmazat", {"co": "jednotlivci", "id": pid}, cookie=ck); c2, st = call("/api/stat"); check("zmazanie registrácie", c == 200 and st["ludia_spolu"] == 0)
+    c, b, h = req("/admin/api/logout", {}, cookie=ck); c2, b2, h2 = req("/admin/api/prehlad", cookie=ck); check("odhlásenie", c == 200 and c2 == 401)
+    for _ in range(8): req("/admin/api/login", {"meno": "miki", "heslo": "zle"})
+    c, b, h = req("/admin/api/login", {"meno": "miki", "heslo": "spravne-heslo-123"}); check("zablokovanie po opakovaných pokusoch", c == 429)
+
 run(18773, lambda tmp: {}, bez_posty)
+run(18777, lambda tmp: {"QGISSK_ADMIN_FILE": os.path.join(tmp, "admin.json"), "QGISSK_COOKIE_SECURE": "0"}, administracia)
 run(18775, lambda tmp: {"QGISSK_MAIL_DIR": os.path.join(tmp, "mail"), "NOTIFY_TO": "tim@example.org", "MAIL_FROM": "registracia@example.org", "MAIL_REPLY_TO": "kontakt@example.org"}, s_postou)
 sys.exit(0 if ok else 1)

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <title>QGIS Slovensko – správa registrácií</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="/admin/app.css">
+</head>
+<body>
+  <main id="login" hidden>
+    <form id="login-form" autocomplete="on">
+      <h1>QGIS Slovensko</h1>
+      <p>Správa registrácií</p>
+      <label>Meno <input name="meno" type="text" autocomplete="username" required></label>
+      <label>Heslo <input name="heslo" type="password" autocomplete="current-password" required></label>
+      <p class="err" id="login-err" hidden></p>
+      <button type="submit">Prihlásiť sa</button>
+    </form>
+  </main>
+
+  <div id="app" hidden>
+    <header>
+      <strong>QGIS Slovensko</strong><span>správa registrácií</span>
+      <span class="spacer"></span>
+      <span id="refreshed" class="muted"></span>
+      <button id="refresh" class="ghost">Obnoviť</button>
+      <span id="who" class="muted"></span>
+      <button id="logout" class="ghost">Odhlásiť</button>
+    </header>
+    <section id="cards" class="cards"></section>
+    <nav id="tabs">
+      <button data-tab="ludia" class="active">Ľudia</button>
+      <button data-tab="org">Organizácie</button>
+      <button data-tab="pribehy">Príklady použitia</button>
+      <button data-tab="navstevnost">Návštevnosť</button>
+    </nav>
+    <section id="tab-ludia">
+      <div class="bar"><input id="hladat" type="search" placeholder="Hľadať meno, e-mail, kraj, organizáciu…"><a class="btn ghost" href="/admin/api/csv?co=jednotlivci">Stiahnuť CSV</a></div>
+      <div class="scroll"><table id="t-ludia"><thead><tr><th>Čas</th><th>Meno</th><th>E-mail</th><th>Kraj</th><th>Organizácia</th><th>Oblasť</th><th>Skúsenosť</th><th>Poznámky</th><th></th></tr></thead><tbody></tbody></table></div>
+      <p class="muted" id="ludia-empty" hidden>Zatiaľ žiadne registrácie cez nový formulár.</p>
+    </section>
+    <section id="tab-org" hidden>
+      <div class="bar"><span class="muted">Organizácia sa na mape objaví až po overení sídla a doplnení do tabuľky mapy.</span><span class="spacer"></span><a class="btn ghost" href="/admin/api/csv?co=organizacie">Stiahnuť CSV</a></div>
+      <div id="org-list"></div>
+    </section>
+    <section id="tab-pribehy" hidden><div id="pribehy-list"></div></section>
+    <section id="tab-navstevnost" hidden>
+      <div class="scroll"><table id="t-dni"><thead><tr><th>Deň</th><th>Návštevníci</th><th>Zobrazenia</th><th>Otvorenia formulára</th><th>Registrácie ľudí</th><th>Organizácie</th></tr></thead><tbody></tbody></table></div>
+      <div class="two"><div><h3>Odkiaľ prišli (30 dní)</h3><table id="t-zdroje"><tbody></tbody></table></div><div><h3>Stránky (30 dní)</h3><table id="t-stranky"><tbody></tbody></table></div></div>
+      <p class="muted">Počítame anonymne, bez cookies. Návštevník = jedno zariadenie za deň. Kto má zapnuté „Do Not Track“, nepočíta sa.</p>
+    </section>
+  </div>
+  <script src="/admin/app.js"></script>
+</body>
+</html>

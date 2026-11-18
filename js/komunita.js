@@ -79,8 +79,13 @@
     if (note) note.textContent = !hasInd
       ? "Zatiaľ vidno organizácie. Počty ľudí po krajoch pribudnú s prvými registráciami."
       : st.jednotlivci_kraj_neznamy
-        ? "Pri pôvodných registráciách kraj odhadujeme podľa zamestnávateľa alebo ho nepoznáme (" + st.jednotlivci_kraj_neznamy + " ľudí). Ak ste medzi nimi, doplňte si ho v novom formulári, zaberie to minútu."
+        ? "Pri pôvodných registráciách kraj odhadujeme podľa zamestnávateľa alebo ho nepoznáme (" + st.jednotlivci_kraj_neznamy + " ľudí). Registrovali ste sa už dávnejšie? "
         : "Jednotlivcov uvádzame iba ako počet za kraj, bez mien a adries.";
+    if (note && hasInd && st.jednotlivci_kraj_neznamy) {
+      const a = document.createElement("a");
+      a.href = "pridat-sa.html"; a.textContent = "Doplňte si kraj: vyplňte formulár rovnakým e-mailom ako vtedy.";
+      note.append(a, " Nezapočítame vás dvakrát.");
+    }
   }
 
   // Živé počty ľudí z registračnej služby (ak je dostupná); inak ostávajú čísla zo stat.json
