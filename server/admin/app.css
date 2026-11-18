@@ -1,0 +1,42 @@
+:root { --green: #589632; --green-dk: #3f6f23; --soft: #eef4e8; --orange: #ee7913; --ink: #1c1b1b; --ink2: #4a4a48; --muted: #7a7a76; --line: #e3e3de; --paper2: #f6f7f3; }
+* { box-sizing: border-box; }
+body { margin: 0; font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--ink); background: #fff; }
+[hidden] { display: none !important; }
+.muted { color: var(--muted); } .spacer { flex: 1; }
+button, .btn { font: inherit; font-weight: 600; padding: 8px 16px; border-radius: 999px; border: 2px solid var(--green); background: var(--green); color: #fff; cursor: pointer; text-decoration: none; display: inline-block; }
+button.ghost, .btn.ghost { background: #fff; color: var(--ink); border-color: var(--line); }
+button.ghost:hover, .btn.ghost:hover { border-color: var(--ink); }
+button.danger { background: #fff; color: #b03a2e; border-color: #e6c3be; padding: 3px 10px; font-size: 13px; }
+input, select { font: inherit; padding: 9px 12px; border: 1px solid #cfcfc9; border-radius: 8px; }
+#login { min-height: 100vh; display: grid; place-items: center; background: var(--paper2); }
+#login form { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 36px; width: min(380px, 92vw); display: flex; flex-direction: column; gap: 14px; }
+#login h1 { margin: 0; font-size: 26px; } #login p { margin: 0; color: var(--muted); }
+#login label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; }
+.err { color: #b03a2e !important; font-weight: 600; }
+header { display: flex; gap: 12px; align-items: center; padding: 12px 24px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: #fff; z-index: 5; flex-wrap: wrap; }
+header strong { font-size: 17px; } header button { padding: 5px 14px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; padding: 20px 24px 8px; }
+.card { border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; }
+.card b { display: block; font-size: 32px; line-height: 1.1; color: var(--green-dk); }
+.card span { color: var(--ink2); font-size: 13px; } .card.alert { border-color: var(--orange); background: #fff7ee; } .card.alert b { color: var(--orange); }
+nav { display: flex; gap: 8px; padding: 12px 24px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+nav button { background: #fff; color: var(--ink2); border-color: var(--line); }
+nav button.active { background: var(--soft); border-color: var(--green); color: var(--green-dk); }
+section[id^=tab-] { padding: 16px 24px 48px; }
+.bar { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; } .bar input { flex: 1 1 260px; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); white-space: nowrap; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tr.new td { background: #fff7ee; } tr.new td:first-child { box-shadow: inset 3px 0 0 var(--orange); }
+.tag { display: inline-block; font-size: 12px; padding: 1px 8px; border-radius: 999px; background: var(--soft); color: var(--green-dk); margin: 0 4px 2px 0; white-space: nowrap; }
+.tag.o { background: #fff0e0; color: #a8551a; }
+.org { border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; }
+.org.nova { border-color: var(--orange); }
+.org h3 { margin: 0 0 4px; font-size: 17px; } .org p { margin: 4px 0; color: var(--ink2); } .org .row { display: flex; gap: 10px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+.pribeh { border-left: 4px solid var(--green); padding: 6px 0 6px 16px; margin: 0 0 22px; white-space: pre-wrap; }
+.pribeh small { display: block; color: var(--muted); white-space: normal; margin-bottom: 4px; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 24px; } .two h3 { font-size: 15px; margin: 0 0 6px; }
+@media (max-width: 760px) { .two { grid-template-columns: 1fr; } header, nav, .cards, section[id^=tab-] { padding-left: 14px; padding-right: 14px; } }
+#t-dni th:not(:first-child) { text-align: right; }

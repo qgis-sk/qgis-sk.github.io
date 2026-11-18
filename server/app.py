@@ -33,6 +33,8 @@ import urllib.request
 from email.message import EmailMessage
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
+import admin
+
 PORT = int(os.environ.get("PORT", "8773"))
 DB = os.environ.get("QGISSK_DB", "/var/lib/qgis-sk/registracie.db")
 ORIGINS = set(o.strip() for o in os.environ.get(
@@ -373,6 +375,8 @@ class H(BaseHTTPRequestHandler):
 
     def do_GET(self):
         u = urllib.parse.urlparse(self.path)
+        if u.path.startswith("/admin"):
+            return admin.handle(self, "GET", u)
         if u.path == "/api/zdravie":
             return self.send_json(200, {"ok": True})
         if u.path == "/api/stat":
@@ -394,6 +398,13 @@ class H(BaseHTTPRequestHandler):
 
     def do_POST(self):
         u = urllib.parse.urlparse(self.path)
+        if u.path.startswith("/admin"):
+            try:
+                n = int(self.headers.get("Content-Length") or 0)
+                body = json.loads(self.rfile.read(n).decode("utf-8")) if 0 < n <= MAX_BODY else {}
+            except Exception:
+                body = {}
+            return admin.handle(self, "POST", u, body)
         if u.path not in ("/api/jednotlivec", "/api/organizacia", "/api/potvrdit", "/api/n"):
             return self.send_json(404, {"chyba": "Nenájdené."})
         origin = self.headers.get("Origin")
@@ -567,4 +578,5 @@ class H(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     init_db()
+    admin.init(db=db, stat=stat, now=now, cache=_stat_cache)
     ThreadingHTTPServer(("127.0.0.1", PORT), H).serve_forever()

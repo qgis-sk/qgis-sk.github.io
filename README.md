@@ -128,6 +128,7 @@ ktorá beží na serveri Geosupportu (Hetzner, Norimberg) na adrese z `js/config
 | `server/app.py` | služba: `POST /api/jednotlivec`, `POST /api/organizacia`, `GET /api/stat`, `GET /api/ico` |
 | `server/test_app.py` | testy na dočasnej databáze (`python3 server/test_app.py`) |
 | `server/deploy.sh` | nasadenie: testy → kód do `/opt/qgis-sk` → systemd `qgis-sk` (používateľ `qgissk`) → nginx `qgis.geosupport.sk` → kontrola |
+| `server/admin.py`, `server/admin/` | administrácia v prehliadači na `/admin`: registrácie s časom, organizácie a ich stav, príklady použitia, návštevnosť, CSV, mazanie záznamov; obnovuje sa každých 30 s |
 | `server/export.py` | export pre správcu (na serveri): `jednotlivci`, `organizacie [nová]`, `oznac <IČO> overená` |
 | `server/admin.sh` | to isté zo svojho počítača cez SSH: `zoznam`, `organizacie`, `csv`, `navstevnost`, `pribehy`, `sledovat` |
 | `server/import_povodni.py` | načíta odtlačky e-mailov pôvodných registrácií, aby sa ľudia nepočítali dvakrát |
@@ -144,6 +145,11 @@ použijú sa záložné čísla z `data/stat.json`.
 **Organizácie** z formulára idú do stavu „nová“. Na mapu sa dostanú po overení: export čakajúcich
 (`export.py organizacie nová`), kontrola sídla, doplnenie riadku do zdieľanej tabuľky pre mapu
 (súradnice), potom `export.py oznac <IČO> overená`. Kraj organizácie sa určí zo súradníc pri synchronizácii.
+
+**Administrácia.** `https://<služba>/admin`, prihlásenie menom a heslom. Účty vytvára root na serveri:
+`ssh -t root@server qgis-sk-admin pridat <meno>` (heslo sa zadáva skryto, min. 12 znakov; `zoznam`,
+`odobrat <meno>`). Heslá sú uložené len ako PBKDF2 odtlačky. Po 8 neúspešných pokusoch je prihlásenie
+na 15 minút zablokované, sedenie trvá 12 hodín, každý zásah (stav, zmazanie, export) sa zapisuje do denníka.
 
 **Potvrdenie e-mailom.** Keď je na serveri nastavená schránka (`ssh -t root@server qgis-sk-set-smtp
 <schránka> [adresa pre upozornenia tímu]`, heslo sa zadáva skryto), registrácia jednotlivca platí až po
