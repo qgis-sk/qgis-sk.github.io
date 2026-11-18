@@ -19,6 +19,7 @@ VYROCIE = "--bez-vyrocia" not in sys.argv
 S = 2; W, H = 1200 * S, 630 * S
 WHITE, LEMON, GREEN, TEXT, MUTED = (255, 255, 255), (240, 230, 74), (88, 150, 50), (221, 231, 216), (159, 176, 154)
 DARK = (14, 24, 17)
+ORANGE = (238, 121, 19)
 
 def font(size, weight):
     f = ImageFont.truetype(FONT, int(size * S))
@@ -69,6 +70,15 @@ t = "qgis.sk"; f = font(30, 700); tw = d.textlength(t, font=f)
 bx1, by1 = W - 60 * S, H - 44 * S
 d.rounded_rectangle([bx1 - tw - 64 * S, by1 - 58 * S, bx1, by1], radius=29 * S, fill=GREEN)
 d.text((bx1 - 32 * S, by1 - 29 * S), t, font=f, fill=WHITE, anchor="rm")
+if VYROCIE:
+    # nálepka „Nový web“ pri adrese: oranžová, mierne pootočená, s bielym okrajom
+    t2 = "NOVÝ WEB"; f2 = font(21, 700); w2 = int(d.textlength(t2, font=f2) + 44 * S); h2 = 44 * S; ok = 3 * S
+    nal = Image.new("RGBA", (w2 + 2 * ok, h2 + 2 * ok), (0, 0, 0, 0)); dn = ImageDraw.Draw(nal)
+    dn.rounded_rectangle([0, 0, nal.width - 1, nal.height - 1], radius=nal.height // 2, fill=WHITE)
+    dn.rounded_rectangle([ok, ok, ok + w2, ok + h2], radius=h2 // 2, fill=ORANGE)
+    dn.text((nal.width / 2, nal.height / 2), t2, font=f2, fill=WHITE, anchor="mm")
+    nal = nal.rotate(7, resample=Image.BICUBIC, expand=True)
+    img.paste(nal, (int(bx1 - tw - 64 * S - nal.width * 0.62), int(by1 - 58 * S - nal.height * 0.62)), nal)
 d.text((60 * S, H - 40 * S), "body: organizácie, ktoré pracujú s QGIS  ·  podklad © OpenStreetMap, OpenFreeMap, AWS Terrain Tiles",
        font=font(15, 500), fill=MUTED, anchor="ls")
 
