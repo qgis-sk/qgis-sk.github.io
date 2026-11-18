@@ -76,21 +76,20 @@ section { padding: 96px 0; }
 
 /* Hero */
 .hero { padding: 110px 0 90px; position: relative; overflow: hidden; }
-.hero .wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items: center; }
+.hero .wrap { display: grid; grid-template-columns: 1.05fr .95fr; gap: 48px; align-items: center; }
 .hero h1 span { color: var(--green); }
 .hero .lead { font-size: 1.3rem; max-width: 36ch; }
 .hero .actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
-.hero-map { position: relative; display: block; text-decoration: none; }
-.hero-map:hover { text-decoration: none; }
-.hero-map svg { width: 100%; height: auto; display: block; }
-.hero-map .kraj { fill: var(--green-soft); stroke: #fff; stroke-width: 2; transition: fill .15s; }
-.hero-map:hover .kraj { fill: #e4eedb; }
-.hero-map .obrys { fill: none; stroke: var(--green); stroke-width: 2.5; stroke-linejoin: round; }
-.hero-map .bod { fill: var(--green); stroke: #fff; stroke-width: 2.5; }
-.hero-map .bod.firma { fill: var(--orange); }
-.hero-map .halo { fill: var(--green); opacity: .14; }
-.hero-map .halo.firma { fill: var(--orange); }
-.hero-map-note { display: block; text-align: center; font-size: .85rem; color: var(--muted); margin-top: 6px; }
+.hero-map { position: relative; }
+.hero-map-box { position: relative; isolation: isolate; border-radius: 18px; overflow: hidden; background: #1b2a20; box-shadow: 0 22px 50px rgba(12,22,16,.3); transition: transform .2s, box-shadow .2s; }
+.hero-map-box:hover { transform: translateY(-3px); box-shadow: 0 28px 60px rgba(12,22,16,.36); }
+#hero-mapa { height: 380px; }
+.hero-map-pocty { position: absolute; top: 14px; left: 14px; z-index: 3; padding: 7px 14px; border-radius: 999px; background: rgba(12,22,16,.78); color: #fff; font-size: .85rem; font-weight: 600; border: 1px solid rgba(227,218,85,.55); backdrop-filter: blur(6px); pointer-events: none; }
+.hero-map-open { position: absolute; inset: 0; z-index: 1; text-decoration: none; }
+.hero-map-open span { position: absolute; left: 14px; bottom: 14px; padding: 9px 18px; border-radius: 999px; background: var(--green); color: #fff; font-weight: 700; font-size: .9rem; box-shadow: 0 6px 18px rgba(0,0,0,.35); transition: background .15s; }
+.hero-map-open:hover span, .hero-map-open:focus-visible span { background: var(--green-light); }
+.hero-map-note { display: block; text-align: center; font-size: .85rem; color: var(--muted); margin-top: 14px; }
+#mapa { scroll-margin-top: 96px; }
 
 /* Numbers band */
 .band { background: linear-gradient(135deg, var(--dark) 0%, var(--dark-2) 100%); color: #fff; padding: 80px 0; }
@@ -203,6 +202,7 @@ section { padding: 96px 0; }
   .nav-toggle { display: block; }
   .band .grid, .join .grid, .resources .grid { grid-template-columns: 1fr; }
   .hero { padding: 64px 0 56px; }
+  #hero-mapa { height: 280px; }
   #mapa { height: 380px; }
 }
 

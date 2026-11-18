@@ -40,6 +40,7 @@ pridat-sa.html             formulár pre jednotlivcov
 pridat-organizaciu.html    formulár pre organizácie
 server/                    registračná služba (beží na serveri Geosupportu)
 js/mapa.js                 komunitná mapa (MapLibre GL): tmavý podklad, reliéf, 3D terén, zhluky, legenda
+                           + jej malý náhľad v úvode stránky (`QgisMapa.nahlad`, bez ovládania)
 js/komunita.js             zoznam organizácií, vyhľadávanie, filtre, panel po krajoch,
                            mobilné menu, SVG mapa Slovenska v hlavičke (kraje + body organizácií)
 data/organizacie.json      dáta pre mapu – GENEROVANÉ, needitovať ručne
@@ -198,7 +199,8 @@ kontaktu na `index.html`.
 ## Externé závislosti
 
 - Font Cairo z Google Fonts
-- MapLibre GL JS 4.7.1 z cdnjs (načíta sa až vtedy, keď sa mapa blíži do zorného poľa)
+- MapLibre GL JS 4.7.1 z cdnjs (načíta sa hneď, lebo ho potrebuje náhľad v úvode; veľká mapa sa
+  vytvorí až vtedy, keď sa blíži do zorného poľa)
 - Vektorové dlaždice a písma máp: [OpenFreeMap](https://openfreemap.org) (dáta © prispievatelia OpenStreetMap, schéma OpenMapTiles), bez kľúča
 - Výškový model pre tieňovaný reliéf a 3D terén: AWS Terrain Tiles (Mapzen), bez kľúča
 - Hranice krajov (`data/sk-kraje.json`): © prispievatelia OpenStreetMap (ODbL), stiahnuté cez Nominatim

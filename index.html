@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="alternate" type="application/rss+xml" title="QGIS Slovensko – novinky" href="feed.xml">
-  <link rel="stylesheet" href="styles.css?v=21">
+  <link rel="stylesheet" href="styles.css?v=22">
 </head>
 <body>
 
@@ -54,10 +54,14 @@
         <a class="btn ghost" href="#komunita">Kto s QGIS pracuje</a>
       </div>
     </div>
-    <a class="hero-map" href="#komunita" title="Otvoriť komunitnú mapu">
-      <svg id="hero-map" viewBox="0 0 1000 560" role="img" aria-label="Mapa Slovenska s organizáciami, ktoré pracujú s QGIS"></svg>
-      <span class="hero-map-note" id="hero-map-note"></span>
-    </a>
+    <div class="hero-map">
+      <div class="hero-map-box">
+        <div id="hero-mapa" role="img" aria-label="Mapa Slovenska: organizácie, ktoré pracujú s QGIS, a počet ľudí v komunite podľa krajov"></div>
+        <span class="hero-map-pocty" id="hero-map-pocty">Komunita QGIS na Slovensku</span>
+        <a class="hero-map-open" href="#mapa" aria-label="Preskúmať mapu komunity"><span>Preskúmať mapu →</span></a>
+      </div>
+      <span class="hero-map-note">Body sú organizácie: zelené inštitúcie, školy a samosprávy, oranžové firmy. Žltý odtieň kraja ukazuje počet ľudí.</span>
+    </div>
   </div>
 </section>
 
@@ -276,9 +280,9 @@
   </div>
 </footer>
 
-<script src="js/mapa.js?v=6"></script>
+<script src="js/mapa.js?v=7"></script>
 <script src="js/config.js?v=2"></script>
-<script src="js/komunita.js?v=15"></script>
+<script src="js/komunita.js?v=16"></script>
 <script src="js/meranie.js?v=1" defer></script>
 </body>
 </html>
