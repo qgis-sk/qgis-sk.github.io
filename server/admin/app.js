@@ -100,7 +100,8 @@
       const tdd = el("td"), acts = el("div", "acts"); acts.append(ed, del); tdd.append(acts);
       const tdk = el("td", null, r.kraj || "–"); if (r.kraj && r.kraj_odhad) tdk.append(" ", el("span", "tag g", "odhad"));
       const rok = new Date(r.vytvorene).getFullYear() < new Date().getFullYear() - 0 && r.povodny ? new Date(r.vytvorene).toLocaleDateString("sk-SK") : cas(r.vytvorene);
-      tr.append(el("td", null, rok), el("td", null, r.meno), tdm, tdk, el("td", null, r.organizacia || ""),
+      const tdn = el("td"), meno = el("button", "link", r.meno); meno.title = "Upraviť záznam"; meno.onclick = ed.onclick; tdn.append(meno);
+      tr.append(el("td", null, rok), tdn, tdm, tdk, el("td", null, r.organizacia || ""),
         el("td", null, (r.oblast || []).join(", ")), el("td", null, r.skusenost || ""), pozn, tdd);
       tb.append(tr);
     });

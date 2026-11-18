@@ -356,3 +356,10 @@ details.more[open] > * + * { margin-top: 18px; }
 .field textarea:focus { outline: 2px solid var(--green); outline-offset: 1px; border-color: var(--green); }
 .form-done.wait { border-color: var(--orange); background: #fff7ee; }
 .form-done.wait .featured-tag { background: var(--orange); }
+
+/* Výzva pre pôvodných členov */
+.member-cta { margin: 0 0 12px; padding: 12px 16px; border-left: 4px solid var(--orange); background: #fff7ee; border-radius: 0 8px 8px 0; font-size: .98rem; }
+.member-cta a { font-weight: 700; white-space: nowrap; }
+.member-box { margin-top: 28px; max-width: 640px; padding: 16px 20px; border: 1px solid rgba(238,121,19,.45); background: #fff7ee; border-radius: var(--radius); }
+.member-box p { margin: 4px 0 0; color: var(--ink-2); font-size: .97rem; }
+.member-box + .form { margin-top: 24px; }
