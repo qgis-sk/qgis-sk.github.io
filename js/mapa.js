@@ -221,8 +221,13 @@ window.QgisMapa = (function () {
   return {
     init(container) {
       el = container; el.classList.add("mapa-gl");
-      const io = new IntersectionObserver((z) => { if (z[0].isIntersecting) { io.disconnect(); nacitaj(vytvor); } }, { rootMargin: "600px" });
+      // knižnicu načítame, keď sa mapa blíži do zorného poľa; poistka: najneskôr pár sekúnd po načítaní stránky
+      let spustene = false;
+      const spusti = () => { if (spustene) return; spustene = true; io.disconnect(); nacitaj(vytvor); };
+      const io = new IntersectionObserver((z) => { if (z[0].isIntersecting) spusti(); }, { rootMargin: "600px" });
       io.observe(el);
+      const neskor = () => setTimeout(spusti, 4000);
+      document.readyState === "complete" ? neskor() : window.addEventListener("load", neskor);
     },
     // zoznam organizácií: [{id, nazov, typ, mesto, popis, web, lat, lon}]
     setOrgs(list, vsetky) {
