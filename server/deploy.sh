@@ -35,7 +35,11 @@ sleep 1
 systemctl is-active qgis-sk
 '
 
-if [ -f .private/povodni.csv ]; then
+if [ -f .private/povodni-plne.csv ]; then
+  echo "== pôvodní členovia (úplné záznamy do databázy) =="
+  ssh "$HOST" 'runuser -u qgissk -- env QGISSK_DB=/var/lib/qgis-sk/registracie.db python3 /opt/qgis-sk/import_povodni.py' < .private/povodni-plne.csv
+  sleep 21
+elif [ -f .private/povodni.csv ]; then
   echo "== pôvodné registrácie (odtlačky e-mailov) =="
   ssh "$HOST" 'runuser -u qgissk -- env QGISSK_DB=/var/lib/qgis-sk/registracie.db python3 /opt/qgis-sk/import_povodni.py' < .private/povodni.csv
   sleep 21

@@ -241,6 +241,42 @@ def handle(h, method, u, body=None):
         with core["db"]() as con:
             n = con.execute("UPDATE organizacie SET stav = ? WHERE id = ?", (d["stav"], rid)).rowcount
         _log(kto, "organizácia %d → %s" % (rid, d["stav"]))
+    elif path == "/admin/api/upravit":
+        co = d.get("co")
+        z = d.get("zmeny") if isinstance(d.get("zmeny"), dict) else {}
+        T = lambda k, m: " ".join(str(z.get(k) or "").split())[:m]
+        if co == "jednotlivci":
+            vals = {"meno": T("meno", 120), "email": T("email", 254).lower(), "kraj": z.get("kraj") or "",
+                    "organizacia": T("organizacia", 160), "skusenost": T("skusenost", 60), "poznamka": str(z.get("poznamka") or "").strip()[:2000],
+                    "novinky": 1 if z.get("novinky") else 0, "clenstvo": 1 if z.get("clenstvo") else 0}
+            if len(vals["meno"]) < 2 or not core["email_re"].match(vals["email"]) or vals["kraj"] not in list(core["kraje"]) + [core["mimo"], ""]:
+                _out(h, 400, {"chyba": "Skontrolujte meno, e-mail a kraj."})
+                return True
+        elif co == "organizacie":
+            vals = {"nazov": T("nazov", 200), "obec": T("obec", 100), "typ": z.get("typ"), "pracovisko": T("pracovisko", 200), "web": T("web", 200),
+                    "popis": T("popis", 150), "kontakt_meno": T("kontakt_meno", 120), "kontakt_email": T("kontakt_email", 254).lower(),
+                    "poznamka": str(z.get("poznamka") or "").strip()[:2000]}
+            ico = T("ico", 8)
+            if len(vals["nazov"]) < 2 or vals["typ"] not in core["typy"] or (ico and not core["ico_re"].match(ico)) or not core["email_re"].match(vals["kontakt_email"]):
+                _out(h, 400, {"chyba": "Skontrolujte názov, typ, IČO a e-mail."})
+                return True
+            if ico:
+                vals["ico"] = ico
+        else:
+            _out(h, 400, {"chyba": "Neznámy typ záznamu."})
+            return True
+        try:
+            with core["db"]() as con:
+                if co == "jednotlivci":
+                    stary = con.execute("SELECT kraj FROM jednotlivci WHERE id = ?", (rid,)).fetchone()
+                    if stary and stary["kraj"] != vals["kraj"]:
+                        vals["kraj_odhad"] = 0
+                n = con.execute("UPDATE " + co + " SET upravene = ?, " + ", ".join(k + " = ?" for k in vals) + " WHERE id = ?",
+                                [core["now"]()] + list(vals.values()) + [rid]).rowcount
+        except Exception:
+            _out(h, 409, {"chyba": "Záznam s týmto e-mailom alebo IČO už existuje."})
+            return True
+        _log(kto, "upravený záznam %s %d" % (co, rid))
     elif path == "/admin/api/zmazat":
         co = d.get("co")
         if co not in ("jednotlivci", "organizacie"):

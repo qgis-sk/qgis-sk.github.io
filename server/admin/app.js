@@ -2,7 +2,34 @@
 (function () {
   const $ = (id) => document.getElementById(id);
   const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-  let data = null, seen = null, timer = null;
+  let data = null, seen = null, timer = null, filter = "vsetci";
+  const KRAJE = ["Bratislavský", "Trnavský", "Trenčiansky", "Nitriansky", "Žilinský", "Banskobystrický", "Prešovský", "Košický", "Mimo Slovenska"];
+  const TYPY = [["firma", "Firma"], ["institucia", "Štátna inštitúcia"], ["skola", "Škola alebo univerzita"], ["samosprava", "Samospráva"], ["komunita", "Združenie alebo komunita"]];
+  const SKUS = ["", "Začínam", "Bežne ho používam", "Pokročilý používateľ", "Vyvíjam pluginy alebo učím QGIS"];
+
+  // Dialóg na úpravu záznamu: polia = [kľúč, popis, typ, možnosti]
+  function uprav(co, r, polia, nadpis) {
+    const dlg = $("edit"), box = $("edit-fields"), err = $("edit-err"); box.replaceChildren(); err.hidden = true;
+    $("edit-title").textContent = nadpis;
+    const get = {};
+    polia.forEach(([k, popis, typ, opts]) => {
+      const l = el("label", typ === "area" || typ === "wide" ? "wide" : typ === "check" ? "check" : "");
+      let i;
+      if (typ === "select") { i = el("select"); opts.forEach((o) => { const [v, t] = Array.isArray(o) ? o : [o, o || "(neuvedené)"]; const op = el("option", null, t); op.value = v; op.selected = (r[k] || "") === v; i.append(op); }); get[k] = () => i.value; }
+      else if (typ === "check") { i = el("input"); i.type = "checkbox"; i.checked = !!r[k]; get[k] = () => i.checked; }
+      else if (typ === "area") { i = el("textarea"); i.rows = 3; i.value = r[k] || ""; get[k] = () => i.value; }
+      else { i = el("input"); i.type = "text"; i.value = r[k] || ""; get[k] = () => i.value; }
+      if (typ === "check") l.append(i, popis); else l.append(popis, i);
+      box.append(l);
+    });
+    $("edit-cancel").onclick = () => dlg.close();
+    $("edit-form").onsubmit = async (e) => {
+      e.preventDefault(); const zmeny = {}; Object.keys(get).forEach((k) => { zmeny[k] = get[k](); });
+      try { await api("upravit", { co: co, id: r.id, zmeny: zmeny }); dlg.close(); load(); }
+      catch (x) { err.textContent = x.message; err.hidden = false; }
+    };
+    dlg.showModal();
+  }
 
   async function api(path, body) {
     const opt = body ? { method: "POST", headers: { "Content-Type": "application/json", "X-Admin": "1" }, body: JSON.stringify(body) } : {};
@@ -24,7 +51,7 @@
   async function load() {
     try { data = await api("prehlad"); } catch (e) { return; }
     $("refreshed").textContent = "obnovené " + new Date().toLocaleTimeString("sk-SK");
-    const fresh = new Set(data.jednotlivci.map((r) => r.id));
+    const fresh = new Set(data.jednotlivci.map((r) => r.id + "|" + r.upravene));
     const nove = seen ? new Set([...fresh].filter((i) => !seen.has(i))) : new Set();
     cards(); ludia(nove); org(); pribehy(); navstevnost();
     if (nove.size) document.title = "(" + nove.size + ") QGIS Slovensko – správa registrácií";
@@ -35,7 +62,9 @@
     const s = data.stat, d = data.dni.find((x) => x.den === dnes()) || {};
     const dnesReg = data.jednotlivci.filter((r) => new Date(r.vytvorene).toLocaleDateString("sv-SE") === dnes()).length;
     const cak = data.organizacie.filter((o) => o.stav === "nová").length;
-    const items = [[s.ludia_spolu, "ľudí v komunite"], [s.nove_registracie, "cez nový formulár"], [dnesReg, "registrácií dnes"],
+    const dnesObn = data.jednotlivci.filter((r) => r.povodny && r.obnovil && new Date(r.upravene).toLocaleDateString("sv-SE") === dnes()).length;
+    const items = [[s.ludia_spolu, "ľudí v komunite"], [s.nove_registracie, "nových cez nový formulár"], [dnesReg, "nových registrácií dnes"],
+      [dnesObn, "pôvodných si dnes doplnilo údaje"],
       [cak, "organizácií čaká na overenie", cak > 0], [d.navstevnici || 0, "návštevníkov dnes"], [d.formular || 0, "otvorení formulára dnes"], [s.kraj_neznamy, "ľudí bez známeho kraja"]];
     if (data.cakajuce) items.push([data.cakajuce, "čaká na potvrdenie e-mailom"]);
     const c = $("cards"); c.replaceChildren();
@@ -45,22 +74,33 @@
   function ludia(nove) {
     const q = $("hladat").value.trim().toLowerCase();
     const tb = $("t-ludia").tBodies[0]; tb.replaceChildren();
-    const rows = data.jednotlivci.filter((r) => !q || [r.meno, r.email, r.kraj, r.organizacia].join(" ").toLowerCase().includes(q));
+    const F = { vsetci: () => true, novi: (r) => !r.povodny, obnovili: (r) => r.povodny && r.obnovil, neobnovili: (r) => r.povodny && !r.obnovil, bezkraja: (r) => !r.kraj };
+    const rows = data.jednotlivci.filter(F[filter]).filter((r) => !q || [r.meno, r.email, r.kraj, r.organizacia, r.poznamka].join(" ").toLowerCase().includes(q))
+      .sort((a, b) => (b.upravene > a.upravene ? 1 : b.upravene < a.upravene ? -1 : b.id - a.id));
+    $("pocet").textContent = rows.length + " z " + data.jednotlivci.length;
     $("ludia-empty").hidden = data.jednotlivci.length > 0;
     rows.forEach((r) => {
-      const tr = el("tr", nove.has(r.id) ? "new" : "");
+      const tr = el("tr", nove.has(r.id + "|" + r.upravene) ? "new" : "");
       const mail = el("a", null, r.email); mail.href = "mailto:" + r.email;
       const tdm = el("td"); tdm.append(mail);
-      const pozn = el("td");
+      const pozn = el("td", "pozn");
+      if (r.povodny) pozn.append(el("span", "tag g", r.obnovil ? "pôvodný člen, údaje doplnil" : "pôvodný člen"));
       if (r.clenstvo) pozn.append(el("span", "tag o", "chce členstvo v OZ"));
       if (r.novinky) pozn.append(el("span", "tag", "novinky"));
       if (r.pribeh || r.pribeh_odkaz) pozn.append(el("span", "tag o", "príklad použitia"));
       (r.prispiet || []).forEach((p) => pozn.append(el("span", "tag", p)));
       if (r.upravene !== r.vytvorene) pozn.append(el("span", "muted", " upravené " + cas(r.upravene)));
+      if (r.poznamka) pozn.append(el("span", "note", r.poznamka));
+      const ed = el("button", "small", "Upraviť");
+      ed.onclick = () => uprav("jednotlivci", r, [["meno", "Meno a priezvisko", "text"], ["email", "E-mail", "text"], ["kraj", "Kraj", "select", [["", "(nepoznáme)"]].concat(KRAJE.map((k) => [k, k]))],
+        ["skusenost", "Skúsenosť s QGIS", "select", SKUS], ["organizacia", "Organizácia", "wide"], ["novinky", "Chce dostávať novinky e-mailom", "check"], ["clenstvo", "Má záujem o členstvo v OZ", "check"],
+        ["poznamka", "Interná poznámka (nezverejňuje sa)", "area"]], "Upraviť: " + r.meno);
       const del = el("button", "danger", "Zmazať");
       del.onclick = async () => { if (confirm("Naozaj zmazať registráciu: " + r.meno + " (" + r.email + ")? Nedá sa to vrátiť.")) { await api("zmazat", { co: "jednotlivci", id: r.id }); load(); } };
-      const tdd = el("td"); tdd.append(del);
-      tr.append(el("td", null, cas(r.vytvorene)), el("td", null, r.meno), tdm, el("td", null, r.kraj), el("td", null, r.organizacia || ""),
+      const tdd = el("td"), acts = el("div", "acts"); acts.append(ed, del); tdd.append(acts);
+      const tdk = el("td", null, r.kraj || "–"); if (r.kraj && r.kraj_odhad) tdk.append(" ", el("span", "tag g", "odhad"));
+      const rok = new Date(r.vytvorene).getFullYear() < new Date().getFullYear() - 0 && r.povodny ? new Date(r.vytvorene).toLocaleDateString("sk-SK") : cas(r.vytvorene);
+      tr.append(el("td", null, rok), el("td", null, r.meno), tdm, tdk, el("td", null, r.organizacia || ""),
         el("td", null, (r.oblast || []).join(", ")), el("td", null, r.skusenost || ""), pozn, tdd);
       tb.append(tr);
     });
@@ -83,7 +123,12 @@
       sel.onchange = async () => { await api("organizacia", { id: o.id, stav: sel.value }); load(); };
       const del = el("button", "danger", "Zmazať");
       del.onclick = async () => { if (confirm("Naozaj zmazať organizáciu: " + o.nazov + "? Nedá sa to vrátiť.")) { await api("zmazat", { co: "organizacie", id: o.id }); load(); } };
-      row.append(el("span", "muted", "Stav:"), sel, el("span", "spacer"), del); d.append(row); box.append(d);
+      if (o.poznamka) d.append(el("p", "muted", "Poznámka: " + o.poznamka));
+      const ed = el("button", "small", "Upraviť");
+      ed.onclick = () => uprav("organizacie", o, [["nazov", "Názov", "wide"], ["obec", "Obec alebo mesto", "text"], ["typ", "Typ", "select", TYPY], ["pracovisko", "Ulica a číslo", "text"], ["ico", "IČO", "text"],
+        ["web", "Web", "wide"], ["popis", "Popis (najviac 150 znakov)", "wide"], ["kontakt_meno", "Kontaktná osoba", "text"], ["kontakt_email", "E-mail kontaktu", "text"],
+        ["poznamka", "Interná poznámka (nezverejňuje sa)", "area"]], "Upraviť: " + o.nazov);
+      row.append(el("span", "muted", "Stav:"), sel, el("span", "spacer"), ed, del); d.append(row); box.append(d);
     });
   }
 
@@ -113,6 +158,9 @@
     ["ludia", "org", "pribehy", "navstevnost"].forEach((t) => { $("tab-" + t).hidden = t !== b.dataset.tab; });
   });
   $("hladat").oninput = () => data && ludia(new Set());
+  document.querySelectorAll("#filtre button").forEach((b) => b.onclick = () => {
+    filter = b.dataset.f; document.querySelectorAll("#filtre button").forEach((x) => x.classList.toggle("active", x === b)); if (data) ludia(new Set());
+  });
   $("refresh").onclick = load;
   $("logout").onclick = async () => { try { await api("logout", {}); } catch (e) {} seen = null; show(false); };
   window.addEventListener("focus", () => { document.title = "QGIS Slovensko – správa registrácií"; });

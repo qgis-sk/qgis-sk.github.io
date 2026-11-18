@@ -131,7 +131,7 @@ ktorá beží na serveri Geosupportu (Hetzner, Norimberg) na adrese z `js/config
 | `server/admin.py`, `server/admin/` | administrácia v prehliadači na `/admin`: registrácie s časom, organizácie a ich stav, príklady použitia, návštevnosť, CSV, mazanie záznamov; obnovuje sa každých 30 s |
 | `server/export.py` | export pre správcu (na serveri): `jednotlivci`, `organizacie [nová]`, `oznac <IČO> overená` |
 | `server/admin.sh` | to isté zo svojho počítača cez SSH: `zoznam`, `organizacie`, `csv`, `navstevnost`, `pribehy`, `sledovat` |
-| `server/import_povodni.py` | načíta odtlačky e-mailov pôvodných registrácií, aby sa ľudia nepočítali dvakrát |
+| `server/import_povodni.py` | prenesie pôvodných členov do databázy (úplné záznamy z `scripts/povodni_z_formulara.py`, uložené v `server/.private/povodni-plne.csv`); starší spôsob cez odtlačky e-mailov ostáva podporovaný |
 | `server/backup.py` | denná záloha databázy do `/var/backups/qgis-sk` (30 dní) |
 
 Zásady: API nikdy nevracia osobné údaje, iba súčty. Služba nezapisuje IP adresy ani obsah do logov.
@@ -146,7 +146,7 @@ použijú sa záložné čísla z `data/stat.json`.
 (`export.py organizacie nová`), kontrola sídla, doplnenie riadku do zdieľanej tabuľky pre mapu
 (súradnice), potom `export.py oznac <IČO> overená`. Kraj organizácie sa určí zo súradníc pri synchronizácii.
 
-**Administrácia.** `https://<služba>/admin`, prihlásenie menom a heslom. Účty vytvára root na serveri:
+**Administrácia.** `https://<služba>/admin`, prihlásenie menom a heslom. Zobrazuje všetkých ľudí vrátane prenesených z pôvodného formulára (príznak „pôvodný člen“, kraj môže byť odhad alebo prázdny), záznamy sa dajú upraviť, doplniť internou poznámkou alebo zmazať. Účty vytvára root na serveri:
 `ssh -t root@server qgis-sk-admin pridat <meno>` (heslo sa zadáva skryto, min. 12 znakov; `zoznam`,
 `odobrat <meno>`). Heslá sú uložené len ako PBKDF2 odtlačky. Po 8 neúspešných pokusoch je prihlásenie
 na 15 minút zablokované, sedenie trvá 12 hodín, každý zásah (stav, zmazanie, export) sa zapisuje do denníka.
