@@ -205,7 +205,7 @@ kontaktu na `index.html`.
 
 Štýl mapy je vlastný a je celý v `js/mapa.js` (funkcia `styl()`): farby, vrstvy, popisy. Kraje sú
 vyfarbené podľa počtu ľudí v komunite, organizácie sú body (oranžová = firmy, zelená = ostatné),
-blízke body sa zlučujú do žltých zhlukov s číslom. Legenda je priamo v mape.
+blízke body sa zlučujú do prstenca s číslom, ktorého farby ukazujú podiel firiem a ostatných organizácií. Kartogram krajov je žltý, aby sa neplietol s bodmi. Legenda je priamo v mape.
 
 ## Licencia
 

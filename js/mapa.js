@@ -6,7 +6,7 @@ window.QgisMapa = (function () {
   const VER = "4.7.1";
   const CDN = "https://cdnjs.cloudflare.com/ajax/libs/maplibre-gl/" + VER + "/maplibre-gl.min.";
   const DEM = "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png";
-  const C = { bg: "#0c1610", zelena: "#a8d65c", oranzova: "#ff9433", citron: "#f0e64a", kraj: "#93b023", text: "#d5e0d0" };
+  const C = { bg: "#1b2a20", zelena: "#b4e36a", oranzova: "#ff9433", kraj: "#f0e64a", krajObrys: "#e3da55", text: "#dde7d8", panel: "#101a13" };
   const SK = [[16.75, 47.68], [22.62, 49.66]];
   const maly = () => window.matchMedia("(max-width: 720px)").matches;
   const pokoj = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -29,22 +29,22 @@ window.QgisMapa = (function () {
       layers: [
         { id: "pozadie", type: "background", paint: { "background-color": C.bg } },
         { id: "tienovanie", type: "hillshade", source: "relief",
-          paint: { "hillshade-shadow-color": "#00060a", "hillshade-highlight-color": "#b9d99a", "hillshade-accent-color": "#18301c",
-            "hillshade-exaggeration": 0.8, "hillshade-illumination-direction": 315 } },
+          paint: { "hillshade-shadow-color": "#0a1710", "hillshade-highlight-color": "#cfe6b4", "hillshade-accent-color": "#25402a",
+            "hillshade-exaggeration": 0.72, "hillshade-illumination-direction": 315 } },
         { id: "lesy", type: "fill", source: "osm", "source-layer": "landcover", filter: ["==", ["get", "class"], "wood"], maxzoom: 12,
-          paint: { "fill-color": "#1f4a24", "fill-opacity": 0.22 } },
-        { id: "voda", type: "fill", source: "osm", "source-layer": "water", paint: { "fill-color": "#0b3440" } },
+          paint: { "fill-color": "#2c5a31", "fill-opacity": 0.22 } },
+        { id: "voda", type: "fill", source: "osm", "source-layer": "water", paint: { "fill-color": "#174652" } },
         { id: "rieky", type: "line", source: "osm", "source-layer": "waterway", filter: ["==", ["get", "class"], "river"],
-          paint: { "line-color": "#1d6474", "line-width": noc(6, 0.6, 12, 2.2), "line-opacity": 0.9 } },
+          paint: { "line-color": "#2c7d8f", "line-width": noc(6, 0.6, 12, 2.2), "line-opacity": 0.9 } },
         { id: "cesty", type: "line", source: "osm", "source-layer": "transportation", minzoom: 7,
           filter: ["in", ["get", "class"], ["literal", ["motorway", "trunk", "primary"]]],
-          paint: { "line-color": "#55664f", "line-width": noc(7, 0.4, 13, 1.8), "line-opacity": 0.55 } },
+          paint: { "line-color": "#6b7c64", "line-width": noc(7, 0.4, 13, 1.8), "line-opacity": 0.55 } },
         { id: "ulice", type: "line", source: "osm", "source-layer": "transportation", minzoom: 11,
           filter: ["in", ["get", "class"], ["literal", ["secondary", "tertiary", "minor"]]],
           paint: { "line-color": "#4a5a45", "line-width": noc(11, 0.3, 15, 1.4), "line-opacity": 0.45 } },
         { id: "budovy", type: "fill", source: "osm", "source-layer": "building", minzoom: 13, paint: { "fill-color": "#33402f", "fill-opacity": 0.6 } },
         { id: "hranica", type: "line", source: "osm", "source-layer": "boundary", filter: ["==", ["get", "admin_level"], 2],
-          paint: { "line-color": "#8aa884", "line-width": 1.1, "line-dasharray": [3, 2], "line-opacity": 0.55 } },
+          paint: { "line-color": "#a9c4a2", "line-width": 1.1, "line-dasharray": [3, 2], "line-opacity": 0.6 } },
         { id: "sidla", type: "symbol", source: "osm", "source-layer": "place",
           filter: ["any",
             ["all", ["in", ["get", "class"], ["literal", ["city", "town"]]],
@@ -107,20 +107,14 @@ window.QgisMapa = (function () {
     // kraje: výplň podľa počtu ľudí, obrys, zvýraznenie pod kurzorom
     map.addSource("kraje", { type: "geojson", data: krajeGeo || { type: "FeatureCollection", features: [] }, generateId: true });
     map.addLayer({ id: "kraje-vypln", type: "fill", source: "kraje", paint: { "fill-color": C.kraj,
-      "fill-opacity": ["step", ["coalesce", ["get", "ludia"], 0], 0.05, 1, 0.13, 3, 0.2, 6, 0.28, 11, 0.37, 21, 0.46, 41, 0.55] } }, "voda");
-    map.addLayer({ id: "kraje-obrys", type: "line", source: "kraje", paint: { "line-color": C.kraj,
-      "line-width": ["case", ["boolean", ["feature-state", "nad"], false], 2.6, 1.1],
-      "line-opacity": ["case", ["boolean", ["feature-state", "nad"], false], 1, 0.6] } }, "sidla");
+      "fill-opacity": ["step", ["coalesce", ["get", "ludia"], 0], 0.07, 1, 0.17, 3, 0.26, 6, 0.35, 11, 0.44, 21, 0.53, 41, 0.62] } }, "voda");
+    map.addLayer({ id: "kraje-obrys", type: "line", source: "kraje", paint: { "line-color": C.krajObrys,
+      "line-width": ["case", ["boolean", ["feature-state", "nad"], false], 2.8, 1.2],
+      "line-opacity": ["case", ["boolean", ["feature-state", "nad"], false], 1, 0.7] } }, "sidla");
     // organizácie: zhluky + body so žiarou
-    map.addSource("org", { type: "geojson", data: orgData, cluster: true, clusterRadius: 34, clusterMaxZoom: 9 });
+    map.addSource("org", { type: "geojson", data: orgData, cluster: true, clusterRadius: 34, clusterMaxZoom: 9,
+      clusterProperties: { firmy: ["+", ["case", ["==", ["get", "typ"], "firma"], 1, 0]] } });
     const farba = ["case", ["==", ["get", "typ"], "firma"], C.oranzova, C.zelena];
-    map.addLayer({ id: "zhluk-ziara", type: "circle", source: "org", filter: ["has", "point_count"],
-      paint: { "circle-color": C.citron, "circle-radius": ["step", ["get", "point_count"], 26, 5, 32, 12, 40], "circle-blur": 0.9, "circle-opacity": 0.35 } });
-    map.addLayer({ id: "zhluk", type: "circle", source: "org", filter: ["has", "point_count"],
-      paint: { "circle-color": C.citron, "circle-radius": ["step", ["get", "point_count"], 13, 5, 16, 12, 20], "circle-stroke-color": C.bg, "circle-stroke-width": 2 } });
-    map.addLayer({ id: "zhluk-pocet", type: "symbol", source: "org", filter: ["has", "point_count"],
-      layout: { "text-field": ["get", "point_count_abbreviated"], "text-font": ["Noto Sans Bold"], "text-size": 13, "text-allow-overlap": true },
-      paint: { "text-color": "#14210f" } });
     map.addLayer({ id: "bod-ziara", type: "circle", source: "org", filter: ["!", ["has", "point_count"]],
       paint: { "circle-color": farba, "circle-radius": 17, "circle-blur": 1, "circle-opacity": 0.5 } });
     map.addLayer({ id: "bod", type: "circle", source: "org", filter: ["!", ["has", "point_count"]],
@@ -129,12 +123,10 @@ window.QgisMapa = (function () {
     map.addLayer({ id: "bod-vyber", type: "circle", source: "org", filter: ["==", ["get", "id"], ""],
       paint: { "circle-color": "rgba(0,0,0,0)", "circle-radius": 15, "circle-stroke-color": "#ffffff", "circle-stroke-width": 2.5 } });
 
-    map.on("click", "zhluk", (e) => {
-      const f = e.features[0];
-      map.getSource("org").getClusterExpansionZoom(f.properties.cluster_id).then((z) => map.easeTo({ center: f.geometry.coordinates, zoom: z + 0.4, duration: 700 }));
-    });
+    map.on("data", (e) => { if (e.sourceId === "org" && e.isSourceLoaded) zhluky(); });
+    map.on("move", zhluky); map.on("moveend", zhluky);
     map.on("click", "bod", (e) => { const p = e.features[0].properties; ukaz(p, e.features[0].geometry.coordinates); vyber(p.id); naVyber && naVyber(p.id); });
-    ["zhluk", "bod"].forEach((l) => { map.on("mouseenter", l, () => { map.getCanvas().style.cursor = "pointer"; }); map.on("mouseleave", l, () => { map.getCanvas().style.cursor = ""; }); });
+    ["bod"].forEach((l) => { map.on("mouseenter", l, () => { map.getCanvas().style.cursor = "pointer"; }); map.on("mouseleave", l, () => { map.getCanvas().style.cursor = ""; }); });
     let nad = null;
     const krajInfo = (f) => {
       if (nad !== null) map.setFeatureState({ source: "kraje", id: nad }, { nad: false });
@@ -157,14 +149,47 @@ window.QgisMapa = (function () {
     io.observe(el);
   }
 
+  // Zhluk = prstenec zložený z farieb bodov, ktoré obsahuje (oranžová časť = firmy), s počtom v strede
+  let znacky = {}, naMape = {};
+  function prstenec(p) {
+    const n = p.point_count, f = p.firmy || 0, r = n >= 12 ? 25 : n >= 5 ? 21 : 18, w = 6, R = r - w / 2, o = 2 * Math.PI * R;
+    const NS = "http://www.w3.org/2000/svg", svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("width", 2 * r); svg.setAttribute("height", 2 * r); svg.setAttribute("viewBox", "0 0 " + 2 * r + " " + 2 * r); svg.setAttribute("class", "mapa-zhluk");
+    const kruh = (farba, dlzka, posun) => { const c = document.createElementNS(NS, "circle"); c.setAttribute("cx", r); c.setAttribute("cy", r); c.setAttribute("r", R);
+      c.setAttribute("fill", "none"); c.setAttribute("stroke", farba); c.setAttribute("stroke-width", w); c.setAttribute("stroke-dasharray", dlzka + " " + (o - dlzka));
+      c.setAttribute("stroke-dashoffset", -posun); c.setAttribute("transform", "rotate(-90 " + r + " " + r + ")"); return c; };
+    const stred = document.createElementNS(NS, "circle"); stred.setAttribute("cx", r); stred.setAttribute("cy", r); stred.setAttribute("r", r - w + 0.5); stred.setAttribute("fill", C.panel); stred.setAttribute("fill-opacity", "0.92");
+    const t = document.createElementNS(NS, "text"); t.setAttribute("x", r); t.setAttribute("y", r); t.setAttribute("text-anchor", "middle"); t.setAttribute("dominant-baseline", "central"); t.textContent = n;
+    svg.append(stred, kruh(C.zelena, o * (n - f) / n, 0), kruh(C.oranzova, o * f / n, o * (n - f) / n), t);
+    return svg;
+  }
+  function zhluky() {
+    if (!map.getSource("org") || !map.isSourceLoaded("org")) return;
+    const nove = {};
+    map.querySourceFeatures("org").forEach((f) => {
+      const p = f.properties; if (!p.cluster || nove[p.cluster_id]) return;
+      let m = znacky[p.cluster_id];
+      if (!m) {
+        const e = prstenec(p); e.title = sklon(p.point_count, "organizácia", "organizácie", "organizácií") + ", z toho " + sklon(p.firmy || 0, "firma", "firmy", "firiem") + ". Kliknutím priblížite.";
+        e.addEventListener("click", (ev) => { ev.stopPropagation();
+          map.getSource("org").getClusterExpansionZoom(p.cluster_id).then((z) => map.easeTo({ center: f.geometry.coordinates, zoom: z + 0.4, duration: 700 })); });
+        m = znacky[p.cluster_id] = new maplibregl.Marker({ element: e }).setLngLat(f.geometry.coordinates);
+      }
+      nove[p.cluster_id] = m; if (!naMape[p.cluster_id]) m.addTo(map);
+    });
+    Object.keys(naMape).forEach((id) => { if (!nove[id]) naMape[id].remove(); });
+    naMape = nove;
+  }
+  function zmazZhluky() { Object.values(naMape).forEach((m) => m.remove()); znacky = {}; naMape = {}; }
+
   function sklon(n, a, b, c) { return n + " " + (n === 1 ? a : n >= 2 && n <= 4 ? b : c); }
 
   function prekrytia() {
     info = document.createElement("div"); info.className = "mapa-info"; el.appendChild(info);
     const l = document.createElement("div"); l.className = "mapa-legenda";
     const riadok = (cls, text) => { const r = document.createElement("div"); const i = document.createElement("i"); i.className = cls; r.append(i, text); return r; };
-    l.append(riadok("b zel", "inštitúcie, školy, samosprávy, komunity"), riadok("b ora", "firmy"), riadok("b zhl", "viac organizácií na jednom mieste"),
-      riadok("k", "odtieň kraja: počet ľudí v komunite"));
+    l.append(riadok("b zel", "inštitúcie, školy, samosprávy, komunity"), riadok("b ora", "firmy"), riadok("zhl", "viac organizácií, prstenec ukazuje ich zloženie"),
+      riadok("k", "žltý odtieň kraja: počet ľudí v komunite"));
     el.appendChild(l);
   }
 
@@ -205,7 +230,7 @@ window.QgisMapa = (function () {
         geometry: { type: "Point", coordinates: [o.lon, o.lat] },
         properties: { id: o.id, nazov: o.nazov, typ: o.typ, mesto: o.mesto, popis: o.popis || "", web: o.web || "" } })) };
       if (!hotovo) return;
-      map.getSource("org").setData(orgData); popup.remove(); vyber(null);
+      zmazZhluky(); map.getSource("org").setData(orgData); popup.remove(); vyber(null);
       if (!vsetky && orgData.features.length) {
         const b = new maplibregl.LngLatBounds(); orgData.features.forEach((f) => b.extend(f.geometry.coordinates));
         map.fitBounds(b, { padding: 90, maxZoom: 10.5, duration: pokoj ? 0 : 900 });
