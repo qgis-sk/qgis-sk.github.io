@@ -363,3 +363,6 @@ details.more[open] > * + * { margin-top: 18px; }
 .member-box { margin-top: 28px; max-width: 640px; padding: 16px 20px; border: 1px solid rgba(238,121,19,.45); background: #fff7ee; border-radius: var(--radius); }
 .member-box p { margin: 4px 0 0; color: var(--ink-2); font-size: .97rem; }
 .member-box + .form { margin-top: 24px; }
+
+.switch { margin: 20px 0 0; font-size: .98rem; color: var(--ink-2); }
+.switch a { font-weight: 700; }
