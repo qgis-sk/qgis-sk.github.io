@@ -124,12 +124,15 @@
       const el = document.createElement("div");
       el.className = "org";
       el.id = o.id;
+      const cak = o.registracia === "člen";
+      const stav = cak ? '<span style="color:#ee7913">na potvrdenie</span>' : (o.stav === "overené" ? '<span style="color:#589632">sídlo overené</span>' : '<span style="color:#ee7913">sídlo neoverené</span>');
       el.innerHTML =
-        '<div class="t"><i class="bodka ' + (o.typ === "firma" ? "ora" : "zel") + '"></i>' + (TYPY[o.typ] || o.typ) + (o.registracia === "člen" ? ' · <span style="color:#ee7913">na potvrdenie</span>' : (o.stav === "overené" ? ' · <span style="color:#589632">sídlo overené</span>' : ' · <span style="color:#ee7913">sídlo neoverené</span>')) + "</div>" +
-        "<h4>" + esc(o.nazov) + "</h4>" +
-        '<div class="city">' + esc(o.mesto) + "</div>" +
+        '<div class="riadok"><i class="bodka ' + (o.typ === "firma" ? "ora" : "zel") + (cak ? " cak" : "") + '"></i>' +
+        '<span class="n">' + esc(o.nazov) + '</span><span class="city">' + esc(o.mesto) + "</span></div>" +
+        '<div class="viac"><div class="t">' + (TYPY[o.typ] || o.typ) + " · " + stav + "</div>" +
         (o.popis ? "<p>" + esc(o.popis) + "</p>" : "") +
-        (o.web ? '<p><a href="' + o.web + '" target="_blank" rel="noopener">' + esc(o.web.replace(/^https?:\/\//, "").replace(/\/$/, "")) + "</a></p>" : "");
+        (o.web ? '<p><a href="' + o.web + '" target="_blank" rel="noopener">' + esc(o.web.replace(/^https?:\/\//, "").replace(/\/$/, "")) + "</a></p>" : "") + "</div>";
+      el.title = o.nazov + ", " + o.mesto;
       el.addEventListener("click", (e) => {
         if (e.target.closest("a")) return;
         highlight(o.id);

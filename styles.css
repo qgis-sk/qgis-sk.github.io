@@ -399,3 +399,18 @@ details.more[open] > * + * { margin-top: 18px; }
 .mapa-zhluk { cursor: pointer; filter: drop-shadow(0 0 7px rgba(180,227,106,.55)); transition: transform .15s; }
 .mapa-zhluk:hover { transform: scale(1.12); }
 .mapa-zhluk text { fill: #fff; font: 700 13px var(--font); }
+
+/* ---- Kompaktný zoznam organizácií: jeden riadok na organizáciu, detail po kliknutí ---- */
+.org-list { gap: 0; border: 1px solid var(--line); border-radius: 14px; padding: 4px 0; background: #fff; }
+.org { border: 0; border-radius: 0; border-bottom: 1px solid var(--line); padding: 6px 14px; }
+.org:last-child { border-bottom: 0; }
+.org:hover { background: var(--paper-2); } .org.active { background: var(--green-soft); }
+.org .riadok { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.org .riadok .bodka { flex: none; width: 10px; height: 10px; border-radius: 50%; margin: 0; }
+.org .riadok .bodka.zel { background: var(--green); } .org .riadok .bodka.ora { background: var(--orange); }
+.org .riadok .bodka.cak { background: transparent; border: 2px solid var(--orange); } .org .riadok .bodka.zel.cak { border-color: var(--green); }
+.org .n { flex: 1 1 auto; min-width: 0; font-weight: 600; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.org .city { flex: none; max-width: 42%; color: var(--muted); font-size: .82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.org .viac { display: none; padding: 6px 0 4px 19px; }
+.org.active .viac { display: block; } .org.active .n { white-space: normal; }
+.org .viac .t { font-size: .7rem; } .org .viac p { margin: 3px 0 0; font-size: .9rem; }
