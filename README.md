@@ -168,8 +168,12 @@ rešpektuje „Do Not Track“. Prehľad: `python3 /opt/qgis-sk/export.py navste
 návštevníkov, zobrazenia, otvorenia formulára, registrácie a zdroje. Do odkazov v kampaniach pridávajte
 napr. `?utm_source=facebook`.
 
-**Náhľad pri zdieľaní.** `images/og-vyzva.jpg` (1200×630) generuje `scripts/og_image.py` z dát mapy;
-po väčšej zmene počtu organizácií ho stačí pregenerovať.
+**Náhľad pri zdieľaní.** Obrázky 1200×630 generuje `scripts/og_mapa.py` zo záberu komunitnej mapy
+(`scripts/podklady/og-mapa.jpg`): `images/og-mapa-6-rokov.jpg` (výročie, používa domovská stránka) a
+`images/og-mapa.jpg` (bez výročia, ostatné stránky). Po výročí stačí v `index.html` prepnúť `og:image`
+na `og-mapa.jpg` a vrátiť `og:title`. Sociálne siete si náhľad pamätajú, po zmene ho treba obnoviť
+(LinkedIn Post Inspector, Facebook Sharing Debugger). Starý `images/og-vyzva.jpg` ostáva kvôli už
+zdieľaným odkazom.
 
 Lokálny test formulárov: spustiť službu
 `PORT=18774 QGISSK_DB=/tmp/q.db QGISSK_ORIGINS=http://localhost:8765 python3 server/app.py`
