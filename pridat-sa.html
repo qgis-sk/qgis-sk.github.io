@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="alternate" type="application/rss+xml" title="QGIS Slovensko – novinky" href="feed.xml">
-  <link rel="stylesheet" href="styles.css?v=16">
+  <link rel="stylesheet" href="styles.css?v=17">
 </head>
 <body>
 <header class="site-header">
@@ -44,9 +44,14 @@
     <h1>Pridajte sa na mapu slovenskej QGIS komunity</h1>
     <p class="lead">Tri údaje a ste tam. Registrácia je bezplatná a nezáväzná a neznamená členstvo v občianskom združení. Na mape sa nezobrazíte, pripočítame vás iba do počtu za váš kraj.</p>
 
+    <div class="member-box">
+      <strong>Registrovali ste sa už v minulosti?</strong>
+      <p>Vyplňte meno, kraj a e-mail, ktorý ste použili vtedy. Váš záznam doplníme a nezapočítame vás dvakrát.</p>
+    </div>
+
     <form class="form" id="form-jednotlivec" novalidate>
       <div class="field"><label for="meno">Meno a priezvisko</label><input id="meno" name="meno" type="text" autocomplete="name" required maxlength="120"></div>
-      <div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="254"><small>Ak ste sa už registrovali v pôvodnom formulári, použite rovnaký e-mail. Nezapočítame vás dvakrát.</small></div>
+      <div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="254"><small>Pôvodní členovia: použite rovnaký e-mail ako pri prvej registrácii.</small></div>
       <div class="field"><label for="kraj">Kraj, v ktorom pôsobíte</label><select id="kraj" name="kraj" required><option value="">Vyberte kraj…</option><option>Bratislavský</option><option>Trnavský</option><option>Trenčiansky</option><option>Nitriansky</option><option>Žilinský</option><option>Banskobystrický</option><option>Prešovský</option><option>Košický</option><option value="Mimo Slovenska">Pôsobím mimo Slovenska</option></select><small>Kde pracujete, študujete alebo žijete.</small></div>
       <div class="hp" aria-hidden="true"><label>Web stránka <input name="web_stranka" type="text" tabindex="-1" autocomplete="off"></label></div>
 
@@ -84,7 +89,7 @@
 
     <div class="form-done" id="done-jednotlivec" hidden>
       <span class="featured-tag">Ste na mape</span>
-      <h2 id="done-title">Vitajte v slovenskej QGIS komunite</h2>
+      <h2 id="done-title">Ďakujeme. Registrácia prebehla úspešne!</h2>
       <p class="lead" id="done-text"></p>
       <div class="actions"><a class="btn" href="index.html#komunita">Pozrieť mapu</a><a class="btn ghost" id="share-fb" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fqgis.sk%2F%23komunita" target="_blank" rel="noopener">Zdieľať výzvu na Facebooku</a></div>
       <p class="muted small">Pracujete vo firme, na úrade alebo v škole, kde sa používa QGIS? <a href="pridat-organizaciu.html">Pridajte na mapu aj organizáciu.</a></p>
