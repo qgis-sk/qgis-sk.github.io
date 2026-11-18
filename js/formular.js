@@ -18,8 +18,16 @@
       data.web_stranka = form.elements.web_stranka.value;
       btn.disabled = true; const label = btn.textContent; btn.textContent = "Odosielam…";
       try {
-        const r = await fetch(API + path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
-        const j = await r.json();
+        // pri výpadku spojenia alebo preťažení to skúsime ešte dvakrát; registrácia je podľa e-mailu, takže sa nezdvojí
+        let r = null, j = null;
+        for (let pokus = 0; pokus < 3; pokus++) {
+          try {
+            r = await fetch(API + path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+            if (r.status < 500) { j = await r.json(); break; }
+          } catch (x) { r = null; }
+          if (pokus < 2) await new Promise((ok) => setTimeout(ok, 1500 * (pokus + 1)));
+        }
+        if (!j) throw new Error("spojenie");
         if (!r.ok) {
           err.textContent = j.chyba || "Odoslanie zlyhalo."; err.hidden = false;
           const el = j.pole && form.elements[j.pole];

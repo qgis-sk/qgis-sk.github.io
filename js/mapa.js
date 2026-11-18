@@ -57,12 +57,16 @@ window.QgisMapa = (function () {
     };
   }
 
-  function nacitaj(cb) {
-    if (window.maplibregl) return cb();
-    const css = document.createElement("link"); css.rel = "stylesheet"; css.href = CDN + "css"; document.head.appendChild(css);
-    const js = document.createElement("script"); js.src = CDN + "js"; js.onload = cb;
-    js.onerror = () => chyba("Mapu sa nepodarilo načítať. Zoznam organizácií je vedľa.");
-    document.head.appendChild(js);
+  // knižnica sa načíta raz, používa ju veľká mapa aj náhľad v úvode stránky
+  let kniznica = null;
+  function nacitaj() {
+    if (!kniznica) kniznica = new Promise((ok, zle) => {
+      if (window.maplibregl) return ok();
+      const css = document.createElement("link"); css.rel = "stylesheet"; css.href = CDN + "css"; document.head.appendChild(css);
+      const js = document.createElement("script"); js.src = CDN + "js"; js.onload = () => ok(); js.onerror = zle;
+      document.head.appendChild(js);
+    });
+    return kniznica;
   }
 
   function chyba(text) {
@@ -92,8 +96,8 @@ window.QgisMapa = (function () {
   }
 
   // základný záber: na mobile kolmo zhora, inak naklonený pohľad od juhu; pri náklone treba ísť bližšie
-  function pohlad() {
-    const c = map.cameraForBounds(SK, { padding: maly() ? 16 : 30 });
+  function pohlad(m, okraj) {
+    const c = (m || map).cameraForBounds(SK, { padding: okraj != null ? okraj : maly() ? 16 : 30 });
     if (maly()) return { center: c.center, zoom: c.zoom, pitch: 0, bearing: 0 };
     return { center: [19.5, 48.74], zoom: c.zoom + 0.08, pitch: 42, bearing: -6 };
   }
@@ -102,15 +106,19 @@ window.QgisMapa = (function () {
     map.easeTo(Object.assign({ duration: pokoj ? 0 : 1400 }, pohlad()));
   }
 
-  function poNacitani() {
-    if (!maly()) map.setTerrain({ source: "teren", exaggeration: 1.6 });
-    // kraje: výplň podľa počtu ľudí, obrys, zvýraznenie pod kurzorom
-    map.addSource("kraje", { type: "geojson", data: krajeGeo || { type: "FeatureCollection", features: [] }, generateId: true });
-    map.addLayer({ id: "kraje-vypln", type: "fill", source: "kraje", paint: { "fill-color": C.kraj,
+  // kraje: výplň podľa počtu ľudí, obrys, zvýraznenie pod kurzorom
+  function vrstvyKraje(m) {
+    m.addSource("kraje", { type: "geojson", data: krajeGeo || { type: "FeatureCollection", features: [] }, generateId: true });
+    m.addLayer({ id: "kraje-vypln", type: "fill", source: "kraje", paint: { "fill-color": C.kraj,
       "fill-opacity": ["step", ["coalesce", ["get", "ludia"], 0], 0.07, 1, 0.17, 3, 0.26, 6, 0.35, 11, 0.44, 21, 0.53, 41, 0.62] } }, "voda");
-    map.addLayer({ id: "kraje-obrys", type: "line", source: "kraje", paint: { "line-color": C.krajObrys,
+    m.addLayer({ id: "kraje-obrys", type: "line", source: "kraje", paint: { "line-color": C.krajObrys,
       "line-width": ["case", ["boolean", ["feature-state", "nad"], false], 2.8, 1.2],
       "line-opacity": ["case", ["boolean", ["feature-state", "nad"], false], 1, 0.7] } }, "sidla");
+  }
+
+  function poNacitani() {
+    if (!maly()) map.setTerrain({ source: "teren", exaggeration: 1.6 });
+    vrstvyKraje(map);
     // organizácie: zhluky + body so žiarou
     map.addSource("org", { type: "geojson", data: orgData, cluster: true, clusterRadius: 34, clusterMaxZoom: 9,
       clusterProperties: { firmy: ["+", ["case", ["==", ["get", "typ"], "firma"], 1, 0]] } });
@@ -218,12 +226,62 @@ window.QgisMapa = (function () {
     if (hotovo) map.setFilter("bod-vyber", ["==", ["get", "id"], id || ""]);
   }
 
+  // ---- Náhľad v úvode stránky: tá istá mapa v malom, bez ovládania; kliknutím sa ide na veľkú ----
+  let nm = null, nBox = null, nHotovo = false, orgVsetky = null, nSlucka = null, nVidno = true;
+  function nahladData() {
+    if (!nHotovo) return;
+    if (orgVsetky) nm.getSource("org").setData(orgVsetky);
+    if (krajeGeo) nm.getSource("kraje").setData(krajeGeo);
+  }
+  function nahladVytvor() {
+    try {
+      nm = new maplibregl.Map({ container: nBox, style: styl(), bounds: SK, fitBoundsOptions: { padding: 12 }, maxPitch: 62,
+        interactive: false, attributionControl: false });
+    } catch (e) { return; }   // bez WebGL ostane tmavá karta s odkazom na mapu
+    nm.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
+    nm.on("load", () => {
+      if (!maly()) nm.setTerrain({ source: "teren", exaggeration: 1.6 });
+      vrstvyKraje(nm);
+      nm.addSource("org", { type: "geojson", data: { type: "FeatureCollection", features: [] } });
+      const farba = ["case", ["==", ["get", "typ"], "firma"], C.oranzova, C.zelena];
+      nm.addLayer({ id: "bod-ziara", type: "circle", source: "org", paint: { "circle-color": farba, "circle-radius": 12, "circle-blur": 1, "circle-opacity": 0.5 } });
+      nm.addLayer({ id: "bod", type: "circle", source: "org", paint: { "circle-color": farba, "circle-radius": 4.5, "circle-stroke-color": "#ffffff", "circle-stroke-width": 1.2 } });
+      const atr = nBox.querySelector(".maplibregl-ctrl-attrib"); atr && atr.classList.remove("maplibregl-compact-show"); atr && atr.removeAttribute("open");
+      nHotovo = true; nahladData();
+      const kam = pohlad(nm, 26);
+      if (pokoj) return nm.jumpTo(kam);
+      // nájazd kamery, potom pomalé kolísanie pohľadu a pulzovanie bodov (len kým je náhľad na obrazovke)
+      nm.once("moveend", () => nahladPohyb(kam));
+      nm.easeTo(Object.assign({ duration: maly() ? 0 : 2600 }, kam));
+      new IntersectionObserver((z) => { nVidno = z[0].isIntersecting; }, { threshold: 0.05 }).observe(nBox);
+    });
+  }
+  function nahladPohyb(kam) {
+    if (nSlucka) return;
+    const t0 = performance.now(); let posl = 0;
+    const krok = (t) => {
+      nSlucka = requestAnimationFrame(krok);
+      if (!nVidno || t - posl < 33) return;
+      posl = t;
+      const s = (t - t0) / 1000, p = (Math.sin(s * 1.5) + 1) / 2;
+      nm.setPaintProperty("bod-ziara", "circle-radius", 10 + 5 * p); nm.setPaintProperty("bod-ziara", "circle-opacity", 0.55 - 0.25 * p);
+      if (!maly()) nm.setBearing(kam.bearing + 5 * Math.sin(s / 7));
+    };
+    nSlucka = requestAnimationFrame(krok);
+  }
+
   return {
+    // malá mapa v úvode stránky (kontajner má pevnú výšku z CSS)
+    nahlad(box) {
+      nBox = box; box.classList.add("mapa-gl");
+      nacitaj().then(nahladVytvor, () => {});
+    },
     init(container) {
       el = container; el.classList.add("mapa-gl");
       // knižnicu načítame, keď sa mapa blíži do zorného poľa; poistka: najneskôr pár sekúnd po načítaní stránky
       let spustene = false;
-      const spusti = () => { if (spustene) return; spustene = true; io.disconnect(); nacitaj(vytvor); };
+      const spusti = () => { if (spustene) return; spustene = true; io.disconnect();
+        nacitaj().then(vytvor, () => chyba("Mapu sa nepodarilo načítať. Zoznam organizácií je vedľa.")); };
       const io = new IntersectionObserver((z) => { if (z[0].isIntersecting) spusti(); }, { rootMargin: "600px" });
       io.observe(el);
       const neskor = () => setTimeout(spusti, 4000);
@@ -234,6 +292,7 @@ window.QgisMapa = (function () {
       orgData = { type: "FeatureCollection", features: list.filter((o) => o.lat && o.lon).map((o) => ({ type: "Feature",
         geometry: { type: "Point", coordinates: [o.lon, o.lat] },
         properties: { id: o.id, nazov: o.nazov, typ: o.typ, mesto: o.mesto, popis: o.popis || "", web: o.web || "" } })) };
+      if (vsetky && !orgVsetky) { orgVsetky = orgData; nahladData(); }
       if (!hotovo) return;
       zmazZhluky(); map.getSource("org").setData(orgData); popup.remove(); vyber(null);
       if (!vsetky && orgData.features.length) {
@@ -247,6 +306,7 @@ window.QgisMapa = (function () {
       const pouzi = (geo) => {
         geo.features.forEach((f) => { const k = (f.properties.nazov || "").replace(" kraj", ""); const p = krajePocty[k] || {}; f.properties.ludia = p.ludia || 0; f.properties.org = p.org || 0; });
         krajeGeo = geo; if (hotovo) map.getSource("kraje").setData(geo);
+        nahladData();
       };
       if (krajeGeo) return pouzi(krajeGeo);
       fetch("data/sk-kraje.json").then((r) => r.json()).then(pouzi).catch(() => {});

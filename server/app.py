@@ -80,7 +80,7 @@ def now():
 
 
 def db():
-    con = sqlite3.connect(DB, timeout=10)
+    con = sqlite3.connect(DB, timeout=20)
     con.row_factory = sqlite3.Row
     return con
 
@@ -88,6 +88,9 @@ def db():
 def init_db():
     os.makedirs(os.path.dirname(DB), exist_ok=True)
     with db() as con:
+        # WAL: čítanie (štatistika, administrácia) neblokuje zápis registrácií a naopak
+        con.execute("PRAGMA journal_mode=WAL")
+        con.execute("PRAGMA synchronous=NORMAL")
         con.executescript("""
         CREATE TABLE IF NOT EXISTS jednotlivci (
             id INTEGER PRIMARY KEY, vytvorene TEXT, upravene TEXT,
@@ -205,6 +208,13 @@ def bez_prazdneho_pribehu(vals):
 
 def uloz_jednotlivca(vals):
     """Zapíše alebo aktualizuje človeka; vráti odpoveď pre formulár."""
+    try:
+        return _uloz_jednotlivca(vals)
+    except sqlite3.IntegrityError:      # dve súbežné registrácie rovnakého e-mailu
+        return _uloz_jednotlivca(vals)
+
+
+def _uloz_jednotlivca(vals):
     email = vals["email"]
     t = now()
     with db() as con:
@@ -346,9 +356,21 @@ def rpo(ico):
     return {"nazov": name, "adresa": adresa, "obec": mun, "zaniknuta": bool(e.get("termination"))}
 
 
+class Server(ThreadingHTTPServer):
+    request_queue_size = 256          # nápor naraz prichádzajúcich spojení (predvolených 5 je málo)
+    daemon_threads = True
+
+
 class H(BaseHTTPRequestHandler):
     server_version = "qgis-sk"
-    protocol_version = "HTTP/1.1"
+    protocol_version = "HTTP/1.0"     # jedno spojenie = jedna požiadavka (nginx sa pripája zakaždým nanovo)
+    timeout = 30                      # zaseknuté spojenie neblokuje vlákno donekonečna
+
+    def handle(self):
+        try:
+            super().handle()
+        except (ConnectionError, TimeoutError, OSError):
+            pass                      # klient spojenie prerušil; nie je čo robiť
 
     def log_message(self, *a):   # žiadne logy s adresami ani obsahom
         pass
@@ -432,7 +454,7 @@ class H(BaseHTTPRequestHandler):
             return self.send_json(400, {"chyba": "Neplatné údaje."})
         if u.path == "/api/n":
             ua = self.headers.get("User-Agent") or ""
-            if not limited(self.ip(), "n", 300) and not re.search(r"bot|crawl|spider|preview|monitor", ua, re.I):
+            if not limited(self.ip(), "n", 6000) and not re.search(r"bot|crawl|spider|preview|monitor", ua, re.I):
                 try:
                     navsteva(self.ip(), ua, d)
                 except sqlite3.Error:
@@ -442,7 +464,7 @@ class H(BaseHTTPRequestHandler):
             if limited(self.ip(), "potvrdit", 60):
                 return self.send_json(429, {"chyba": "Príliš veľa pokusov, skúste neskôr."})
             return self.potvrdit(d)
-        if limited(self.ip(), "post", 40):
+        if limited(self.ip(), "post", 400):
             return self.send_json(429, {"chyba": "Príliš veľa registrácií z jednej adresy. Skúste to o hodinu."})
         # ochrana pred robotmi: skryté pole musí ostať prázdne a formulár otvorený aspoň 2 s
         bot = bool(s(d.get("web_stranka"), 50)) or float(d.get("t") or 0) < 2
@@ -566,6 +588,19 @@ class H(BaseHTTPRequestHandler):
                     rpo_nazov=r.get("nazov", ""), rpo_adresa=r.get("adresa", ""),
                     pribeh=text(d.get("pribeh"), 1200), pribeh_odkaz=url(d.get("pribeh_odkaz")))
         t = now()
+        try:
+            row = self._uloz_org(kluc, vals, t)
+        except sqlite3.IntegrityError:  # dve súbežné registrácie rovnakej organizácie
+            row = self._uloz_org(kluc, vals, t)
+        _stat_cache["v"] = None
+        oznam_timu("QGIS SK – organizácia čaká na overenie: " + nazov,
+                   "Nová registrácia organizácie na komunitnú mapu.\n\nNázov: " + nazov + "\nObec: " + obec + "\nIČO: " + (ico or "neuvedené") +
+                   "\nRegister: " + (r.get("nazov", "") + ", " + r.get("adresa", "") if r.get("nazov") else "nenájdené") +
+                   ("\nPridali aj príklad použitia." if vals["pribeh"] else "") +
+                   "\n\nČakajúce: python3 /opt/qgis-sk/export.py organizacie nová\n")
+        self.send_json(200, {"ok": True, "aktualizacia": bool(row), "overene_v_registri": bool(r.get("nazov"))})
+
+    def _uloz_org(self, kluc, vals, t):
         with db() as con:
             row = con.execute("SELECT id FROM organizacie WHERE ico = ?", (kluc,)).fetchone()
             if row:
@@ -576,16 +611,10 @@ class H(BaseHTTPRequestHandler):
                 cols = ["vytvorene", "upravene", "suhlas"] + list(vals)
                 con.execute("INSERT INTO organizacie (" + ", ".join(cols) + ") VALUES (" + ", ".join("?" * len(cols)) + ")",
                             [t, t, t] + list(vals.values()))
-        _stat_cache["v"] = None
-        oznam_timu("QGIS SK – organizácia čaká na overenie: " + nazov,
-                   "Nová registrácia organizácie na komunitnú mapu.\n\nNázov: " + nazov + "\nObec: " + obec + "\nIČO: " + (ico or "neuvedené") +
-                   "\nRegister: " + (r.get("nazov", "") + ", " + r.get("adresa", "") if r.get("nazov") else "nenájdené") +
-                   ("\nPridali aj príklad použitia." if vals["pribeh"] else "") +
-                   "\n\nČakajúce: python3 /opt/qgis-sk/export.py organizacie nová\n")
-        self.send_json(200, {"ok": True, "aktualizacia": bool(row), "overene_v_registri": bool(r.get("nazov"))})
+        return row
 
 
 if __name__ == "__main__":
     init_db()
     admin.init(db=db, stat=stat, now=now, cache=_stat_cache, email_re=EMAIL_RE, ico_re=ICO_RE, kraje=KRAJE, mimo=MIMO, typy=TYPY)
-    ThreadingHTTPServer(("127.0.0.1", PORT), H).serve_forever()
+    Server(("127.0.0.1", PORT), H).serve_forever()
