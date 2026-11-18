@@ -18,6 +18,9 @@ scp -q deploy/qgis-sk-set-smtp deploy/qgis-sk-admin "$HOST:/usr/local/sbin/"
 ssh "$HOST" 'chmod 700 /usr/local/sbin/qgis-sk-set-smtp /usr/local/sbin/qgis-sk-admin'
 
 
+echo "== záloha databázy pred reštartom =="
+ssh "$HOST" 'python3 /opt/qgis-sk/backup.py pred-nasadenim'
+
 echo "== služba =="
 ssh "$HOST" '
 set -e
