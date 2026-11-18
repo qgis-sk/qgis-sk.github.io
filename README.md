@@ -39,7 +39,8 @@ js/formular.js             odosielanie formulárov, dohľadanie IČO
 pridat-sa.html             formulár pre jednotlivcov
 pridat-organizaciu.html    formulár pre organizácie
 server/                    registračná služba (beží na serveri Geosupportu)
-js/komunita.js             mapa organizácií (Leaflet + OpenStreetMap), vyhľadávanie, filtre,
+js/mapa.js                 komunitná mapa (MapLibre GL): tmavý podklad, reliéf, 3D terén, zhluky, legenda
+js/komunita.js             zoznam organizácií, vyhľadávanie, filtre, panel po krajoch,
                            mobilné menu, SVG mapa Slovenska v hlavičke (kraje + body organizácií)
 data/organizacie.json      dáta pre mapu – GENEROVANÉ, needitovať ručne
 data/stat.json             počty členov – udržiavané ručne
@@ -197,10 +198,14 @@ kontaktu na `index.html`.
 ## Externé závislosti
 
 - Font Cairo z Google Fonts
-- Leaflet 1.9.4 z cdnjs
-- Hranice krajov v hlavičke: © prispievatelia OpenStreetMap (ODbL), stiahnuté cez Nominatim
-- Dlaždice OpenStreetMap (štandardný server, vhodný pre nízku návštevnosť; pri raste prejsť na
-  vlastný alebo platený poskytovateľ)
+- MapLibre GL JS 4.7.1 z cdnjs (načíta sa až vtedy, keď sa mapa blíži do zorného poľa)
+- Vektorové dlaždice a písma máp: [OpenFreeMap](https://openfreemap.org) (dáta © prispievatelia OpenStreetMap, schéma OpenMapTiles), bez kľúča
+- Výškový model pre tieňovaný reliéf a 3D terén: AWS Terrain Tiles (Mapzen), bez kľúča
+- Hranice krajov (`data/sk-kraje.json`): © prispievatelia OpenStreetMap (ODbL), stiahnuté cez Nominatim
+
+Štýl mapy je vlastný a je celý v `js/mapa.js` (funkcia `styl()`): farby, vrstvy, popisy. Kraje sú
+vyfarbené podľa počtu ľudí v komunite, organizácie sú body (oranžová = firmy, zelená = ostatné),
+blízke body sa zlučujú do prstenca s číslom, ktorého farby ukazujú podiel firiem a ostatných organizácií. Kartogram krajov je žltý, aby sa neplietol s bodmi. Legenda je priamo v mape.
 
 ## Licencia
 
