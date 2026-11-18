@@ -40,3 +40,20 @@ tr.new td { background: #fff7ee; } tr.new td:first-child { box-shadow: inset 3px
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 24px; } .two h3 { font-size: 15px; margin: 0 0 6px; }
 @media (max-width: 760px) { .two { grid-template-columns: 1fr; } header, nav, .cards, section[id^=tab-] { padding-left: 14px; padding-right: 14px; } }
 #t-dni th:not(:first-child) { text-align: right; }
+
+.chips { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+.chips button { background: #fff; color: var(--ink2); border-color: var(--line); padding: 4px 12px; font-size: 13px; }
+.chips button.active { background: var(--soft); border-color: var(--green); color: var(--green-dk); }
+.tag.g { background: #eee; color: #555; }
+td .acts { display: flex; gap: 6px; }
+button.small { padding: 3px 10px; font-size: 13px; background: #fff; color: var(--ink); border-color: var(--line); }
+td.pozn { max-width: 340px; } td.pozn .note { display: block; color: var(--muted); font-size: 13px; margin-top: 3px; }
+dialog { border: 1px solid var(--line); border-radius: 14px; padding: 0; width: min(560px, 94vw); }
+dialog::backdrop { background: rgba(0,0,0,.35); }
+dialog form { padding: 26px 28px; display: flex; flex-direction: column; gap: 14px; }
+dialog h2 { margin: 0; font-size: 20px; }
+#edit-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 14px; }
+#edit-fields label { display: flex; flex-direction: column; gap: 4px; font-weight: 600; font-size: 13px; }
+#edit-fields label.wide { grid-column: 1 / -1; } #edit-fields label.check { flex-direction: row; align-items: center; gap: 8px; font-weight: 400; }
+#edit-fields input[type=text], #edit-fields select, #edit-fields textarea { font: inherit; padding: 8px 10px; border: 1px solid #cfcfc9; border-radius: 8px; width: 100%; }
+dialog .row { display: flex; gap: 10px; align-items: center; }

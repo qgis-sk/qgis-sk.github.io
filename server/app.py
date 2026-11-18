@@ -109,11 +109,14 @@ def init_db():
         CREATE TABLE IF NOT EXISTS dni (
             den TEXT PRIMARY KEY, navstevnici INTEGER DEFAULT 0, zobrazenia INTEGER DEFAULT 0);
         """)
-        for tab in ("jednotlivci", "organizacie"):
+        nove = {"jednotlivci": (("pribeh", "TEXT"), ("pribeh_odkaz", "TEXT"), ("poznamka", "TEXT"),
+                                ("povodny", "INTEGER DEFAULT 0"), ("obnovil", "INTEGER DEFAULT 0"), ("kraj_odhad", "INTEGER DEFAULT 0")),
+                "organizacie": (("pribeh", "TEXT"), ("pribeh_odkaz", "TEXT"), ("obec", "TEXT"), ("poznamka", "TEXT"))}
+        for tab, stlpce in nove.items():
             cols = [r[1] for r in con.execute("PRAGMA table_info(" + tab + ")")]
-            for col in ("pribeh", "pribeh_odkaz") + (("obec",) if tab == "organizacie" else ()):
+            for col, typ in stlpce:
                 if col not in cols:
-                    con.execute("ALTER TABLE " + tab + " ADD COLUMN " + col + " TEXT")
+                    con.execute("ALTER TABLE " + tab + " ADD COLUMN " + col + " " + typ)
 
 
 def email_hash(email):
@@ -205,11 +208,11 @@ def uloz_jednotlivca(vals):
     email = vals["email"]
     t = now()
     with db() as con:
-        row = con.execute("SELECT id FROM jednotlivci WHERE email = ?", (email,)).fetchone()
+        row = con.execute("SELECT id, povodny FROM jednotlivci WHERE email = ?", (email,)).fetchone()
         if row:
             zmeny = bez_prazdneho_pribehu(vals)
-            con.execute("UPDATE jednotlivci SET upravene=?, " + ", ".join(k + "=?" for k in zmeny) + " WHERE id=?",
-                        [t] + list(zmeny.values()) + [row["id"]])
+            con.execute("UPDATE jednotlivci SET upravene=?, kraj_odhad=0, obnovil=povodny, suhlas=?, " + ", ".join(k + "=?" for k in zmeny) + " WHERE id=?",
+                        [t, t] + list(zmeny.values()) + [row["id"]])
         else:
             cols = ["vytvorene", "upravene", "suhlas"] + list(vals)
             con.execute("INSERT INTO jednotlivci (" + ", ".join(cols) + ") VALUES (" + ", ".join("?" * len(cols)) + ")",
@@ -223,7 +226,8 @@ def uloz_jednotlivca(vals):
         oznam_timu("QGIS SK – nový príklad použitia od člena komunity",
                    "Člen komunity sa pri registrácii podelil o príklad použitia QGIS.\n"
                    "Pozrite si ho exportom na serveri: python3 /opt/qgis-sk/export.py pribehy\n")
-    return {"ok": True, "aktualizacia": bool(row), "povodna_registracia": bool(bol_povodny),
+    povodna = bool(bol_povodny) or bool(row and row["povodny"])
+    return {"ok": True, "aktualizacia": bool(row) and not povodna, "povodna_registracia": povodna,
             "kraj": kraj, "poradie_v_kraji": st["kraje"].get(kraj, st["mimo_sr"]),
             "ludia_spolu": st["ludia_spolu"]}
 
@@ -267,22 +271,27 @@ def stat():
     if _stat_cache["v"] and t - _stat_cache["t"] < 20:
         return _stat_cache["v"]
     with db() as con:
-        novi = con.execute("SELECT email, kraj FROM jednotlivci").fetchall()
+        ludia = con.execute("SELECT email, kraj, povodny, obnovil FROM jednotlivci").fetchall()
         povodni = con.execute("SELECT email_hash, kraj FROM povodni").fetchall()
         org_cakaju = con.execute("SELECT COUNT(*) FROM organizacie WHERE stav = 'nová'").fetchone()[0]
     kraje = {k: 0 for k in KRAJE}
-    mimo = 0
-    nove_hash = set()
-    for r in novi:
-        nove_hash.add(email_hash(r["email"]))
+    mimo = neznamy = nove = bez_obnovy = 0
+    mame = set()
+    for r in ludia:                       # ľudia v databáze: noví aj prenesení z pôvodného formulára
+        mame.add(email_hash(r["email"]))
         if r["kraj"] in kraje:
             kraje[r["kraj"]] += 1
-        else:
+        elif r["kraj"] == MIMO:
             mimo += 1
-    neznamy = 0
+        else:
+            neznamy += 1
+        if not r["povodny"]:
+            nove += 1
+        elif not r["obnovil"]:
+            bez_obnovy += 1
     zostava = 0
-    for r in povodni:
-        if r["email_hash"] in nove_hash:
+    for r in povodni:                     # pôvodní členovia, o ktorých máme len odtlačok e-mailu
+        if r["email_hash"] in mame:
             continue
         zostava += 1
         if r["kraj"] in kraje:
@@ -292,10 +301,10 @@ def stat():
         else:
             neznamy += 1
     v = {
-        "ludia_spolu": len(novi) + zostava,
-        "nove_registracie": len(novi),
-        "povodne_bez_obnovy": zostava,
-        "povodni_nacitani": len(povodni) > 0,
+        "ludia_spolu": len(ludia) + zostava,
+        "nove_registracie": nove,
+        "povodne_bez_obnovy": bez_obnovy + zostava,
+        "povodni_nacitani": len(povodni) > 0 or any(r["povodny"] for r in ludia),
         "kraje": kraje,
         "mimo_sr": mimo,
         "kraj_neznamy": neznamy,
@@ -578,5 +587,5 @@ class H(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     init_db()
-    admin.init(db=db, stat=stat, now=now, cache=_stat_cache)
+    admin.init(db=db, stat=stat, now=now, cache=_stat_cache, email_re=EMAIL_RE, ico_re=ICO_RE, kraje=KRAJE, mimo=MIMO, typy=TYPY)
     ThreadingHTTPServer(("127.0.0.1", PORT), H).serve_forever()

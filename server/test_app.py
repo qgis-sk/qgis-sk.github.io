@@ -59,6 +59,18 @@ def bez_posty(call, env, tmp):
     exp = lambda *a: subprocess.run([sys.executable, os.path.join(here, "export.py")] + list(a), env=env, capture_output=True, text=True).stdout
     check("export jednotlivcov", "nova@example.org" in exp("jednotlivci"))
     out = exp("pribehy"); check("export príbehov", "Mapujeme studne" in out and "Pasport zelene" in out and "example.org/mapa" in out and "\n\n\n" not in out.split("Mapujeme")[1][:60])
+    # prenos pôvodných členov ako úplných záznamov
+    full = ("email,meno,kraj,kraj_odhad,vytvorene,oblast,novinky,poznamka\n"
+            "stary@example.org,Stará Osoba,Bratislavský,1,2020-11-18T10:00:00Z,[],1,Pôvodná registrácia\n"
+            "dalsi@example.org,Ďalší Člen,,0,2021-02-01T10:00:00Z,[],0,Pôvodná registrácia\n"
+            "tretia@example.org,Tretia Osoba,Nitriansky,1,2021-03-01T10:00:00Z,[],1,Pôvodná registrácia\n")
+    out = subprocess.run([sys.executable, os.path.join(here, "import_povodni.py")], input=full.encode(), env=env, capture_output=True, text=False).stdout.decode()
+    time.sleep(0.1); call("/api/jednotlivec", dict(good, email="vynuluj-cache@example.org", web_stranka="x"))
+    subprocess.run([sys.executable, "-c", "import sqlite3,os; c=sqlite3.connect(os.environ['QGISSK_DB']); c.execute(\"UPDATE jednotlivci SET upravene=upravene\"); c.commit()"], env=env)
+    c, r = call("/api/jednotlivec", dict(good, email="x-cache@example.org", kraj="Trnavský")); c, st = call("/api/stat")
+    check("prenos pôvodných: 2 noví + 2 prenesení + 1 už bol, odtlačky zmazané", "prenesených pôvodných členov: 2" in out and "už boli v databáze: 1" in out and st["ludia_spolu"] == 5 and st["kraj_neznamy"] == 1 and st["kraje"]["Nitriansky"] == 1 and st["povodne_bez_obnovy"] == 2 and st["nove_registracie"] == 2)
+    c, r = call("/api/jednotlivec", dict(good, email="dalsi@example.org", kraj="Žilinský")); c2, st = call("/api/stat")
+    check("pôvodný člen si doplní kraj", r["povodna_registracia"] and not r["aktualizacia"] and st["ludia_spolu"] == 5 and st["kraj_neznamy"] == 0 and st["kraje"]["Žilinský"] == 1 and st["povodne_bez_obnovy"] == 1)
     # návštevnosť
     call("/api/n", {"p": "/", "r": "l.facebook.com"}); call("/api/n", {"p": "/pridat-sa.html", "s": "Facebook"}); call("/api/n", {"p": "/", "r": "qgis.sk"})
     call("/api/n", {"p": "/<script>", "r": "x"}); call("/api/n", {"p": "/"}, ua="Googlebot/2.1")
@@ -116,6 +128,14 @@ def administracia(call, env, tmp):
     oid = d["organizacie"][0]["id"]; pid = d["jednotlivci"][0]["id"]
     c, b, h = req("/admin/api/organizacia", {"id": oid, "stav": "overená"}, cookie=ck, headers={"Content-Type": "application/json", "Origin": base}); check("zmena bez hlavičky X-Admin odmietnutá", c == 403)
     c, b, h = req("/admin/api/organizacia", {"id": oid, "stav": "overená"}, cookie=ck); c2, st = call("/api/stat"); check("zmena stavu organizácie", c == 200 and st["organizacie_cakaju_na_overenie"] == 0)
+    c, b, h = req("/admin/api/upravit", {"co": "jednotlivci", "id": pid, "zmeny": {"meno": "Nové Meno", "email": "nova@example.org", "kraj": "Košický", "poznamka": "volal, oprava kraja", "novinky": True}}, cookie=ck)
+    c2, b2, h2 = req("/admin/api/prehlad", cookie=ck); dd = json.loads(b2)["jednotlivci"][0]; c3, st = call("/api/stat")
+    check("úprava človeka", c == 200 and dd["meno"] == "Nové Meno" and dd["kraj"] == "Košický" and dd["poznamka"].startswith("volal") and dd["novinky"] == 1 and st["kraje"]["Košický"] == 1 and st["kraje"]["Prešovský"] == 0)
+    c, b, h = req("/admin/api/upravit", {"co": "jednotlivci", "id": pid, "zmeny": {"meno": "X Y", "email": "zly", "kraj": "Košický"}}, cookie=ck); check("úprava so zlým e-mailom odmietnutá", c == 400)
+    c, b, h = req("/admin/api/upravit", {"co": "jednotlivci", "id": pid, "zmeny": {"meno": "X Y", "email": "nova@example.org", "kraj": "Atlantída"}}, cookie=ck); check("úprava s neznámym krajom odmietnutá", c == 400)
+    c, b, h = req("/admin/api/upravit", {"co": "organizacie", "id": oid, "zmeny": {"nazov": "Škola opravená", "obec": "Sabinov", "typ": "skola", "popis": "Opravený popis.", "ico": "51287153", "kontakt_meno": "A B", "kontakt_email": "a@example.org"}}, cookie=ck)
+    c2, b2, h2 = req("/admin/api/prehlad", cookie=ck); oo = json.loads(b2)["organizacie"][0]
+    check("úprava organizácie", c == 200 and oo["nazov"] == "Škola opravená" and oo["obec"] == "Sabinov" and oo["ico"] == "51287153")
     c, b, h = req("/admin/api/csv?co=jednotlivci", cookie=ck); check("export CSV", c == 200 and b"nova@example.org" in b and "attachment" in h["Content-Disposition"])
     c, b, h = req("/admin/api/csv?co=povodni", cookie=ck); check("export inej tabuľky odmietnutý", c == 400)
     c, b, h = req("/admin/api/zmazat", {"co": "jednotlivci", "id": pid}, cookie=ck); c2, st = call("/api/stat"); check("zmazanie registrácie", c == 200 and st["ludia_spolu"] == 0)

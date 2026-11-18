@@ -37,6 +37,14 @@
     </nav>
     <section id="tab-ludia">
       <div class="bar"><input id="hladat" type="search" placeholder="Hľadať meno, e-mail, kraj, organizáciu…"><a class="btn ghost" href="/admin/api/csv?co=jednotlivci">Stiahnuť CSV</a></div>
+      <div class="chips" id="filtre">
+        <button data-f="vsetci" class="active">Všetci</button>
+        <button data-f="novi">Cez nový formulár</button>
+        <button data-f="obnovili">Pôvodní, ktorí si doplnili údaje</button>
+        <button data-f="neobnovili">Pôvodní bez doplnenia</button>
+        <button data-f="bezkraja">Bez kraja</button>
+        <span class="muted" id="pocet"></span>
+      </div>
       <div class="scroll"><table id="t-ludia"><thead><tr><th>Čas</th><th>Meno</th><th>E-mail</th><th>Kraj</th><th>Organizácia</th><th>Oblasť</th><th>Skúsenosť</th><th>Poznámky</th><th></th></tr></thead><tbody></tbody></table></div>
       <p class="muted" id="ludia-empty" hidden>Zatiaľ žiadne registrácie cez nový formulár.</p>
     </section>
@@ -51,6 +59,14 @@
       <p class="muted">Počítame anonymne, bez cookies. Návštevník = jedno zariadenie za deň. Kto má zapnuté „Do Not Track“, nepočíta sa.</p>
     </section>
   </div>
+  <dialog id="edit">
+    <form method="dialog" id="edit-form">
+      <h2 id="edit-title">Upraviť záznam</h2>
+      <div id="edit-fields"></div>
+      <p class="err" id="edit-err" hidden></p>
+      <div class="row"><button type="button" class="ghost" id="edit-cancel">Zrušiť</button><span class="spacer"></span><button type="submit">Uložiť</button></div>
+    </form>
+  </dialog>
   <script src="/admin/app.js"></script>
 </body>
 </html>
